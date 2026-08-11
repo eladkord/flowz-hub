@@ -80,8 +80,20 @@ h1,h2,h3{font-family:'Sora',sans-serif}
 .foot{
   margin-top:40px;font-size:11.5px;letter-spacing:.12em;color:#B4A890;font-weight:600;text-align:center;
 }
+/* ── "To Review" section – work-in-progress material awaiting a decision ── */
+.section-sep{
+  width:100%;max-width:980px;display:flex;align-items:center;gap:16px;margin:44px 0 6px;
+}
+.section-sep::before,.section-sep::after{content:"";flex:1;height:1.5px;background:#E4DACB}
+.section-sep .st{
+  font-family:'Sora';font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  color:#A8720F;background:var(--gold-soft);border:1px solid #EDD9A8;border-radius:999px;padding:6px 16px;
+  white-space:nowrap;
+}
+.grid.review{margin-top:22px;grid-template-columns:repeat(2,minmax(240px,300px))}
+.grid.review .door{border-style:dashed;border-color:#E2D5BC}
 @media (max-width:860px){.grid{grid-template-columns:repeat(2,minmax(220px,1fr))}}
-@media (max-width:560px){.grid{grid-template-columns:1fr}}
+@media (max-width:560px){.grid{grid-template-columns:1fr}.grid.review{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -136,6 +148,26 @@ h1,h2,h3{font-family:'Sora',sans-serif}
     <h2>NDA &amp; Legal</h2>
     <p>The evaluation &amp; technical due-diligence NDA – read online or download as PDF.</p>
     <span class="go">Read NDA →</span>
+  </a>
+</div>
+
+<div class="section-sep"><span class="st">To Review</span></div>
+
+<div class="grid review">
+  <a class="door" href="tiers/">
+    <span class="chip local">Internal · draft</span>
+    <span class="ico" style="background:var(--purple-soft)">🏅</span>
+    <h2>Segmentation Proposal</h2>
+    <p>Lifecycle · Tiers · Badges – the system design, five tier-naming ladders with badge icons, and what the big CRMs do.</p>
+    <span class="go">Open deck →</span>
+  </a>
+
+  <a class="door" href="tiers/Flowz-Segmentation-Research.pdf" target="_blank" rel="noopener">
+    <span class="chip local">Internal · draft</span>
+    <span class="ico" style="background:var(--lightblue-bg)">📄</span>
+    <h2>Full Research Report</h2>
+    <p>The 34-page deep dive – 9 research tracks across HubSpot, Salesforce, Klaviyo, RFM practice, naming psychology and failure modes.</p>
+    <span class="go">Open PDF →</span>
   </a>
 </div>
 

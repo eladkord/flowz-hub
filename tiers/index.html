@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flowz – Attendee Segmentation Proposal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============ design tokens – mirrors the Flowz client deck ============ */
+:root{
+  --cream:#FAF6EF;
+  --cream-deep:#F3EDE2;
+  --card:#FFFDF9;
+  --ink:#2B2620;
+  --ink-soft:#6E6659;
+  --orange:#F0641E;
+  --orange-soft:#FDE8DC;
+  --blue:#3B82F6;
+  --blue-soft:#DBEAFE;
+  --lightblue-bg:#EAF4FB;
+  --green-soft:#DCF3C8;
+  --green:#3E8914;
+  --purple:#8B5CF6;
+  --purple-soft:#EFE3FA;
+  --pink-soft:#F8E1F4;
+  --teal:#0D9488;
+  --teal-soft:#CCF3EC;
+  --gold:#E8A93D;
+  --gold-soft:#FCF0D8;
+  --red:#D14343;
+  --radius:22px;
+  --shadow:0 10px 34px rgba(90,70,40,.10);
+  --t-slide:.55s;
+  --t-chip:.25s;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--cream);color:var(--ink);overflow:hidden}
+h1,h2,h3,.display{font-family:'Sora',sans-serif}
+
+/* ============ deck chrome ============ */
+.deck{position:relative;width:100vw;height:100vh}
+.slide{
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:44px 64px 74px;opacity:0;visibility:hidden;transform:translateY(24px);
+  transition:opacity var(--t-slide) ease,transform var(--t-slide) ease,visibility 0s var(--t-slide);
+}
+.slide.active{opacity:1;visibility:visible;transform:translateY(0);transition:opacity var(--t-slide) ease,transform var(--t-slide) ease}
+.slide-inner{width:100%;max-width:1180px}
+.progress{position:fixed;left:0;top:0;height:4px;background:var(--orange);width:0;transition:width .4s ease;z-index:60;border-radius:0 4px 4px 0}
+.nav{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:60;align-items:center}
+.dot{width:9px;height:9px;border-radius:50%;background:#D9CFBE;cursor:pointer;transition:var(--t-chip);border:none;padding:0}
+.dot.on{background:var(--orange);transform:scale(1.35)}
+.arrows{position:fixed;bottom:14px;right:22px;display:flex;gap:8px;z-index:60}
+.arrow-btn{width:42px;height:42px;border-radius:14px;border:1.5px solid #E4DACB;background:var(--card);font-size:17px;color:var(--ink);cursor:pointer;transition:.2s;box-shadow:0 3px 10px rgba(90,70,40,.07)}
+.arrow-btn:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.slide-num{position:fixed;bottom:26px;left:26px;font-size:11.5px;color:#B4A88F;font-weight:600;letter-spacing:.08em;z-index:60}
+.corner-brand{position:fixed;top:20px;left:26px;font-family:'Sora';font-weight:800;font-size:15px;letter-spacing:.02em;z-index:60}
+.corner-brand span{color:var(--orange)}
+.corner-chip{position:fixed;top:18px;right:24px;z-index:60;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:var(--gold-soft);color:#8a6b1f;border:1px solid #EDD9A8;border-radius:999px;padding:5px 12px}
+
+/* ============ shared blocks ============ */
+.kicker{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--orange);margin-bottom:10px}
+.h-title{font-size:34px;font-weight:800;letter-spacing:-.02em;line-height:1.12;margin-bottom:8px}
+.h-sub{font-size:15px;color:var(--ink-soft);max-width:860px;line-height:1.55}
+.card{background:var(--card);border:1px solid #F0E8DA;border-radius:var(--radius);box-shadow:var(--shadow);padding:20px 22px}
+.pill{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:3px 10px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{font-family:'Sora';font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--cream-deep)}
+.tbl td{padding:9px 12px;border-bottom:1px solid var(--cream-deep);vertical-align:top;line-height:1.45}
+.tbl tr:last-child td{border-bottom:none}
+.foot-link{position:fixed;bottom:24px;right:80px;z-index:60;font-size:12px;font-weight:600;color:var(--ink-soft);text-decoration:none;border:1.5px solid #E4DACB;background:var(--card);border-radius:999px;padding:8px 16px;transition:.2s}
+.foot-link:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+
+/* ============ S1 title ============ */
+.title-badges{display:flex;gap:14px;justify-content:center;margin:26px 0 30px}
+.tb{display:flex;flex-direction:column;align-items:center;gap:8px}
+.tb .nm{font-size:11px;font-weight:700;color:var(--ink-soft)}
+.title-links{display:flex;gap:12px;justify-content:center;margin-top:26px}
+.btn{display:inline-block;border-radius:999px;padding:11px 22px;font-size:13.5px;font-weight:700;text-decoration:none;transition:.2s}
+.btn.primary{background:var(--orange);color:#fff}
+.btn.primary:hover{background:#d4551a}
+.btn.ghost{border:1.5px solid #E4DACB;color:var(--ink);background:var(--card)}
+.btn.ghost:hover{border-color:var(--orange);color:var(--orange)}
+
+/* ============ S2 problem ============ */
+.collide{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:22px}
+.collide .card{border-top:4px solid var(--cream-deep)}
+.collide .card.c1{border-top-color:var(--blue)}
+.collide .card.c2{border-top-color:var(--gold)}
+.collide .card.c3{border-top-color:var(--purple)}
+.collide h3{font-size:16px;margin-bottom:6px}
+.collide p{font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+.problem-strip{margin-top:20px;background:var(--orange-soft);border:1px solid #F6C9AC;border-radius:14px;padding:14px 18px;font-size:13.5px;line-height:1.5}
+
+/* ============ S3 proposal diagram ============ */
+.engine{display:grid;grid-template-columns:250px 60px 1fr;gap:0;align-items:stretch;margin-top:20px}
+.ledger{background:var(--ink);color:#F5EFE4;border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;justify-content:center}
+.ledger h3{font-size:15px;color:#fff;margin-bottom:8px}
+.ledger p{font-size:12px;line-height:1.55;color:#C9BFAE}
+.ledger .ev{font-size:11px;background:rgba(255,255,255,.09);border-radius:8px;padding:5px 9px;margin-top:6px;color:#E8E0D2}
+.engine-arrow{display:flex;align-items:center;justify-content:center;font-size:26px;color:#C9BDA6}
+.fields{display:flex;flex-direction:column;gap:12px}
+.field{display:grid;grid-template-columns:120px 1fr auto;gap:14px;align-items:center;background:var(--card);border:1px solid #F0E8DA;border-radius:16px;padding:14px 18px;box-shadow:var(--shadow)}
+.field .fname{font-family:'Sora';font-weight:700;font-size:15px}
+.field .fdesc{font-size:12.5px;color:var(--ink-soft);line-height:1.45}
+.field .fdrv{font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:4px 11px;white-space:nowrap}
+.f-life .fdrv{background:var(--blue-soft);color:#1D4ED8}
+.f-tier .fdrv{background:var(--gold-soft);color:#8a6b1f}
+.f-badge .fdrv{background:var(--purple-soft);color:#6D28D9}
+.boundary{margin-top:16px;text-align:center;font-size:13.5px;background:var(--card);border:1.5px dashed #D9CFBE;border-radius:14px;padding:12px 18px}
+.boundary b{color:var(--orange)}
+
+/* ============ S5 physics ============ */
+.phys{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
+.phys .card h3{font-size:15px;margin-bottom:7px;display:flex;align-items:center;gap:8px}
+.phys .card p{font-size:12.5px;color:var(--ink-soft);line-height:1.55}
+.phys .num{width:26px;height:26px;border-radius:9px;background:var(--orange-soft);color:var(--orange);display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;font-family:'Sora'}
+
+/* ============ naming ladders ============ */
+.ladder{background:var(--card);border:1px solid #F0E8DA;border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 22px;margin-top:14px;display:grid;grid-template-columns:190px 1fr;gap:18px;align-items:center}
+.ladder .meta h3{font-size:17px;margin-bottom:4px}
+.ladder .meta p{font-size:11.5px;color:var(--ink-soft);line-height:1.45}
+.ladder .meta .pill{margin-top:8px}
+.rungs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.rung{display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center}
+.rung .nm{font-family:'Sora';font-weight:700;font-size:13.5px}
+.rung .th{font-size:10px;color:#B4A88F;font-weight:600}
+.rung.apex .nm{color:var(--orange)}
+.lad-note{margin-top:14px;font-size:12.5px;color:var(--ink-soft);background:var(--cream-deep);border-radius:12px;padding:11px 16px;line-height:1.5}
+/* three ladders on one slide need a tighter cut so nothing clips at 720p */
+.ladder.compact{padding:12px 20px;margin-top:11px}
+.ladder.compact .meta p{font-size:11px}
+.ladder.compact .rung svg{width:50px;height:50px}
+.ladder.compact .rung .nm{font-size:12.5px}
+
+/* ============ S8 options ============ */
+.opt-tbl td:first-child{font-weight:700;white-space:nowrap}
+.verdict{font-size:10.5px;font-weight:800;letter-spacing:.05em;border-radius:999px;padding:3px 10px;white-space:nowrap}
+.v-rec{background:var(--green-soft);color:var(--green)}
+.v-view{background:var(--blue-soft);color:#1D4ED8}
+.v-later{background:var(--gold-soft);color:#8a6b1f}
+.v-no{background:#FBE2E2;color:var(--red)}
+
+/* ============ S9 screenshots ============ */
+.shots{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+.shot{background:var(--card);border:1px solid #F0E8DA;border-radius:16px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column}
+.shot .imgwrap{height:150px;background:var(--cream-deep);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.shot img{width:100%;height:100%;object-fit:cover;object-position:top left}
+.shot .cap{padding:10px 14px}
+.shot .cap b{font-size:12.5px;display:block;margin-bottom:2px}
+.shot .cap span{font-size:11px;color:var(--ink-soft);line-height:1.4;display:block}
+
+/* ============ S10 editability ============ */
+.sentence{background:var(--ink);border-radius:16px;padding:18px 22px;font-family:'Sora';font-size:17px;color:#F5EFE4;line-height:1.7;margin-top:18px}
+.sentence .slot{background:rgba(240,100,30,.25);border:1px solid rgba(240,100,30,.6);color:#FFD9C2;border-radius:8px;padding:2px 10px;font-weight:700}
+.edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.histo{display:flex;align-items:flex-end;gap:3px;height:74px;margin:12px 0 6px}
+.histo i{flex:1;background:var(--blue-soft);border-radius:3px 3px 0 0}
+.histo i.hot{background:var(--orange)}
+.impact{background:var(--gold-soft);border:1px solid #EDD9A8;border-radius:10px;padding:9px 13px;font-size:12px;font-weight:600;color:#8a6b1f}
+
+/* ============ S12 decisions ============ */
+.decide{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px}
+.decide .card{border-left:4px solid var(--orange)}
+.decide h3{font-size:15px;margin-bottom:6px}
+.decide p{font-size:12.5px;color:var(--ink-soft);line-height:1.55}
+</style>
+</head>
+<body>
+
+<div class="corner-brand">FLOW<span>Z</span></div>
+<div class="corner-chip">To Review · Internal</div>
+<div class="progress" id="progress"></div>
+
+<!-- ═══════════ SVG BADGE LIBRARY (referenced via <use>) ═══════════ -->
+<svg width="0" height="0" style="position:absolute">
+<defs>
+
+<!-- WAVES ladder – energy in water. blues -->
+<g id="bg-ripple"><circle cx="32" cy="32" r="30" fill="#E7F5FE"/><circle cx="32" cy="36" r="4" fill="#38BDF8"/><path d="M20 36a12 12 0 0 1 24 0" fill="none" stroke="#7DD3FC" stroke-width="3" stroke-linecap="round"/><path d="M14 36a18 18 0 0 1 36 0" fill="none" stroke="#BAE6FD" stroke-width="3" stroke-linecap="round"/></g>
+<g id="bg-wave"><circle cx="32" cy="32" r="30" fill="#D8EFFC"/><path d="M12 36c5-9 10-9 15 0s10 9 15 0" fill="none" stroke="#0EA5E9" stroke-width="4" stroke-linecap="round"/><path d="M16 44c4-6 8-6 12 0s8 6 12 0" fill="none" stroke="#7DD3FC" stroke-width="3" stroke-linecap="round"/></g>
+<g id="bg-surge"><circle cx="32" cy="32" r="30" fill="#C6E6FA"/><path d="M12 42c6-11 12-11 18 0s12 11 18 0" fill="none" stroke="#0284C7" stroke-width="4.5" stroke-linecap="round"/><path d="M15 31c5-8 9-8 14 0s9 8 14 0" fill="none" stroke="#0EA5E9" stroke-width="3.5" stroke-linecap="round"/><path d="M20 21c3-5 6-5 9 0s6 5 9 0" fill="none" stroke="#7DD3FC" stroke-width="2.5" stroke-linecap="round"/></g>
+<g id="bg-tsunami"><circle cx="32" cy="32" r="30" fill="#0369A1"/><path d="M14 44c0-14 8-24 21-24 8 0 13 5 13 11 0 5-4 9-9 9-4 0-7-3-7-6 0-2 2-4 4-4" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/><path d="M14 48h30" stroke="#7DD3FC" stroke-width="3.5" stroke-linecap="round"/></g>
+
+<!-- WATERS ladder – scale of water. teals -->
+<g id="bg-drop"><circle cx="32" cy="32" r="30" fill="#E4F8F4"/><path d="M32 15c7 9 12 15 12 21a12 12 0 0 1-24 0c0-6 5-12 12-21z" fill="#2DD4BF"/><circle cx="28" cy="37" r="3" fill="#fff" opacity=".7"/></g>
+<g id="bg-stream"><circle cx="32" cy="32" r="30" fill="#CFF2EB"/><path d="M13 27c6-5 12 5 19 0s12-5 19 0" fill="none" stroke="#14B8A6" stroke-width="4" stroke-linecap="round"/><path d="M13 38c6-5 12 5 19 0s12-5 19 0" fill="none" stroke="#0D9488" stroke-width="4" stroke-linecap="round"/></g>
+<g id="bg-river"><circle cx="32" cy="32" r="30" fill="#B5EAE0"/><path d="M18 14c14 6-10 14 6 20s-8 12 8 16" fill="none" stroke="#0D9488" stroke-width="8" stroke-linecap="round"/><path d="M40 12c-4 3-2 5 2 7" fill="none" stroke="#5EEAD4" stroke-width="3" stroke-linecap="round"/></g>
+<g id="bg-ocean"><circle cx="32" cy="32" r="30" fill="#075E54"/><path d="M12 28c5-6 10-6 15 0s10 6 15 0" fill="none" stroke="#5EEAD4" stroke-width="3.5" stroke-linecap="round"/><path d="M12 38c5-6 10-6 15 0s10 6 15 0" fill="none" stroke="#2DD4BF" stroke-width="3.5" stroke-linecap="round"/><circle cx="45" cy="18" r="4" fill="#FCF0D8"/></g>
+
+<!-- BACKSTAGE ladder – venue proximity. brand warms, apex black laminate -->
+<g id="bg-ga"><circle cx="32" cy="32" r="30" fill="#F3EDE2"/><rect x="15" y="22" width="34" height="20" rx="4" fill="#fff" stroke="#B4A88F" stroke-width="2.5"/><path d="M40 22v20" stroke="#B4A88F" stroke-width="2" stroke-dasharray="3 3"/><circle cx="27" cy="32" r="4" fill="#D9CFBE"/></g>
+<g id="bg-frontrow"><circle cx="32" cy="32" r="30" fill="#FCF0D8"/><path d="M14 44h36" stroke="#E8A93D" stroke-width="4" stroke-linecap="round"/><path d="M20 44V33M32 44V33M44 44V33" stroke="#E8A93D" stroke-width="3.5" stroke-linecap="round"/><path d="M32 15l3.5 7 7.5 1-5.5 5.5 1.5 7.5-7-4-7 4 1.5-7.5L21 23l7.5-1z" fill="#F0641E"/></g>
+<g id="bg-backstage"><circle cx="32" cy="32" r="30" fill="#FDE8DC"/><path d="M26 14l6 8 6-8" fill="none" stroke="#F0641E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><rect x="20" y="24" width="24" height="26" rx="5" fill="#F0641E"/><rect x="25" y="31" width="14" height="3.5" rx="1.75" fill="#fff" opacity=".9"/><rect x="25" y="38" width="9" height="3.5" rx="1.75" fill="#fff" opacity=".6"/></g>
+<g id="bg-allaccess"><circle cx="32" cy="32" r="30" fill="#2B2620"/><rect x="19" y="17" width="26" height="32" rx="5" fill="none" stroke="#E8A93D" stroke-width="2.5"/><path d="M32 24l2.6 5.2 5.9.8-4.3 4.1 1.1 5.9-5.3-2.9-5.3 2.9 1.1-5.9-4.3-4.1 5.9-.8z" fill="#E8A93D"/><path d="M24 44h16" stroke="#E8A93D" stroke-width="2.5" stroke-linecap="round"/></g>
+
+<!-- FIRE ladder – heat curve. yellow to red -->
+<g id="bg-spark"><circle cx="32" cy="32" r="30" fill="#FEF6DE"/><path d="M32 16v10M32 38v10M16 32h10M38 32h10" stroke="#FCD34D" stroke-width="3.5" stroke-linecap="round"/><path d="M32 26l2.5 3.5L38 32l-3.5 2.5L32 38l-2.5-3.5L26 32l3.5-2.5z" fill="#F59E0B"/></g>
+<g id="bg-glow"><circle cx="32" cy="32" r="30" fill="#FDEECB"/><circle cx="32" cy="32" r="9" fill="#F59E0B"/><circle cx="32" cy="32" r="15" fill="none" stroke="#FBBF24" stroke-width="2.5" opacity=".65"/><circle cx="32" cy="32" r="21" fill="none" stroke="#FCD34D" stroke-width="2" opacity=".4"/></g>
+<g id="bg-blaze"><circle cx="32" cy="32" r="30" fill="#FDE0C8"/><path d="M32 13c2 8 11 11 11 21a11 11 0 0 1-22 0c0-10 9-13 11-21z" fill="#F0641E"/><path d="M32 30c1 4 5 5 5 9a5 5 0 0 1-10 0c0-4 4-5 5-9z" fill="#FCD34D"/></g>
+<g id="bg-inferno"><circle cx="32" cy="32" r="30" fill="#D14343"/><path d="M32 11c2 8 11 11 11 21a11 11 0 0 1-22 0c0-10 9-13 11-21z" fill="#fff"/><path d="M32 27c1.5 5 6 6 6 11a6 6 0 0 1-12 0c0-5 4.5-6 6-11z" fill="#F0641E"/><path d="M15 46c1-4 5-5 5-9M49 46c-1-4-5-5-5-9" stroke="#FCD34D" stroke-width="3" stroke-linecap="round" fill="none"/></g>
+
+<!-- APEX ladder – rank climb. purples, dynamic top -->
+<g id="bg-rookie"><circle cx="32" cy="32" r="30" fill="#F1EBFB"/><path d="M20 38l12-12 12 12" fill="none" stroke="#C4B5FD" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g id="bg-riser"><circle cx="32" cy="32" r="30" fill="#E7DDF8"/><path d="M20 43l12-12 12 12" fill="none" stroke="#8B5CF6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 30l12-12 12 12" fill="none" stroke="#C4B5FD" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g id="bg-elite"><circle cx="32" cy="32" r="30" fill="#D9C9F5"/><path d="M20 47l12-12 12 12" fill="none" stroke="#6D28D9" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 35l12-12 12 12" fill="none" stroke="#8B5CF6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M25 20l7-7 7 7" fill="none" stroke="#C4B5FD" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g id="bg-apex"><circle cx="32" cy="32" r="30" fill="#2B2620"/><path d="M14 44L28 22l6 9 4-6 12 19z" fill="none" stroke="#8B5CF6" stroke-width="3" stroke-linejoin="round"/><path d="M32 10l1.8 3.8 4.2.6-3 3 .7 4.1-3.7-2-3.7 2 .7-4.1-3-3 4.2-.6z" fill="#E8A93D"/></g>
+
+</defs>
+</svg>
+
+<div class="deck">
+
+<!-- ════════ S1 · TITLE ════════ -->
+<section class="slide" data-n="1">
+  <div class="slide-inner" style="text-align:center">
+    <div class="kicker">Flowz · Product Design Proposal</div>
+    <h1 class="display" style="font-size:46px;letter-spacing:-.03em;line-height:1.08">How we segment an audience:<br>Lifecycle · Tiers · Badges</h1>
+    <p class="h-sub" style="margin:14px auto 0">A single engine under three fields the producer already understands – plus five candidate naming systems for the tier ladder. Built on a 9-track research sweep of HubSpot, Salesforce, Klaviyo, CleverTap, Braze, Zoho, ActiveCampaign, ticketing platforms, RFM practice and loyalty-program psychology.</p>
+    <div class="title-badges">
+      <span class="tb"><svg width="58" height="58" viewBox="0 0 64 64"><use href="#bg-ripple"/></svg><span class="nm">Ripple</span></span>
+      <span class="tb"><svg width="58" height="58" viewBox="0 0 64 64"><use href="#bg-frontrow"/></svg><span class="nm">Front Row</span></span>
+      <span class="tb"><svg width="58" height="58" viewBox="0 0 64 64"><use href="#bg-blaze"/></svg><span class="nm">Blaze</span></span>
+      <span class="tb"><svg width="58" height="58" viewBox="0 0 64 64"><use href="#bg-ocean"/></svg><span class="nm">Ocean</span></span>
+      <span class="tb"><svg width="58" height="58" viewBox="0 0 64 64"><use href="#bg-apex"/></svg><span class="nm">Apex</span></span>
+    </div>
+    <div class="title-links">
+      <a class="btn primary" href="Flowz-Segmentation-Research.pdf" target="_blank">Full research report (PDF)</a>
+      <a class="btn ghost" href="../">Back to hub</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ S2 · THE PROBLEM ════════ -->
+<section class="slide" data-n="2">
+  <div class="slide-inner">
+    <div class="kicker">Where we are</div>
+    <h2 class="h-title">Three dimensions, no rules of engagement</h2>
+    <p class="h-sub">Today lifecycle, tiers and tags live side by side with no defined relationship. Each one is fine alone – together they collide.</p>
+    <div class="collide">
+      <div class="card c1">
+        <h3>Lifecycle</h3>
+        <p>New · Rising · Core · At-risk · Lapsed. A temporal state – but "VIP" used to sit inside it, mixing status into a time axis. Recency runs on calendar days, which breaks for annual events.</p>
+      </div>
+      <div class="card c2">
+        <h3>Tiers</h3>
+        <p>Bronze · Silver · Gold · Platinum. Understandable but generic – and nothing defines what earns a tier: events? money? both? "Veteran" wants in but measures a different thing (tenure).</p>
+      </div>
+      <div class="card c3">
+        <h3>Tags</h3>
+        <p>EarlyBuyer, GroupBuyer, Spender, Responsive... applied ad-hoc, no thresholds, no manager view, and no line between what a tag is versus what a tier is.</p>
+      </div>
+    </div>
+    <div class="problem-strip"><b>The research verdict:</b> the three-field decomposition is industry-correct. What is missing is the connective tissue – one engine underneath, clear boundaries between the axes, and names a stranger ranks in under 2 seconds.</div>
+  </div>
+</section>
+
+<!-- ════════ S3 · THE PROPOSAL ════════ -->
+<section class="slide" data-n="3">
+  <div class="slide-inner">
+    <div class="kicker">The proposal</div>
+    <h2 class="h-title">Three fields, one engine</h2>
+    <p class="h-sub">Every attendee action lands in an append-only ledger. Three engines read it, three fields surface it. Nothing can contradict, and every threshold recomputes cleanly from history when a client edits it later.</p>
+    <div class="engine">
+      <div class="ledger">
+        <h3>The Ledger</h3>
+        <p>Append-only record of value events per attendee:</p>
+        <div class="ev">🎟️ ticket purchased · edition #</div>
+        <div class="ev">🏨 room / F&amp;B / merch spend</div>
+        <div class="ev">📩 open · click · reply · WA / support</div>
+        <div class="ev">👥 group size · buy timing · referral</div>
+      </div>
+      <div class="engine-arrow">→</div>
+      <div class="fields">
+        <div class="field f-life">
+          <span class="fname">Lifecycle</span>
+          <span class="fdesc">Temporal state: New → Returning → Regular → Cooling → Lapsed. Recency counted in <b>missed editions</b>, never calendar days. Engagement splits Cooling into "reachable" vs "silent".</span>
+          <span class="fdrv">Recency + Engagement</span>
+        </div>
+        <div class="field f-tier">
+          <span class="fname">Tier</span>
+          <span class="fdesc">Earned status: events attended <b>and</b> LTV over a rolling window – one VIP table can't buy the top tier. Upgrades instantly, downgrades only at season end with a grace window.</span>
+          <span class="fdrv">Frequency + Monetary</span>
+        </div>
+        <div class="field f-badge">
+          <span class="fname">Badges</span>
+          <span class="fdesc">Behavior patterns, auto-computed from editable rules: Early Bird, Group Buyer, Big Spender, Veteran, Advocate. Plus a separate freeform manual layer (Artist, Helper).</span>
+          <span class="fdrv">Pattern rules</span>
+        </div>
+      </div>
+    </div>
+    <div class="boundary">The boundary rule: <b>rankable → Tier</b> · <b>temporal state → Lifecycle</b> · <b>behavior pattern → Badge</b></div>
+  </div>
+</section>
+
+<!-- ════════ S4 · THE FIVE QUESTIONS ════════ -->
+<section class="slide" data-n="4">
+  <div class="slide-inner">
+    <div class="kicker">The logic</div>
+    <h2 class="h-title">Where each signal lives – the five questions</h2>
+    <div class="card" style="margin-top:18px;padding:10px 6px">
+      <table class="tbl">
+        <tr><th style="width:220px">Signal</th><th style="width:150px">Lives in</th><th>Why</th></tr>
+        <tr><td>1 · Events attended</td><td><span class="pill" style="background:var(--gold-soft);color:#8a6b1f">Tier input</span></td><td>Rankable. Counted over a rolling 24 months in 3–4 bins – quintiles over "attended 1, 2 or 3 events" is fake precision.</td></tr>
+        <tr><td>2 · Rooms / F&amp;B revenue</td><td><span class="pill" style="background:var(--gold-soft);color:#8a6b1f">Tier input</span></td><td>Monetary sub-score. Tier needs events AND LTV, so the rooms-always buyer with 2 events can outrank a GA-only buyer with 4.</td></tr>
+        <tr><td>3 · Group buyers</td><td><span class="pill" style="background:var(--purple-soft);color:#6D28D9">Badge</span></td><td>Not rankable. Their money already counts in Monetary; the badge captures the pattern for group offers and referral flows.</td></tr>
+        <tr><td>4 · Early / late buyers</td><td><span class="pill" style="background:var(--purple-soft);color:#6D28D9">Badge</span></td><td>Gold for pricing flows, meaningless as rank. Early Bird = first-window buyer 2+ times; Last-Minute = final-week buyer.</td></tr>
+        <tr><td>5 · Engagement score</td><td><span class="pill" style="background:var(--blue-soft);color:#1D4ED8">Lifecycle modifier</span></td><td>Ratio with decay (share of messages engaged, events attended vs opportunity). Splits identical recency states: "Cooling · reachable" vs "Cooling · silent" – different flow each. Never feeds the tier: blended scores hide the driver.</td></tr>
+      </table>
+    </div>
+    <div class="lad-note" style="margin-top:14px"><b>Why engagement stays out of the tier:</b> a fused "health score" is the documented failure mode – green account, renews at 78%. Multi-dimension views predict churn ~34% better. Spend and engagement stay visibly separate.</div>
+  </div>
+</section>
+
+<!-- ════════ S5 · TIER PHYSICS ════════ -->
+<section class="slide" data-n="5">
+  <div class="slide-inner">
+    <div class="kicker">Tier mechanics</div>
+    <h2 class="h-title">Status you earn, not a label that flickers</h2>
+    <div class="phys">
+      <div class="card"><h3><span class="num">↑</span> Upgrade instantly</h3><p>The moment the threshold is crossed, the attendee levels up. Goal-gradient works for us: always show progress-to-next-tier on the profile.</p></div>
+      <div class="card"><h3><span class="num">↓</span> Downgrade gently</h3><p>Only at season end, with notice and a grace window – "attend 1 event to keep Backstage". Demoted customers measurably end up less loyal than never-promoted ones, so demotion is engineered, not automatic. Tier freezes during the producer's off-season.</p></div>
+      <div class="card"><h3><span class="num">📅</span> Event-relative recency</h3><p>"Lapsed" means missed 2 consecutive editions they used to attend – never "no purchase in 365 days", which marks every annual-festival fan dead in month 11. Cadence detected per producer from their event calendar.</p></div>
+      <div class="card"><h3><span class="num">🔒</span> Sustained qualification</h3><p>Tier = events AND LTV over the trailing window. Qualifying metric stays isolated from anything spendable (future points program), so a redemption can never demote anyone – the Salesforce currency split, adopted early.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ S6 · NAMING – FLOWZ BRAND ════════ -->
+<section class="slide" data-n="6">
+  <div class="slide-inner">
+    <div class="kicker">Naming the ladder · 1 of 2</div>
+    <h2 class="h-title">Two ladders in the brand's own language</h2>
+    <p class="h-sub">Flowz is flow – water gives us ladders that are on-brand, calm enough for a retreat, big enough for a festival. A stranger ranks both in under 2 seconds.</p>
+
+    <div class="ladder">
+      <div class="meta">
+        <h3>WAVES</h3>
+        <p>Energy magnitude. The crowd version – reads perfectly for bass, parties, festivals.</p>
+        <span class="pill" style="background:var(--blue-soft);color:#1D4ED8">Flowz brand</span>
+      </div>
+      <div class="rungs">
+        <span class="rung"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-ripple"/></svg><span class="nm">Ripple</span><span class="th">first event</span></span>
+        <span class="rung"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-wave"/></svg><span class="nm">Wave</span><span class="th">2+ events</span></span>
+        <span class="rung"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-surge"/></svg><span class="nm">Surge</span><span class="th">4+ events · LTV floor</span></span>
+        <span class="rung apex"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-tsunami"/></svg><span class="nm">Tsunami</span><span class="th">top of the ladder</span></span>
+      </div>
+    </div>
+
+    <div class="ladder">
+      <div class="meta">
+        <h3>WATERS</h3>
+        <p>Scale of water. The universal version – drop &lt; stream &lt; river &lt; ocean needs zero explanation in any vertical.</p>
+        <span class="pill" style="background:var(--teal-soft);color:var(--teal)">Flowz brand</span>
+      </div>
+      <div class="rungs">
+        <span class="rung"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-drop"/></svg><span class="nm">Drop</span><span class="th">first event</span></span>
+        <span class="rung"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-stream"/></svg><span class="nm">Stream</span><span class="th">2+ events</span></span>
+        <span class="rung"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-river"/></svg><span class="nm">River</span><span class="th">4+ events · LTV floor</span></span>
+        <span class="rung apex"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-ocean"/></svg><span class="nm">Ocean</span><span class="th">top of the ladder</span></span>
+      </div>
+    </div>
+
+    <div class="lad-note">Architecture either way: stable internal keys (tier_1...tier_4) + <b>name skins</b>. We ship a default skin, clients rename freely later – the Delta model: fixed names, repriced numbers.</div>
+  </div>
+</section>
+
+<!-- ════════ S7 · NAMING – THE COOL THREE ════════ -->
+<section class="slide" data-n="7">
+  <div class="slide-inner">
+    <div class="kicker">Naming the ladder · 2 of 2</div>
+    <h2 class="h-title">Three more, sliding up the cool scale</h2>
+
+    <div class="ladder compact">
+      <div class="meta">
+        <h3>BACKSTAGE</h3>
+        <p>Venue proximity physically encodes rank – every promoter and attendee decodes it instantly. Industry vernacular, not decoration.</p>
+        <span class="pill" style="background:var(--orange-soft);color:var(--orange)">Cool · safest</span>
+      </div>
+      <div class="rungs">
+        <span class="rung"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-ga"/></svg><span class="nm">GA</span><span class="th">first event</span></span>
+        <span class="rung"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-frontrow"/></svg><span class="nm">Front Row</span><span class="th">2+ events</span></span>
+        <span class="rung"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-backstage"/></svg><span class="nm">Backstage</span><span class="th">4+ events · LTV floor</span></span>
+        <span class="rung apex"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-allaccess"/></svg><span class="nm">All-Access</span><span class="th">black laminate</span></span>
+      </div>
+    </div>
+
+    <div class="ladder compact">
+      <div class="meta">
+        <h3>FIRE</h3>
+        <p>Heat is monotonic – spark to inferno self-ranks. Born for EDM and bass brands; deliberately wrong for yoga. That's what skins are for.</p>
+        <span class="pill" style="background:var(--gold-soft);color:#8a6b1f">Cooler · genre skin</span>
+      </div>
+      <div class="rungs">
+        <span class="rung"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-spark"/></svg><span class="nm">Spark</span><span class="th">first event</span></span>
+        <span class="rung"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-glow"/></svg><span class="nm">Glow</span><span class="th">2+ events</span></span>
+        <span class="rung"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-blaze"/></svg><span class="nm">Blaze</span><span class="th">4+ events · LTV floor</span></span>
+        <span class="rung apex"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-inferno"/></svg><span class="nm">Inferno</span><span class="th">top of the ladder</span></span>
+      </div>
+    </div>
+
+    <div class="ladder compact">
+      <div class="meta">
+        <h3>APEX</h3>
+        <p>The unique one: the top tier is not a threshold – it's the <b>top 5% of this producer's audience, live</b>. A 300-person retreat and a 50k festival get equally exclusive apexes with zero tuning. No CRM ships this.</p>
+        <span class="pill" style="background:var(--purple-soft);color:#6D28D9">Coolest · dynamic apex</span>
+      </div>
+      <div class="rungs">
+        <span class="rung"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-rookie"/></svg><span class="nm">Rookie</span><span class="th">first event</span></span>
+        <span class="rung"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-riser"/></svg><span class="nm">Riser</span><span class="th">2+ events</span></span>
+        <span class="rung"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-elite"/></svg><span class="nm">Elite</span><span class="th">4+ events · LTV floor</span></span>
+        <span class="rung apex"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-apex"/></svg><span class="nm">Apex</span><span class="th">top 5% · live</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ S8 · OPTIONS CONSIDERED ════════ -->
+<section class="slide" data-n="8">
+  <div class="slide-inner">
+    <div class="kicker">Alternatives</div>
+    <h2 class="h-title">Five architectures considered</h2>
+    <div class="card" style="margin-top:18px;padding:10px 6px">
+      <table class="tbl opt-tbl">
+        <tr><th style="width:230px">Approach</th><th>What it is</th><th style="width:130px">Verdict</th></tr>
+        <tr><td>A · 3 fields + 1 engine</td><td>Lifecycle, Tier, Badges as visible fields; recency/frequency/monetary/engagement engines underneath, all reading one ledger.</td><td><span class="verdict v-rec">RECOMMENDED</span></td></tr>
+        <tr><td>B · Fused RFM grid</td><td>One set of named cells (Champions, At Risk, Can't Lose Them...) like Klaviyo/CleverTap. Loses "Gold member going cold" – our highest-value insight.</td><td><span class="verdict v-view">KEEP AS VIEW</span></td></tr>
+        <tr><td>C · Fan Score 0–100</td><td>One blended number per attendee. Composites hide drivers; no event platform exposes one; only ~40% of sales teams trust opaque scores.</td><td><span class="verdict v-no">REJECTED</span></td></tr>
+        <tr><td>D · Points program</td><td>Fan-facing points, redemptions, leaderboards (Tixr Rewards style). A different product – but its ledger + currency-split lessons apply now.</td><td><span class="verdict v-later">LATER PHASE</span></td></tr>
+        <tr><td>E · Two-axis grade</td><td>HubSpot-style A1–C3: value letter × recency number. Nice power-user shorthand for grid cells, not a primary construct.</td><td><span class="verdict v-view">CELL LABELS</span></td></tr>
+      </table>
+    </div>
+    <div class="lad-note" style="margin-top:14px"><b>The consolidation you asked about happens in the view layer:</b> the LTV dashboard's lifecycle × tier cross-view already IS the RFM grid. The data model stays orthogonal; the grid is how you look at it.</div>
+  </div>
+</section>
+
+<!-- ════════ S9 · WHAT OTHERS DO ════════ -->
+<section class="slide" data-n="9">
+  <div class="slide-inner">
+    <div class="kicker">Research base</div>
+    <h2 class="h-title">What the big platforms actually ship</h2>
+    <div class="shots">
+      <div class="shot"><div class="imgwrap"><img src="img/hubspot.png" alt="HubSpot lifecycle stage editor"></div><div class="cap"><b>HubSpot</b><span>Lifecycle stages: a simple ordered-list editor with a "Used In" dependency guard. Scores live separately and drive stage transitions.</span></div></div>
+      <div class="shot"><div class="imgwrap"><img src="img/salesforce.png" alt="Salesforce Loyalty tiers"></div><div class="cap"><b>Salesforce</b><span>Loyalty tier = name + rank + one threshold + color. Instant upgrade, period-end downgrade, currency split.</span></div></div>
+      <div class="shot"><div class="imgwrap"><img src="img/klaviyo.png" alt="Klaviyo RFM"></div><div class="cap"><b>Klaviyo</b><span>RFM scores are invisible plumbing – only 6 fixed group names surface. Thresholds editable with preview-before-save.</span></div></div>
+      <div class="shot"><div class="imgwrap"><img src="img/clevertap.png" alt="CleverTap RFM grid"></div><div class="cap"><b>CleverTap</b><span>Recency × Frequency grid, 10 named cells, percentile-based so it auto-fits any audience size.</span></div></div>
+      <div class="shot"><div class="imgwrap"><img src="img/braze.gif" alt="Braze churn histogram"></div><div class="cap"><b>Braze</b><span>Churn-score histogram with a draggable threshold slider showing live counts – the editing UX to copy.</span></div></div>
+      <div class="shot" style="display:flex;align-items:center;justify-content:center;background:var(--cream-deep);border-style:dashed"><div class="cap" style="text-align:center"><b>The consensus</b><span>Score ≠ tier ≠ stage everywhere. Scores are plumbing, names are the product. Clients edit definitions, never the math.</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ S10 · EDITABILITY ════════ -->
+<section class="slide" data-n="10">
+  <div class="slide-inner">
+    <div class="kicker">B2B config</div>
+    <h2 class="h-title">Clients edit definitions, never the math</h2>
+    <p class="h-sub">Every threshold is a sentence. Every edit shows its impact before saving. Defaults are seeded from the client's own history – nobody starts from a blank rule builder.</p>
+    <div class="sentence">Backstage&nbsp; = &nbsp;attended <span class="slot">4 +</span> events &nbsp;AND&nbsp; spent <span class="slot">₪ 2,500 +</span> &nbsp;over the last <span class="slot">24 months</span></div>
+    <div class="edit-grid">
+      <div class="card">
+        <h3 style="font-size:14px">Histogram + drag handles <span style="font-weight:400;color:var(--ink-soft)">(Braze pattern)</span></h3>
+        <div class="histo">
+          <i style="height:22%"></i><i style="height:38%"></i><i style="height:58%"></i><i style="height:74%"></i><i style="height:100%"></i><i style="height:82%"></i><i class="hot" style="height:60%"></i><i class="hot" style="height:42%"></i><i class="hot" style="height:26%"></i><i class="hot" style="height:14%"></i>
+        </div>
+        <p style="font-size:12px;color:var(--ink-soft)">The producer sees their real attendee distribution and drags the boundary – counts update live, one click materializes the band as a segment.</p>
+      </div>
+      <div class="card">
+        <h3 style="font-size:14px">Impact preview <span style="font-weight:400;color:var(--ink-soft)">(Klaviyo pattern)</span></h3>
+        <div class="impact" style="margin:12px 0 10px">⚠ This change moves 1,240 attendees from Backstage → Front Row</div>
+        <p style="font-size:12px;color:var(--ink-soft)">Plus a periodic validation nudge: "62% of Cooling actually lapsed – thresholds look healthy." Pro plan: a Flowz rep tunes it with the client.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ S11 · DEFAULTS & GUARDRAILS ════════ -->
+<section class="slide" data-n="11">
+  <div class="slide-inner">
+    <div class="kicker">Shipping defaults</div>
+    <h2 class="h-title">Opinionated defaults, hard guardrails</h2>
+    <div class="grid2" style="margin-top:18px">
+      <div class="card">
+        <h3 style="font-size:15px;margin-bottom:10px">Industry-baseline defaults</h3>
+        <table class="tbl">
+          <tr><td>Frequent / core</td><td><b>3+ events</b> per rolling 24 months</td></tr>
+          <tr><td>Top tier size</td><td><b>≤ 5–10%</b> of the audience</td></tr>
+          <tr><td>Lapsed</td><td><b>2 missed editions</b> they used to attend</td></tr>
+          <tr><td>New</td><td>first purchase, first 90 days</td></tr>
+          <tr><td>Tier window</td><td>rolling 24 months · season-end downgrade</td></tr>
+          <tr><td>Seeding</td><td>percentiles over the client's own history</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h3 style="font-size:15px;margin-bottom:10px">Guardrails from the failure research</h3>
+        <table class="tbl">
+          <tr><td>Hard caps</td><td>≤ 5 lifecycle stages · ≤ 4 tiers. One segment = one default action; if two trigger the same campaign, merge them.</td></tr>
+          <tr><td>No weight sliders</td><td>Ever. Weights are meeting-room guesses nobody backtests.</td></tr>
+          <tr><td>Dependency guard</td><td>"Used in 3 flows" blocks deletion – the HubSpot pattern.</td></tr>
+          <tr><td>Explainability</td><td>Every state shows its fired rule: "Cooling ↓ – 1 missed edition, opens down 60%".</td></tr>
+          <tr><td>Vocabulary rule</td><td>No word appears on two axes – tier names never reuse lifecycle words.</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ S12 · DECISIONS ════════ -->
+<section class="slide" data-n="12">
+  <div class="slide-inner">
+    <div class="kicker">To decide</div>
+    <h2 class="h-title">Two open calls, then we spec it</h2>
+    <div class="decide">
+      <div class="card">
+        <h3>1 · Lifecycle renames</h3>
+        <p>Research says "Rising" and "Core" need a legend; "Returning / Regular" don't. Proposal: <b>New → Returning → Regular → Cooling → Lapsed</b>, with the engagement split on Cooling. Keeping Rising/Core is a brand-personality call – just never reuse those words on the tier axis.</p>
+      </div>
+      <div class="card">
+        <h3>2 · Pick the default ladder</h3>
+        <p>Five candidates on slides 6–7: Waves · Waters · Backstage · Fire · Apex. My lean: <b>Backstage as default skin</b>, Waters for wellness clients, Apex's dynamic top-% as the differentiator feature regardless of which names ship.</p>
+      </div>
+    </div>
+    <div class="lad-note" style="margin-top:16px">Next: lock the two calls above → spec the ledger fields + engines with Aviv → thresholds config UI in productv2 → badge rule editor. Full research: <a href="Flowz-Segmentation-Research.pdf" target="_blank" style="color:var(--orange);font-weight:700">the 9-track report (PDF)</a>.</div>
+  </div>
+</section>
+
+</div>
+
+<a class="foot-link" href="Flowz-Segmentation-Research.pdf" target="_blank">📄 Full report</a>
+<div class="nav" id="nav"></div>
+<div class="arrows">
+  <button class="arrow-btn" id="prev">←</button>
+  <button class="arrow-btn" id="next">→</button>
+</div>
+<div class="slide-num" id="slideNum">01 / 12</div>
+
+<script>
+const slides = Array.from(document.querySelectorAll('.slide'));
+let cur = 0;
+const nav = document.getElementById('nav');
+slides.forEach((s, i) => {
+  const d = document.createElement('button');
+  d.className = 'dot';
+  d.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+  d.addEventListener('click', () => go(i));
+  nav.appendChild(d);
+});
+const dots = Array.from(nav.querySelectorAll('.dot'));
+function go(i) {
+  cur = Math.max(0, Math.min(slides.length - 1, i));
+  slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+  dots.forEach((d, j) => d.classList.toggle('on', j === cur));
+  document.getElementById('progress').style.width = ((cur + 1) / slides.length * 100) + '%';
+  document.getElementById('slideNum').textContent = String(cur + 1).padStart(2, '0') + ' / ' + slides.length;
+}
+document.getElementById('next').addEventListener('click', () => go(cur + 1));
+document.getElementById('prev').addEventListener('click', () => go(cur - 1));
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') go(cur + 1);
+  if (e.key === 'ArrowLeft' || e.key === 'PageUp') go(cur - 1);
+  if (e.key === 'Home') go(0);
+  if (e.key === 'End') go(slides.length - 1);
+});
+let tx = null;
+document.addEventListener('touchstart', e => tx = e.touches[0].clientX, {passive: true});
+document.addEventListener('touchend', e => {
+  if (tx === null) return;
+  const dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 60) (dx < 0 ? go(cur + 1) : go(cur - 1));
+  tx = null;
+}, {passive: true});
+go(0);
+</script>
+</body>
+</html>
