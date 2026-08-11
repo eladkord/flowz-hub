@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flowz – Technology &amp; Delivery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============ design tokens – mirrors the Flowz client deck ============ */
+:root{
+  --cream:#FAF6EF;
+  --cream-deep:#F3EDE2;
+  --card:#FFFDF9;
+  --ink:#2B2620;
+  --ink-soft:#6E6659;
+  --orange:#F0641E;
+  --orange-soft:#FDE8DC;
+  --blue:#3B82F6;
+  --blue-soft:#DBEAFE;
+  --lightblue-bg:#EAF4FB;
+  --green-soft:#DCF3C8;
+  --green:#3E8914;
+  --purple:#8B5CF6;
+  --purple-soft:#EFE3FA;
+  --pink-soft:#F8E1F4;
+  --teal:#0D9488;
+  --teal-soft:#CCF3EC;
+  --gold:#E8A93D;
+  --gold-soft:#FCF0D8;
+  --red:#D14343;
+  --radius:22px;
+  --shadow:0 10px 34px rgba(90,70,40,.10);
+  /* timing – grouped so pacing is one-stop to retune */
+  --t-slide:.55s;
+  --t-chip:.25s;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--cream);
+  color:var(--ink);
+  overflow:hidden;
+}
+h1,h2,h3,.display{font-family:'Sora',sans-serif}
+
+/* ============ deck chrome ============ */
+.deck{position:relative;width:100vw;height:100vh}
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:48px 68px 78px;
+  opacity:0;visibility:hidden;transform:translateY(24px);
+  transition:opacity var(--t-slide) ease,transform var(--t-slide) ease,visibility 0s var(--t-slide);
+}
+.slide.active{opacity:1;visibility:visible;transform:translateY(0);transition:opacity var(--t-slide) ease,transform var(--t-slide) ease}
+.slide-inner{width:100%;max-width:1180px}
+
+.progress{
+  position:fixed;left:0;top:0;height:4px;background:var(--orange);
+  width:0;transition:width .4s ease;z-index:60;border-radius:0 4px 4px 0;
+}
+.nav{
+  position:fixed;bottom:22px;left:50%;transform:translateX(-50%);
+  display:flex;gap:8px;z-index:60;align-items:center;
+}
+.dot{width:9px;height:9px;border-radius:50%;background:#D9CFBE;cursor:pointer;transition:var(--t-chip);border:none;padding:0}
+.dot.on{background:var(--orange);transform:scale(1.35)}
+.dot.appx{background:transparent;border:1.6px solid #C9BDA6}
+.dot.appx.on{border-color:var(--orange);background:var(--orange-soft);transform:scale(1.35)}
+.nav-sep{width:1px;height:14px;background:#D9CFBE;margin:0 4px}
+.arrows{position:fixed;bottom:14px;right:22px;display:flex;gap:8px;z-index:60}
+.arrow-btn{
+  width:42px;height:42px;border-radius:14px;border:1.5px solid #E4DACB;background:var(--card);
+  font-size:17px;color:var(--ink);cursor:pointer;transition:.2s;box-shadow:0 3px 10px rgba(90,70,40,.07);
+}
+.arrow-btn:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.slide-num{
+  position:fixed;bottom:24px;left:26px;font-size:12px;letter-spacing:.14em;
+  color:#B4A890;z-index:60;font-weight:600;
+}
+
+/* ============ shared bits ============ */
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:12.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--orange);margin-bottom:16px;
+}
+.eyebrow .dotmark{width:8px;height:8px;border-radius:50%;background:var(--orange);animation:pulse 2.4s infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.5}}
+.h-xl{font-size:58px;line-height:1.06;font-weight:800;letter-spacing:-.02em}
+.h-lg{font-size:40px;line-height:1.1;font-weight:800;letter-spacing:-.018em}
+.h-md{font-size:21px;font-weight:700}
+.lede{font-size:18px;line-height:1.6;color:var(--ink-soft);max-width:760px}
+.lede.sm{font-size:15px}
+
+/* status chips – the deck's honesty system */
+.chip{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  padding:5px 11px;border-radius:999px;white-space:nowrap;
+}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.chip.live{background:var(--green-soft);color:var(--green)}
+.chip.build{background:var(--gold-soft);color:#A8720F}
+.chip.process{background:var(--teal-soft);color:var(--teal)}
+.chip.roadmap{background:var(--blue-soft);color:#1D5FCC}
+
+.card{
+  background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:24px 26px;border:1px solid #F0E8DA;
+}
+.card h3{font-size:16.5px;margin-bottom:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.card p{font-size:13.8px;line-height:1.55;color:var(--ink-soft)}
+.card .ico{
+  width:34px;height:34px;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;
+  font-size:16px;flex:0 0 auto;
+}
+
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+
+.proof{
+  margin-top:22px;background:var(--ink);color:#F6EFE3;border-radius:18px;
+  padding:16px 24px;display:flex;align-items:center;justify-content:center;gap:26px;flex-wrap:wrap;
+  font-size:13.5px;font-weight:600;
+}
+.proof b{color:#FFC79E;font-weight:700}
+.proof .sep{opacity:.35}
+
+/* ============ S2 architecture diagram ============ */
+.pipe{display:flex;align-items:stretch;gap:0;margin-top:26px}
+.stage{flex:1;display:flex;flex-direction:column}
+.stage-box{
+  background:var(--card);border:1px solid #F0E8DA;border-radius:18px;box-shadow:var(--shadow);
+  padding:16px 14px;flex:1;text-align:center;
+}
+.stage-box h4{font-family:'Sora';font-size:14.5px;margin:8px 0 4px}
+.stage-box .st-ico{
+  width:40px;height:40px;border-radius:13px;margin:0 auto;
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+}
+.stage-box ul{list-style:none;margin-top:8px}
+.stage-box li{font-size:11.6px;color:var(--ink-soft);line-height:1.45;padding:1.5px 0}
+.stage-box .chip{margin-top:10px}
+.pipe-arrow{
+  align-self:center;flex:0 0 34px;text-align:center;font-size:20px;color:#C9BDA6;font-weight:700;
+}
+.legend{display:flex;gap:10px;justify-content:center;margin-top:22px;flex-wrap:wrap}
+.loopline{text-align:center;margin-top:18px;font-size:14px;color:var(--ink-soft)}
+.loopline b{color:var(--orange);font-family:'Sora'}
+
+/* ============ S4 integration cards ============ */
+.int-card{padding:26px 28px}
+.int-card .h-md{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.int-card p{font-size:14.5px;line-height:1.6;color:var(--ink-soft)}
+.int-row{
+  margin-top:14px;background:var(--cream-deep);border-radius:13px;padding:10px 14px;
+  font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.int-row .lbl{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+.playbook{
+  margin-top:20px;background:var(--orange-soft);border-radius:16px;padding:14px 22px;text-align:center;
+  font-size:14px;font-weight:600;color:#9A3D0E;
+}
+
+/* ============ S5 wireframe ============ */
+.wire{
+  background:var(--cream-deep);border-radius:18px;border:1px solid #EADFCC;padding:14px;
+  display:flex;flex-direction:column;gap:8px;height:100%;min-height:300px;
+}
+.wire .w-band{display:flex;gap:8px}
+.wire .w-pill{height:16px;border-radius:8px;background:#E2D6C1;flex:1}
+.wire .w-pill.hot{background:var(--orange);flex:0 0 90px}
+.wire .w-tiles{display:grid;grid-template-columns:1.7fr 1fr 1fr;gap:8px}
+.wire .w-tile{height:58px;border-radius:12px;background:var(--card);border:1px solid #EADFCC;position:relative;overflow:hidden}
+.wire .w-tile i{position:absolute;left:10px;top:9px;width:34%;height:7px;border-radius:4px;background:#E2D6C1}
+.wire .w-tile b{position:absolute;left:10px;bottom:9px;width:52%;height:13px;border-radius:6px;background:#D8CBB2}
+.wire .w-graph{height:74px;border-radius:12px;background:var(--card);border:1px solid #EADFCC;position:relative;overflow:hidden}
+.wire .w-graph svg{position:absolute;inset:0;width:100%;height:100%}
+.wire .w-split{display:grid;grid-template-columns:35fr 65fr;gap:8px;flex:1}
+.wire .w-list{border-radius:12px;background:var(--card);border:1px solid #EADFCC;padding:8px;display:flex;flex-direction:column;gap:6px}
+.wire .w-item{height:16px;border-radius:8px;background:#EFE6D4}
+.wire .w-item.hi{background:var(--orange-soft)}
+.wire-cap{font-size:11.5px;color:var(--ink-soft);text-align:center;margin-top:8px;letter-spacing:.06em}
+
+.surface-list{display:flex;flex-direction:column;gap:12px}
+.surface-item{
+  background:var(--card);border:1px solid #F0E8DA;border-radius:16px;box-shadow:var(--shadow);
+  padding:14px 18px;display:flex;align-items:center;gap:14px;
+}
+.surface-item .si-ico{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;flex:0 0 auto}
+.surface-item h4{font-size:15px;font-family:'Sora'}
+.surface-item p{font-size:12.6px;color:var(--ink-soft);line-height:1.45;margin-top:2px}
+.surface-item .chip{margin-left:auto;flex:0 0 auto}
+
+/* ============ S6 intelligence ============ */
+.defs{display:flex;gap:14px;margin:18px 0}
+.def{
+  flex:1;border-radius:16px;padding:14px 18px;font-size:14px;line-height:1.5;
+}
+.def b{font-family:'Sora'}
+.def.ins{background:var(--lightblue-bg);color:#1D4E89}
+.def.flo{background:var(--orange-soft);color:#9A3D0E}
+.pair{
+  margin-top:18px;background:var(--card);border:1px solid #F0E8DA;border-radius:18px;box-shadow:var(--shadow);
+  padding:16px 22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+.pair .p-lbl{flex:0 0 100%;font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.pair .p-ins{
+  background:var(--lightblue-bg);border-radius:12px;padding:10px 14px;font-size:13px;font-weight:600;color:#1D4E89;
+}
+.pair .p-arrow{font-size:18px;color:var(--orange);font-weight:800}
+.pair .p-chain{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.6px;font-weight:600}
+.pair .p-step{background:var(--cream-deep);border-radius:10px;padding:8px 11px}
+.pair .p-step small{display:block;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);font-weight:700}
+.keyline{
+  margin-top:20px;text-align:center;font-size:15.5px;font-weight:600;color:var(--ink);
+}
+.keyline b{color:var(--purple)}
+
+/* ============ S7 channels ============ */
+.chan{position:relative;padding:22px 24px}
+.chan .h-md{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.chan p{font-size:13.4px;line-height:1.55;color:var(--ink-soft)}
+.chan .eta{
+  margin-top:12px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;
+}
+.chan .eta .big{font-family:'Sora';font-size:17px;color:var(--teal)}
+.rail{
+  margin-top:20px;background:var(--cream-deep);border-radius:16px;padding:13px 22px;text-align:center;
+  font-size:13.5px;font-weight:600;color:var(--ink-soft);
+}
+.rail b{color:var(--orange)}
+
+/* ============ S11 table ============ */
+.tt{width:100%;border-collapse:separate;border-spacing:0 8px;margin-top:18px}
+.tt th{
+  font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);
+  text-align:left;padding:0 16px 2px;font-weight:700;
+}
+.tt td{
+  background:var(--card);padding:10px 16px;font-size:13px;vertical-align:middle;
+  border-top:1px solid #F0E8DA;border-bottom:1px solid #F0E8DA;
+}
+.tt td:first-child{border-left:1px solid #F0E8DA;border-radius:14px 0 0 14px;font-weight:700;font-family:'Sora';font-size:13.2px}
+.tt td:last-child{border-right:1px solid #F0E8DA;border-radius:0 14px 14px 0}
+.tt .time{font-weight:800;font-family:'Sora';color:var(--ink);white-space:nowrap}
+.tt .dep{color:var(--ink-soft);font-size:12.2px}
+.footnotes{margin-top:14px;display:flex;flex-direction:column;gap:4px}
+.footnotes p{font-size:12px;color:var(--ink-soft)}
+.footnotes p b{color:var(--ink)}
+
+/* ============ closing ============ */
+.go-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}
+.go-card{background:var(--card);border:1px solid #F0E8DA;border-radius:var(--radius);box-shadow:var(--shadow);padding:24px 24px}
+.go-card .ico{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:12px}
+.go-card h3{font-size:16.5px;margin-bottom:8px}
+.go-card p{font-size:13.6px;line-height:1.55;color:var(--ink-soft)}
+.go-close{margin-top:30px;text-align:center}
+.go-close .brand{font-family:'Sora';font-weight:800;font-size:20px}
+.go-close .brand span{color:var(--orange)}
+.go-close p{font-size:13px;color:var(--ink-soft);margin-top:4px}
+
+/* ============ appendix ============ */
+.appx-tag{
+  display:inline-block;background:var(--ink);color:#F6EFE3;border-radius:8px;
+  font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  padding:4px 10px;margin-bottom:14px;
+}
+.arch-col{padding:20px 22px}
+.arch-col h3{font-size:15.5px;margin-bottom:4px;display:flex;align-items:center;gap:10px}
+.arch-col .sub{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;margin-bottom:10px}
+.arch-col ul{list-style:none}
+.arch-col li{
+  font-size:12.8px;color:var(--ink-soft);line-height:1.5;padding:5px 0 5px 18px;position:relative;
+}
+.arch-col li::before{content:"";position:absolute;left:2px;top:11px;width:7px;height:7px;border-radius:2.5px;background:var(--orange);opacity:.55}
+.flowstrip{
+  margin-top:20px;background:var(--card);border:1px solid #F0E8DA;border-radius:16px;box-shadow:var(--shadow);
+  padding:14px 20px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;
+  font-size:12.8px;font-weight:600;
+}
+.flowstrip .fs{background:var(--cream-deep);border-radius:10px;padding:8px 12px}
+.flowstrip .fa{color:var(--orange);font-weight:800}
+.stack-lbl{
+  font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-soft);margin-top:18px;text-align:center;
+}
+.stack-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:8px}
+.stack-item{background:var(--cream-deep);border-radius:14px;padding:12px 14px;text-align:center}
+.stack-item b{font-family:'Sora';font-size:13.5px;display:block;margin-bottom:3px}
+.stack-item span{font-size:11.3px;color:var(--ink-soft);line-height:1.4;display:block}
+
+@media (max-width:980px){
+  .grid-3,.go-grid{grid-template-columns:1fr}
+  .grid-2{grid-template-columns:1fr}
+  .pipe{flex-direction:column}
+  .pipe-arrow{transform:rotate(90deg);padding:6px 0}
+  .h-xl{font-size:40px}.h-lg{font-size:30px}
+  .stack-row{grid-template-columns:1fr 1fr}
+  .slide{padding:34px 22px 84px;overflow-y:auto;justify-content:flex-start}
+}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<div class="deck" id="deck">
+
+<!-- ============ S1 · TITLE ============ -->
+<section class="slide" data-n="1">
+  <div class="slide-inner" style="text-align:center">
+    <div class="eyebrow" style="justify-content:center"><span class="dotmark"></span>FLOWZ · TECHNICAL OVERVIEW</div>
+    <h1 class="h-xl">Technology &amp; Delivery</h1>
+    <p class="lede" style="margin:22px auto 0">What's running today, what ships next, and how fast we move.<br>Companion to the Flowz product deck.</p>
+    <div class="legend" style="margin-top:34px">
+      <span class="chip live">Data core · live</span>
+      <span class="chip live">Dashboards · live</span>
+      <span class="chip process">Channels · in process</span>
+      <span class="chip roadmap">Intelligence · roadmap</span>
+    </div>
+    <p style="margin-top:44px;font-size:12px;letter-spacing:.14em;color:#B4A890;font-weight:600">AUGUST 2026 · CONFIDENTIAL</p>
+  </div>
+</section>
+
+<!-- ============ S2 · ARCHITECTURE ============ -->
+<section class="slide" data-n="2">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dotmark"></span>THE SYSTEM</div>
+    <h2 class="h-lg">One pipeline – from raw data to executed action</h2>
+    <div class="pipe">
+      <div class="stage">
+        <div class="stage-box">
+          <div class="st-ico" style="background:var(--lightblue-bg)">🔌</div>
+          <h4>Sources</h4>
+          <ul>
+            <li>Ticketing systems</li>
+            <li>Email marketing</li>
+            <li>Ads &amp; social</li>
+            <li>WhatsApp</li>
+            <li>Backoffice files</li>
+          </ul>
+          <span class="chip live">Live + growing</span>
+        </div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="stage">
+        <div class="stage-box">
+          <div class="st-ico" style="background:var(--green-soft)">🔄</div>
+          <h4>Sync Engine</h4>
+          <ul>
+            <li>API sync or dedicated parser</li>
+            <li>Runs every few minutes</li>
+            <li>Normalization &amp; parsing</li>
+            <li>Identity resolution</li>
+          </ul>
+          <span class="chip live">Live</span>
+        </div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="stage">
+        <div class="stage-box">
+          <div class="st-ico" style="background:var(--gold-soft)">🗄️</div>
+          <h4>Data Core</h4>
+          <ul>
+            <li>Unified customer &amp; commerce model</li>
+            <li>Lifecycle &amp; LTV computed in-database</li>
+            <li>Any vendor maps in</li>
+          </ul>
+          <span class="chip live">Live</span>
+        </div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="stage">
+        <div class="stage-box">
+          <div class="st-ico" style="background:var(--purple-soft)">🧠</div>
+          <h4>Intelligence</h4>
+          <ul>
+            <li>Algorithmic insights – signal rules</li>
+            <li>Agentic insights – AI reasoning</li>
+            <li>Flowz – orchestrated actions</li>
+          </ul>
+          <span class="chip roadmap">Roadmap</span>
+        </div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="stage">
+        <div class="stage-box">
+          <div class="st-ico" style="background:var(--teal-soft)">🚀</div>
+          <h4>Activation</h4>
+          <ul>
+            <li>Meta &amp; Google campaigns</li>
+            <li>WhatsApp · Email · SMS</li>
+            <li>Tasks &amp; write-back</li>
+          </ul>
+          <span class="chip process">In process</span>
+        </div>
+      </div>
+    </div>
+    <div class="legend">
+      <span class="chip live">Live</span>
+      <span class="chip build">In build</span>
+      <span class="chip process">In process</span>
+      <span class="chip roadmap">Roadmap</span>
+    </div>
+    <p class="loopline">The core loop: <b>Data → Analyze → Insights → Flows (Actions)</b></p>
+  </div>
+</section>
+
+<!-- ============ S3 · DATA CORE ============ -->
+<section class="slide" data-n="3">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dotmark"></span>LIVE TODAY</div>
+    <h2 class="h-lg" style="margin-bottom:20px">A production data platform – not a prototype</h2>
+    <div class="grid-2">
+      <div class="card">
+        <h3><span class="ico" style="background:var(--lightblue-bg)">🧩</span>Unified data model</h3>
+        <p>One clean model for customers, orders, tickets, events, products, campaigns &amp; communications. Every record keeps track of which system it came from – so any vendor's data maps into the same structure.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico" style="background:var(--green-soft)">🔄</span>Continuous sync</h3>
+        <p>Automatic sync pulls fresh data from the connected platforms every few minutes – plus a one-shot historical backfill that loads years of past events and orders on day one.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico" style="background:var(--pink-soft)">🪪</span>Parsing &amp; identity</h3>
+        <p>Phone-first customer identity with email fallback and cross-source dedupe – one person stays one person across systems, files and brands. Built for the messy reality of real-world event data.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico" style="background:var(--gold-soft)">📈</span>Intelligence at the data</h3>
+        <p>Lifecycle stages, retention &amp; LTV profiles, and sales velocity vs past editions – live in the app today, computed right where the data sits instead of in spreadsheets.</p>
+      </div>
+    </div>
+    <div class="proof">
+      <span>In production for <b>Desert Bass Festival</b></span><span class="sep">·</span>
+      <span><b>Multi-year</b> order history</span><span class="sep">·</span>
+      <span><b>300k+</b> communications synced</span><span class="sep">·</span>
+      <span><b>Zero-downtime</b> upgrades on a live system</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S4 · INTEGRATIONS ============ -->
+<section class="slide" data-n="4">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dotmark"></span>SYNC FABRIC</div>
+    <h2 class="h-lg" style="margin-bottom:20px">Ticketing &amp; email – synced, normalized, acted on</h2>
+    <div class="grid-2">
+      <div class="card int-card">
+        <div class="h-md">🎟️ Ticketing <span class="chip live">Live</span></div>
+        <p>Clients, orders and full ticket history flow into a living client profile – through a live API or a dedicated parser, depending on the platform. Where the platform allows it: list creation, order edits and more advanced actions.</p>
+        <div class="int-row"><span class="lbl">Currently in use</span> Vibez · Eventbuzz · GoOut</div>
+        <div class="int-row"><span class="lbl">Expansion</span> Any ticketing platform – live in <b>&nbsp;1–2 weeks</b>, via API or dedicated parser</div>
+      </div>
+      <div class="card int-card">
+        <div class="h-md">✉️ Email marketing <span class="chip live">Live</span></div>
+        <p>Lists sync and campaigns launch directly through the client's own provider – contacts, lists, campaign history and engagement all feed the customer profile. Exporting lists is always an option.</p>
+        <div class="int-row"><span class="lbl">Currently supported</span> Smoove</div>
+        <div class="int-row"><span class="lbl">Expansion</span> Additional email providers – <b>&nbsp;1–2 weeks</b> each</div>
+      </div>
+    </div>
+    <div class="playbook">The connector playbook: one unified data model + an adapter per platform – API or parser – so new integrations land in weeks, not quarters.</div>
+  </div>
+</section>
+
+<!-- ============ S5 · PRODUCT SURFACE ============ -->
+<section class="slide" data-n="5">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dotmark"></span>THE COCKPIT</div>
+    <h2 class="h-lg" style="margin-bottom:20px">ControlRoom + three smart dashboards – live</h2>
+    <div class="grid-2" style="grid-template-columns:0.9fr 1.1fr;align-items:stretch">
+      <div>
+        <div class="wire">
+          <div class="w-band"><div class="w-pill hot"></div><div class="w-pill"></div><div class="w-pill" style="flex:0 0 120px"></div></div>
+          <div class="w-tiles">
+            <div class="w-tile"><i></i><b></b></div>
+            <div class="w-tile"><i></i><b></b></div>
+            <div class="w-tile"><i></i><b></b></div>
+          </div>
+          <div class="w-graph">
+            <svg viewBox="0 0 300 70" preserveAspectRatio="none">
+              <polyline points="0,58 40,52 80,54 120,40 160,42 200,26 240,20 300,8" fill="none" stroke="#F0641E" stroke-width="2.5"/>
+              <polyline points="0,62 40,60 80,55 120,50 160,49 200,42 240,40 300,34" fill="none" stroke="#D8CBB2" stroke-width="2" stroke-dasharray="5 4"/>
+            </svg>
+          </div>
+          <div class="w-split">
+            <div class="w-list"><div class="w-item hi"></div><div class="w-item"></div><div class="w-item"></div></div>
+            <div class="w-list"><div class="w-item hi"></div><div class="w-item"></div><div class="w-item"></div></div>
+          </div>
+        </div>
+        <p class="wire-cap">CONTROLROOM – GLANCE · PACE GRAPH · INSIGHTS | FLOWZ</p>
+      </div>
+      <div class="surface-list">
+        <div class="surface-item">
+          <span class="si-ico" style="background:var(--orange-soft)">🎛️</span>
+          <div><h4>ControlRoom</h4><p>The operator's landing view – live status, sales trackers and what needs attention, in one viewport.</p></div>
+          <span class="chip live">Live</span>
+        </div>
+        <div class="surface-item">
+          <span class="si-ico" style="background:var(--green-soft)">💰</span>
+          <div><h4>Sales</h4><p>Per-event tracking, pace vs past editions, pricing views and projections.</p></div>
+          <span class="chip live">Live</span>
+        </div>
+        <div class="surface-item">
+          <span class="si-ico" style="background:var(--purple-soft)">💜</span>
+          <div><h4>LTV / Community</h4><p>Lifecycle × value-tier view of the whole audience, with drill-downs and exports that match the screen.</p></div>
+          <span class="chip live">Live</span>
+        </div>
+        <div class="surface-item">
+          <span class="si-ico" style="background:var(--lightblue-bg)">📣</span>
+          <div><h4>Reach</h4><p>Channel performance, audience growth and campaign results against targets.</p></div>
+          <span class="chip live">Live</span>
+        </div>
+        <div class="surface-item">
+          <span class="si-ico" style="background:var(--gold-soft)">🖥️</span>
+          <div><h4>v1 dashboard</h4><p>The original production app – running the business daily while the new surface lands.</p></div>
+          <span class="chip live">Live · daily use</span>
+        </div>
+      </div>
+    </div>
+    <p class="lede sm" style="margin-top:16px">Final touches in progress: refreshed tier definitions and per-event targets (break-even, sell-out). The insight &amp; flow panels arrive with the intelligence roadmap.</p>
+  </div>
+</section>
+
+<!-- ============ S6 · INTELLIGENCE ROADMAP ============ -->
+<section class="slide" data-n="6">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dotmark"></span>THE KEY LAYER · ROADMAP</div>
+    <h2 class="h-lg">Insights &amp; Flowz – where data becomes action</h2>
+    <div class="defs">
+      <div class="def ins"><b>INSIGHT</b> – what the data says. A read-only signal computed from the org's live data: pace, churn risk, pricing windows, budget drift.</div>
+      <div class="def flo"><b>FLOW</b> – what to do about it. Orchestrated across marketing, sales, community and finance – with approval gates where it matters.</div>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <h3><span class="ico" style="background:var(--purple-soft)">📚</span>A proprietary bank, 100 items deep</h3>
+        <p>50 insights + 50 flows, each specified down to its exact data needs and paired action – written from years of operating real events. The engine's curriculum, ready before the engine.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico" style="background:var(--green-soft)">🧮</span>Track 1 – Algorithmic insights</h3>
+        <p>Signal rules computed straight from the data: pace vs target, churn flags, budget drift. The first track on the roadmap – concrete, measurable, no magic.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico" style="background:var(--lightblue-bg)">🤖</span>Track 2 – Agentic insights</h3>
+        <p>AI reasoning over the organization's data, grounded in the bank and market-behavior playbooks. The deeper build – sequenced after the algorithmic track proves out.</p>
+      </div>
+    </div>
+    <div class="pair">
+      <div class="p-lbl">What it will look like</div>
+      <div class="p-ins">📉 INSIGHT – "Sales stalled: 4 days below daily target"</div>
+      <div class="p-arrow">→</div>
+      <div class="p-chain">
+        <div class="p-step"><small>CRM</small>Characterize leaders &amp; abandoners</div>
+        <div class="p-arrow">→</div>
+        <div class="p-step"><small>Marketing</small>Schedule pushes + content briefs</div>
+        <div class="p-arrow">→</div>
+        <div class="p-step"><small>Tasks</small>Assign 3 creatives A/B/C</div>
+        <div class="p-arrow">→</div>
+        <div class="p-step"><small>Track</small>Measure &amp; repeat</div>
+      </div>
+    </div>
+    <p class="keyline">A roadmap item we take seriously: <b>the bank is written, the surface is built, the tracks are defined</b> – work on the algorithmic track starts in the coming weeks, prioritized with our design partners.</p>
+  </div>
+</section>
+
+<!-- ============ S7 · ACTIVATION ============ -->
+<section class="slide" data-n="7">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dotmark"></span>FROM INSIGHT TO CAMPAIGN</div>
+    <h2 class="h-lg" style="margin-bottom:20px">Every insight can turn into a campaign</h2>
+    <div class="grid-2">
+      <div class="card chan">
+        <div class="h-md">📱 Meta Ads – Facebook + Instagram <span class="chip process">In process</span></div>
+        <p>Create and manage ads across feed, stories, reels and marketplace; read real-time analytics; target by age, gender, location, interests and behaviors; build audiences and lookalikes from any Flowz segment.</p>
+        <div class="eta">Via a certified technology partner – already validated · <span class="big">~4 weeks</span></div>
+      </div>
+      <div class="card chan">
+        <div class="h-md">💬 WhatsApp <span class="chip process">In process</span></div>
+        <p>Official WhatsApp Business platform through a compliance-certified partner: broadcast to CRM segments, chat-bots, two-way conversations, and ads that click straight into WhatsApp – on the client's own number. The connection is quick; the customer-communication interface is the real build, and we're building it properly.</p>
+        <div class="eta">Via a compliance-certified partner · <span class="big">~4 weeks</span></div>
+      </div>
+      <div class="card chan">
+        <div class="h-md">🔎 Google Ads <span class="chip roadmap">Roadmap</span></div>
+        <p>Campaign creation and launch through a certified tech partner, with real-time spend, CTR, CPC and CPM per ad. A supporting channel by design – not the main focus.</p>
+        <div class="eta">Partner route mapped · <span class="big">~4 weeks</span></div>
+      </div>
+      <div class="card chan">
+        <div class="h-md">📨 SMS / MMS <span class="chip roadmap">Roadmap</span></div>
+        <p>For markets where texting leads – the US in particular – SMS/MMS over the client's own number, custom numbers on request, riding the same segment rails.</p>
+        <div class="eta">High feasibility · <span class="big">~4 weeks</span></div>
+      </div>
+    </div>
+    <div class="rail">All channels ride the same rails: <b>segment from the data core → template → approval → send → results back into the profile.</b></div>
+  </div>
+</section>
+
+<!-- ============ S8 · TENANCY & SECURITY ============ -->
+<section class="slide" data-n="8">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dotmark"></span>BUILT TO HOST MANY BRANDS</div>
+    <h2 class="h-lg" style="margin-bottom:20px">Isolated by design – owned by the client</h2>
+    <div class="grid-2">
+      <div class="card">
+        <h3><span class="ico" style="background:var(--teal-soft)">🏢</span>Organization isolation <span class="chip build">Built</span></h3>
+        <p>Every client's data lives in its own isolated organization – separate access, separate connections, separate modules. One organization can never see another's data, and a user with no organization sees nothing at all.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico" style="background:var(--purple-soft)">🧬</span>Multi-brand <span class="chip roadmap">Optional build</span></h3>
+        <p>Today, each brand can run as its own fully-isolated organization. A unified cross-brand portfolio view – one dashboard over all brands – is an optional build, <b>5–7 weeks</b> once we prioritize it together.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico" style="background:var(--gold-soft)">🔑</span>Client asset ownership</h3>
+        <p>Clients keep ownership of their ad accounts, messaging numbers and data – always. Flowz connects with permissions the client can revoke; it never takes custody.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico" style="background:var(--green-soft)">🛡️</span>Security &amp; compliance track <span class="chip build">Scheduled</span></h3>
+        <p>A dedicated security specialist runs a full review of the stack – data rules, permissions, secrets – ahead of enterprise onboarding, once terms and roadmap are agreed. Verified, not assumed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S9 · VELOCITY ============ -->
+<section class="slide" data-n="9">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dotmark"></span>HOW WE SHIP</div>
+    <h2 class="h-lg">Small team. Industrial pace.</h2>
+    <div class="grid-2" style="margin-top:20px">
+      <div class="card">
+        <h3><span class="ico" style="background:var(--orange-soft)">⚡</span>What the pace so far produced</h3>
+        <p>Everything in this deck was designed, built and shipped by a two-person founding team working AI-accelerated: a full data platform, 20+ shipped features, a new product surface, and a 100-item intelligence bank.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico" style="background:var(--teal-soft)">🚀</span>And that was the slow version</h3>
+        <p>At GO, the engineering bench is ready – capacity scales the day the decision is made, not after a hiring cycle. We accelerate beyond the demonstrated pace; what remains is focus: pick the vertical, fit the demands per client, ship.</p>
+      </div>
+    </div>
+    <div class="card" style="margin-top:18px">
+      <h3><span class="ico" style="background:var(--lightblue-bg)">🧭</span>The per-client assembly line</h3>
+      <p style="margin-top:6px"><b>1.</b> Survey &amp; data inventory &nbsp;→&nbsp; <b>2.</b> Bundle assembly (core + optional) &nbsp;→&nbsp; <b>3.</b> Integration validation <i>before</i> deployment &nbsp;→&nbsp; <b>4.</b> Build &amp; onboard &nbsp;→&nbsp; <b>5.</b> Usage-driven v2. Onboarding a client is a process, not a project.</p>
+    </div>
+    <div class="legend" style="margin-top:20px">
+      <span class="chip live">New integration · 1–2 weeks</span>
+      <span class="chip process">New channel · ~4 weeks</span>
+      <span class="chip build">Multi-brand view · 5–7 weeks, optional</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S10 · NEAR-TERM TECH PLAN ============ -->
+<section class="slide" data-n="10">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dotmark"></span>NEAR-TERM TECH PLAN</div>
+    <h2 class="h-lg" style="margin-bottom:20px">Hardening before scale – on purpose</h2>
+    <div class="grid-2">
+      <div class="card">
+        <h3><span class="ico" style="background:var(--green-soft)">🛡️</span>Security &amp; compliance pass</h3>
+        <p>A dedicated specialist reviews the full stack – data rules, permissions, secrets, privacy practices – before enterprise onboarding. Scheduled as part of the agreed roadmap, so commitments are verified, not assumed.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico" style="background:var(--gold-soft)">🔁</span>Rebuilt on the new surface</h3>
+        <p>Utilities being brought over and hardened as the new app becomes the main one: Hebrew–English name matching, AI-powered search, and deeper operational logging.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico" style="background:var(--orange-soft)">🎯</span>Product finishing</h3>
+        <p>Refreshing the customer tier definitions and adding per-event targets – break-even, sell-out and friends – across the live dashboards. Touch-ups, not construction.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico" style="background:var(--lightblue-bg)">🧭</span>Optional builds, by priority</h3>
+        <p>The cross-brand portfolio view (5–7 weeks) and further modules get scheduled by the priorities we choose together – the roadmap bends to the partnership, not the other way around.</p>
+      </div>
+    </div>
+    <div class="rail" style="margin-top:18px">None of this blocks a pilot – <b>it's the professional path to enterprise-grade.</b></div>
+  </div>
+</section>
+
+<!-- ============ S11 · TIMELINE MAP ============ -->
+<section class="slide" data-n="11">
+  <div class="slide-inner">
+    <div class="eyebrow"><span class="dotmark"></span>THE HONEST TABLE</div>
+    <h2 class="h-lg">What ships when</h2>
+    <table class="tt">
+      <thead><tr><th>Capability</th><th>Status today</th><th>Time to production</th><th>How</th></tr></thead>
+      <tbody>
+        <tr><td>Additional ticketing integrations</td><td><span class="chip live">Playbook proven</span></td><td class="time">1–2 weeks each</td><td class="dep">Live API or dedicated parser</td></tr>
+        <tr><td>Additional email integrations</td><td><span class="chip live">Playbook proven</span></td><td class="time">1–2 weeks each</td><td class="dep">Provider API</td></tr>
+        <tr><td>Meta Ads</td><td><span class="chip process">Validated · in process</span></td><td class="time">~4 weeks</td><td class="dep">Certified technology partner</td></tr>
+        <tr><td>WhatsApp official</td><td><span class="chip process">Validated · in process</span></td><td class="time">~4 weeks</td><td class="dep">Certified partner + communication interface</td></tr>
+        <tr><td>SMS / MMS · Google Ads</td><td><span class="chip roadmap">Partner route</span></td><td class="time">~4 weeks</td><td class="dep">Certified partners</td></tr>
+        <tr><td>Multi-organization workspaces</td><td><span class="chip build">Built</span></td><td class="time">In the app</td><td class="dep">Each client – or brand – fully isolated</td></tr>
+        <tr><td>Cross-brand portfolio view</td><td><span class="chip roadmap">Optional</span></td><td class="time">5–7 weeks</td><td class="dep">Scheduled by chosen priorities</td></tr>
+        <tr><td>Security &amp; compliance review</td><td><span class="chip build">Scheduled</span></td><td class="time">Pre-onboarding</td><td class="dep">Dedicated specialist</td></tr>
+        <tr><td>Insights &amp; Flowz engine</td><td><span class="chip roadmap">Roadmap · 2 tracks</span></td><td class="time">Prioritized with partners</td><td class="dep">Algorithmic first, agentic after</td></tr>
+      </tbody>
+    </table>
+    <div class="footnotes">
+      <p><b>Timelines assume parallel execution</b> – integrations, channels and product finishing proceed simultaneously; demos ship faster than production dates.</p>
+      <p>Production-grade platform approvals key off company formation – in progress.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S12 · CLOSING ============ -->
+<section class="slide" data-n="12">
+  <div class="slide-inner" style="text-align:center">
+    <div class="eyebrow" style="justify-content:center"><span class="dotmark"></span>THE BOTTOM LINE</div>
+    <h2 class="h-xl" style="font-size:52px">When it's GO – we ship.</h2>
+    <div class="go-grid" style="text-align:left">
+      <div class="go-card">
+        <span class="ico" style="background:var(--green-soft)">✅</span>
+        <h3>The platform is ready</h3>
+        <p>Data core and dashboards live in production, connector playbook proven, activation channels validated and already in process.</p>
+      </div>
+      <div class="go-card">
+        <span class="ico" style="background:var(--orange-soft)">📈</span>
+        <h3>The team scales on decision</h3>
+        <p>Tech people ready to onboard the day it's GO – we accelerate past the pace that built everything you've just seen.</p>
+      </div>
+      <div class="go-card">
+        <span class="ico" style="background:var(--purple-soft)">🎯</span>
+        <h3>Fit is a process, not a project</h3>
+        <p>Choose the vertical, map each client's demands, assemble their bundle – the same playbook that put the current deployment live.</p>
+      </div>
+    </div>
+    <div class="go-close">
+      <div class="brand">FLOW<span>Z</span></div>
+      <p>Decision Intelligence for the Experience Economy · Companion deck: product &amp; vision</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ A1 · ARCHITECTURE DETAIL ============ -->
+<section class="slide" data-n="13">
+  <div class="slide-inner">
+    <span class="appx-tag">Appendix · A1</span>
+    <h2 class="h-lg" style="margin-bottom:18px">System architecture &amp; stack</h2>
+    <div class="grid-2">
+      <div class="card arch-col">
+        <h3><span class="ico" style="background:var(--gold-soft)">🗄️</span>Data layer</h3>
+        <div class="sub">PostgreSQL · single source of truth</div>
+        <ul>
+          <li>Every table enforces per-organization access rules</li>
+          <li>Scheduled sync jobs run from inside the database</li>
+          <li>Analytics computed where the data sits – not in the browser</li>
+          <li>Nothing hard-deleted; history is preserved</li>
+          <li>Every synced record keeps its source system &amp; ID</li>
+        </ul>
+      </div>
+      <div class="card arch-col">
+        <h3><span class="ico" style="background:var(--green-soft)">⚙️</span>Sync layer</h3>
+        <div class="sub">One adapter per platform</div>
+        <ul>
+          <li>Live API connections where the platform offers one</li>
+          <li>Dedicated parsers where it doesn't</li>
+          <li>Incremental sync every few minutes</li>
+          <li>Full historical backfill for onboarding</li>
+          <li>Credentials stored securely, per organization</li>
+        </ul>
+      </div>
+    </div>
+    <p class="stack-lbl">The stack</p>
+    <div class="stack-row">
+      <div class="stack-item"><b>Supabase</b><span>Managed PostgreSQL database, sync services &amp; authentication</span></div>
+      <div class="stack-item"><b>Vercel</b><span>App hosting – every release deploys automatically</span></div>
+      <div class="stack-item"><b>React</b><span>The dashboard application</span></div>
+      <div class="stack-item"><b>Certified partners</b><span>Meta &amp; WhatsApp rails at stage A</span></div>
+    </div>
+    <div class="flowstrip">
+      <span class="fs">Provider systems</span><span class="fa">→</span>
+      <span class="fs">Adapters &amp; parsers</span><span class="fa">→</span>
+      <span class="fs">One unified model</span><span class="fa">→</span>
+      <span class="fs">Lifecycle · retention · velocity</span><span class="fa">→</span>
+      <span class="fs">Dashboards</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ A2 · TENANCY MODEL (plain view) ============ -->
+<section class="slide" data-n="14">
+  <div class="slide-inner">
+    <span class="appx-tag">Appendix · A2</span>
+    <h2 class="h-lg" style="margin-bottom:18px">Multi-organization &amp; security – the plain view</h2>
+    <div class="grid-2">
+      <div class="card">
+        <h3><span class="ico" style="background:var(--teal-soft)">🏢</span>One home per client</h3>
+        <p>Every client – or brand – is its own isolated organization. Data never mixes between organizations, full stop.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico" style="background:var(--gold-soft)">🚪</span>Access fails closed</h3>
+        <p>A user belongs to specific organizations with a specific role. No organization, no data – the default is zero access, not full access.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico" style="background:var(--purple-soft)">🔑</span>Per-organization connections</h3>
+        <p>Each organization holds its own integration credentials and sync schedule. One organization's hiccup never touches another's data or syncs.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico" style="background:var(--green-soft)">✔️</span>Verified before onboarding</h3>
+        <p>A dedicated security pass over the whole stack – data rules, permissions, secrets – runs before enterprise onboarding, so isolation is proven, not promised.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ A3 · ACCESS STRATEGY ============ -->
+<section class="slide" data-n="15">
+  <div class="slide-inner">
+    <span class="appx-tag">Appendix · A3</span>
+    <h2 class="h-lg" style="margin-bottom:18px">Integration access strategy</h2>
+    <div class="grid-3">
+      <div class="card">
+        <h3><span class="ico" style="background:var(--green-soft)">📜</span>Official-API-first</h3>
+        <p>Every client-facing channel runs on official platform APIs – no gray channels anywhere in the offering. Compliance is an architecture choice, not an afterthought.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico" style="background:var(--gold-soft)">🔑</span>Your accounts, your data – always</h3>
+        <p>Each client connects <i>their own</i> ad accounts and messaging numbers through permissions they can revoke. Assets, audiences and history always remain theirs.</p>
+      </div>
+      <div class="card">
+        <h3><span class="ico" style="background:var(--teal-soft)">🤝</span>Partner-accelerated</h3>
+        <p>Stage A runs on certified technology partners who already carry the heavy platform approvals, compressing time-to-market to weeks – while the client's assets and data stay in the client's hands throughout.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<div class="nav" id="nav"></div>
+<div class="arrows">
+  <button class="arrow-btn" id="prev" aria-label="Previous slide">←</button>
+  <button class="arrow-btn" id="next" aria-label="Next slide">→</button>
+</div>
+<div class="slide-num" id="slideNum">01 / 15</div>
+
+<script>
+/* ---- slide engine (timings live in :root custom props) ---- */
+const slides = Array.from(document.querySelectorAll('.slide'));
+const APPENDIX_START = 12;            // 0-based index of first appendix slide
+let cur = 0;
+
+const nav = document.getElementById('nav');
+slides.forEach((s, i) => {
+  if (i === APPENDIX_START) {
+    const sep = document.createElement('span');
+    sep.className = 'nav-sep';
+    nav.appendChild(sep);
+  }
+  const d = document.createElement('button');
+  d.className = 'dot' + (i >= APPENDIX_START ? ' appx' : '');
+  d.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+  d.addEventListener('click', () => go(i));
+  nav.appendChild(d);
+});
+const dots = Array.from(nav.querySelectorAll('.dot'));
+
+function go(i) {
+  cur = Math.max(0, Math.min(slides.length - 1, i));
+  slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+  dots.forEach((d, j) => d.classList.toggle('on', j === cur));
+  document.getElementById('progress').style.width = ((cur + 1) / slides.length * 100) + '%';
+  document.getElementById('slideNum').textContent =
+    String(cur + 1).padStart(2, '0') + ' / ' + slides.length;
+}
+document.getElementById('next').addEventListener('click', () => go(cur + 1));
+document.getElementById('prev').addEventListener('click', () => go(cur - 1));
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') go(cur + 1);
+  if (e.key === 'ArrowLeft'  || e.key === 'PageUp') go(cur - 1);
+  if (e.key === 'Home') go(0);
+  if (e.key === 'End') go(slides.length - 1);
+});
+/* touch swipe */
+let tx = null;
+document.addEventListener('touchstart', e => tx = e.touches[0].clientX, {passive: true});
+document.addEventListener('touchend', e => {
+  if (tx === null) return;
+  const dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 60) (dx < 0 ? go(cur + 1) : go(cur - 1));
+  tx = null;
+}, {passive: true});
+
+go(0);
+</script>
+</body>
+</html>

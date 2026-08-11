@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flowz · NDA</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23F0641E'/><text x='50' y='72' font-size='62' font-weight='800' font-family='Arial' text-anchor='middle' fill='white'>Z</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FAF6EF;
+  --card:#FFFDF9;
+  --ink:#2B2620;
+  --ink-soft:#6E6659;
+  --orange:#F0641E;
+  --orange-soft:#FDE8DC;
+  --radius:22px;
+  --shadow:0 10px 34px rgba(90,70,40,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--cream);color:var(--ink);
+  padding:40px 20px 70px;
+}
+.top{
+  max-width:820px;margin:0 auto 22px;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+}
+.brand{font-family:'Sora';font-weight:800;font-size:22px;text-decoration:none;color:var(--ink)}
+.brand span{color:var(--orange)}
+.actions{display:flex;gap:10px}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'Inter';font-weight:700;font-size:13.5px;text-decoration:none;
+  padding:11px 18px;border-radius:14px;transition:.18s;
+}
+.btn.dl{background:var(--orange);color:#fff}
+.btn.dl:hover{background:#D4531290}
+.btn.back{background:var(--card);color:var(--ink);border:1.5px solid #E4DACB}
+.btn.back:hover{border-color:var(--orange);color:var(--orange)}
+.sheet{
+  max-width:820px;margin:0 auto;background:var(--card);
+  border:1px solid #F0E8DA;border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:56px 62px;
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:14.5px;line-height:1.65;
+}
+.sheet h1{
+  font-family:Georgia,serif;font-size:23px;text-align:center;letter-spacing:.01em;margin-bottom:4px;
+}
+.sheet .sub{text-align:center;font-style:italic;color:var(--ink-soft);margin-bottom:26px}
+.sheet h2{
+  font-family:Georgia,serif;font-size:15.5px;margin:22px 0 6px;
+}
+.sheet p{margin-bottom:11px;text-align:justify}
+.sheet .meta p{text-align:left;margin-bottom:6px}
+.blank{
+  display:inline-block;min-width:130px;border-bottom:1px solid #B9AC97;height:1em;vertical-align:baseline;
+}
+.blank.s{min-width:80px}
+.sigblock{margin-top:10px;line-height:2.1}
+.rule{border:none;border-top:1px solid #EADFCC;margin:26px 0}
+.foot{
+  max-width:820px;margin:26px auto 0;text-align:center;
+  font-size:11px;letter-spacing:.12em;color:#B4A890;font-weight:600;font-family:'Inter';
+}
+@media (max-width:640px){.sheet{padding:34px 22px}}
+@media print{
+  body{background:#fff;padding:0}
+  .top,.foot{display:none}
+  .sheet{box-shadow:none;border:none;max-width:100%;padding:0}
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <a class="brand" href="../">FLOW<span>Z</span> <span style="font-family:'Inter';font-weight:600;font-size:13px;color:var(--ink-soft)">· NDA &amp; Legal</span></a>
+  <div class="actions">
+    <a class="btn back" href="../">← Hub</a>
+    <a class="btn dl" href="Flowz-NDA-TechDD.pdf" download>⬇ Download PDF</a>
+  </div>
+</div>
+
+<div class="sheet">
+  <h1>NON-DISCLOSURE AGREEMENT</h1>
+  <p class="sub">(One-Way – Evaluation &amp; Technical Due Diligence)</p>
+
+  <div class="meta">
+    <p><b>Subject Matter:</b> CRM · Community Management · Live Events Production &amp; Management · Decision Intelligence Software &amp; Services</p>
+    <p><b>NDA No.:</b> NDA-<span class="blank s"></span>-2026 &nbsp;&nbsp; <b>Date:</b> <span class="blank s"></span></p>
+  </div>
+
+  <hr class="rule">
+
+  <p><b>DISCLOSING PARTY:</b> Elad Kord (ID/T.Z.: <span class="blank s"></span>) and Aviv Uzan (ID/T.Z.: <span class="blank s"></span>), acting jointly (the "Disclosing Party").</p>
+
+  <p><b>RECEIVING PARTY:</b><br>
+  Full Name: <span class="blank"></span> &nbsp; ID (T.Z.): <span class="blank s"></span><br>
+  Address: <span class="blank"></span> &nbsp; Phone / Email: <span class="blank"></span><br>
+  Role / Title: <span class="blank"></span><br>
+  Where the Receiving Party is acting on behalf of an entity:<br>
+  Entity Name: <span class="blank"></span> &nbsp; Reg. No.: <span class="blank s"></span><br>
+  (the individual and, where completed, the entity, jointly and severally, the "Receiving Party")</p>
+
+  <p>The Disclosing Party is developing proprietary software, platforms, and service programs encompassing customer relationship management, community management, live events production and management, and decision intelligence (collectively, the "Platform"). The Receiving Party wishes to evaluate a potential investment, commercial, or collaborative relationship with the Disclosing Party, including technical due diligence of the Platform. The Parties agree as follows:</p>
+
+  <h2>1. DEFINITIONS</h2>
+  <p>"Confidential Information" means any and all non-public, proprietary, or sensitive information disclosed by or on behalf of the Disclosing Party to the Receiving Party – whether oral, written, visual, electronic, or in any other form – including but not limited to: (a) software source code, object code, algorithms, architectures, APIs, technical specifications, and system designs relating to the Platform; (b) product roadmaps, features, functionality, and development plans; (c) business models, revenue strategies, pricing structures, financial projections, and market strategies; (d) customer lists, community data, event management data, and operational workflows; (e) concepts, ideas, inventions, know-how, trade secrets, and research; (f) the existence, status, and content of the Parties' discussions; and (g) any information that a reasonable person would consider confidential given its nature or the circumstances of disclosure.</p>
+  <p>"Permitted Purpose" means the evaluation by the Receiving Party of a potential investment, commercial, consulting, advisory, or partnership relationship with the Disclosing Party, including technical due diligence of the Platform, and the provision of feedback related to the Platform – and no other purpose.</p>
+  <p>"Representatives" means the Receiving Party's directors, officers, employees, and professional advisers who have a genuine need to know Confidential Information for the Permitted Purpose.</p>
+
+  <h2>2. CONFIDENTIALITY OBLIGATIONS</h2>
+  <p>The Receiving Party shall: (a) hold all Confidential Information in strict confidence; (b) not disclose, publish, transmit, transfer, or make available any Confidential Information to any third party without the prior explicit written consent of both co-founders of the Disclosing Party; (c) use the Confidential Information solely for the Permitted Purpose; (d) restrict access strictly to Representatives bound by obligations no less restrictive than those herein; (e) promptly notify the Disclosing Party upon becoming aware of any actual or suspected breach of this Agreement; and (f) remain fully liable for any act or omission of its Representatives that would constitute a breach of this Agreement if committed by the Receiving Party.</p>
+
+  <h2>3. EXCLUSIONS</h2>
+  <p>The obligations of confidentiality shall not apply to information that the Receiving Party can demonstrate through contemporaneous written records: (a) was lawfully known prior to disclosure and free of any obligation of confidence; (b) is or becomes publicly available through no fault of the Receiving Party; (c) is independently developed without reference to or use of the Confidential Information; or (d) is lawfully obtained from a third party free of any confidentiality obligation. A compelled legal disclosure shall not relieve the Receiving Party of its obligations except to the minimum extent legally required, and advance written notice must be provided to the Disclosing Party as early as practicable.</p>
+
+  <h2>4. INTELLECTUAL PROPERTY &amp; OWNERSHIP</h2>
+  <p>All Confidential Information remains the sole and exclusive property of the Disclosing Party. No license, right, title, or interest of any kind is granted to the Receiving Party by this Agreement or by any disclosure hereunder. Notes, analyses, compilations, and other materials prepared by or for the Receiving Party that contain or reflect Confidential Information shall themselves constitute Confidential Information and are subject to Section 8. Any improvement, derivative, or modification of the Platform developed by the Receiving Party that is derived from Confidential Information shall be the sole and exclusive property of the Disclosing Party, and the Receiving Party hereby irrevocably assigns all rights therein to the Disclosing Party.</p>
+
+  <h2>5. FEEDBACK</h2>
+  <p>If the Receiving Party provides any feedback, suggestions, ideas, recommendations, or other input regarding the Platform ("Feedback"), the Receiving Party hereby irrevocably assigns to the Disclosing Party all rights, title, and interest in and to such Feedback without any compensation or attribution obligation. The Disclosing Party may use, reproduce, license, and exploit Feedback for any purpose without restriction.</p>
+
+  <h2>6. NO REVERSE ENGINEERING; USE RESTRICTION</h2>
+  <p>The Receiving Party shall not, directly or indirectly: (a) reverse engineer, decompile, disassemble, decode, or attempt to derive access to the source code or underlying systems of the Platform; (b) use or rely on any Confidential Information to design, develop, replicate, or assist any third party in designing, developing, or replicating any product, service, feature, or workflow that competes with the Platform; or (c) use the Confidential Information for any purpose beyond the Permitted Purpose. For the avoidance of doubt, this Section does not restrict activity that makes no use of Confidential Information.</p>
+
+  <h2>7. NON-SOLICITATION</h2>
+  <p>During the term of this Agreement and for twenty-four (24) months following its termination or expiration, the Receiving Party shall not, directly or indirectly, solicit, hire, employ, or engage any employee, contractor, advisor, or service provider of the Disclosing Party who became known to the Receiving Party in connection with this Agreement, without the prior written consent of both co-founders. A general public job advertisement not targeted at such persons shall not by itself constitute solicitation.</p>
+
+  <h2>8. RETURN OR DESTRUCTION</h2>
+  <p>Upon the Disclosing Party's written request, or upon termination or expiration of this Agreement, the Receiving Party shall within seven (7) business days: (a) return all tangible materials embodying Confidential Information; (b) permanently delete and destroy all electronic copies; and (c) certify in writing that it has complied with this Section. The Receiving Party shall not be required to purge Confidential Information from automated backup systems or copies retained pursuant to a legal or regulatory obligation, provided that any such retained information remains subject to this Agreement for as long as it is retained.</p>
+
+  <h2>9. TERM &amp; SURVIVAL</h2>
+  <p>This Agreement commences on the date above and remains in force for five (5) years unless earlier terminated by either Party upon thirty (30) days' written notice. The obligations of confidentiality and restricted use survive termination or expiration for five (5) years from the date of last disclosure; with respect to trade secrets, for as long as such information remains a trade secret under applicable law. Sections 4, 5, 7 (per its terms), 8, and 10 through 13 survive termination or expiration.</p>
+
+  <h2>10. REMEDIES &amp; INJUNCTIVE RELIEF</h2>
+  <p>The Receiving Party acknowledges that any breach or threatened breach would cause the Disclosing Party irreparable harm for which monetary damages alone would be an inadequate remedy. Accordingly, the Disclosing Party shall be entitled – in addition to all other remedies available at law or in equity – to seek immediate injunctive or other equitable relief without the necessity of proving actual damages or posting any bond.</p>
+
+  <h2>11. NO OBLIGATION; NO WARRANTY</h2>
+  <p>Nothing in this Agreement obligates either Party to enter into any transaction, investment, or further agreement, and either Party may end discussions at any time. All Confidential Information is provided "as is"; the Disclosing Party makes no representation or warranty as to its accuracy or completeness, provided that the foregoing does not limit liability for fraud.</p>
+
+  <h2>12. GOVERNING LAW &amp; JURISDICTION</h2>
+  <p>This Agreement shall be governed by and construed in accordance with the laws of the State of Israel, without regard to its conflict of law provisions. The Parties irrevocably submit to the exclusive jurisdiction of the competent courts of Tel Aviv-Jaffa, Israel.</p>
+
+  <h2>13. GENERAL PROVISIONS</h2>
+  <p><i>Entire Agreement.</i> This Agreement constitutes the entire agreement between the Parties with respect to its subject matter and supersedes all prior oral or written understandings. <i>Amendment.</i> No modification shall be effective unless in writing and signed by both Parties. <i>Waiver.</i> Failure to enforce any provision shall not constitute a waiver of future enforcement rights. <i>Severability.</i> If any provision is held invalid or unenforceable, the remaining provisions shall continue in full force. <i>No Partnership.</i> Nothing herein creates any partnership, joint venture, agency, employment, or fiduciary relationship between the Parties. <i>Assignment.</i> The Receiving Party may not assign this Agreement. The Disclosing Party may assign this Agreement, including all rights in Confidential Information, to any entity formed to carry on the business of the Platform, whereupon such entity succeeds to all rights and obligations of the Disclosing Party. <i>Counterparts; Electronic Signature.</i> This Agreement may be executed in counterparts, including by electronic or digital signature, each deemed an original.</p>
+
+  <hr class="rule">
+
+  <p>IN WITNESS WHEREOF, the Parties have executed this Agreement as of the date above.</p>
+
+  <p class="sigblock"><b>DISCLOSING PARTY</b><br>
+  Name: Elad Kord &nbsp; ID: <span class="blank s"></span> &nbsp; Signature: <span class="blank"></span> &nbsp; Date: <span class="blank s"></span><br>
+  Name: Aviv Uzan &nbsp; ID: <span class="blank s"></span> &nbsp; Signature: <span class="blank"></span> &nbsp; Date: <span class="blank s"></span></p>
+
+  <p class="sigblock"><b>RECEIVING PARTY (individual)</b><br>
+  Name: <span class="blank"></span> &nbsp; ID: <span class="blank s"></span> &nbsp; Signature: <span class="blank"></span> &nbsp; Date: <span class="blank s"></span></p>
+
+  <p class="sigblock"><b>RECEIVING PARTY (entity, where applicable)</b><br>
+  Entity: <span class="blank"></span> &nbsp; Reg. No.: <span class="blank s"></span><br>
+  By (authorized signatory): <span class="blank"></span> &nbsp; Title: <span class="blank s"></span> &nbsp; Signature: <span class="blank"></span> &nbsp; Date: <span class="blank s"></span></p>
+</div>
+
+<p class="foot">FLOWZ · NDA V2 · AUGUST 2026</p>
+
+</body>
+</html>
