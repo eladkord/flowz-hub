@@ -73,7 +73,7 @@ h1,h2,h3,.display{font-family:'Sora',sans-serif}
 .tbl th{font-family:'Sora';font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--cream-deep)}
 .tbl td{padding:9px 12px;border-bottom:1px solid var(--cream-deep);vertical-align:top;line-height:1.45}
 .tbl tr:last-child td{border-bottom:none}
-.foot-link{position:fixed;bottom:24px;right:80px;z-index:60;font-size:12px;font-weight:600;color:var(--ink-soft);text-decoration:none;border:1.5px solid #E4DACB;background:var(--card);border-radius:999px;padding:8px 16px;transition:.2s}
+.foot-link{position:fixed;bottom:24px;right:122px;z-index:60;font-size:12px;font-weight:600;color:var(--ink-soft);text-decoration:none;border:1.5px solid #E4DACB;background:var(--card);border-radius:999px;padding:8px 16px;transition:.2s}
 .foot-link:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
 
 /* ============ S1 title ============ */
@@ -169,6 +169,79 @@ h1,h2,h3,.display{font-family:'Sora',sans-serif}
 .decide .card{border-left:4px solid var(--orange)}
 .decide h3{font-size:15px;margin-bottom:6px}
 .decide p{font-size:12.5px;color:var(--ink-soft);line-height:1.55}
+.opt-row{display:flex;align-items:center;gap:9px;background:var(--cream);border:1.5px solid #EDE4D3;border-radius:12px;padding:9px 13px;margin-top:8px}
+.opt-row .radio{width:14px;height:14px;border-radius:50%;border:2px solid #C9BDA6;flex:none}
+.opt-row.lead{border-color:var(--orange);background:var(--orange-soft)}
+.opt-row.lead .radio{border-color:var(--orange);background:var(--orange)}
+.opt-row b{font-size:12.5px}
+.opt-row span{font-size:11px;color:var(--ink-soft)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:18px}
+.step{position:relative;text-align:center;padding:0 10px}
+.step:not(:last-child)::after{content:"→";position:absolute;right:-8px;top:8px;color:#C9BDA6;font-size:15px}
+.step .sn{width:30px;height:30px;border-radius:11px;background:var(--ink);color:#fff;font-family:'Sora';font-weight:700;font-size:13px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:7px}
+.step b{display:block;font-size:12.5px;margin-bottom:2px}
+.step span{font-size:11px;color:var(--ink-soft);line-height:1.4;display:block}
+
+/* ============ persona alt-names on a ladder ============ */
+.rung .alt{font-size:9.5px;font-weight:700;color:var(--teal);background:var(--teal-soft);border-radius:999px;padding:1px 8px}
+.ladder.choice{border:2px solid var(--orange);background:linear-gradient(135deg,#FFF7F0,var(--card))}
+.ladder.choice .meta h3{color:var(--orange)}
+
+/* ============ PRO styling (S10) ============ */
+.pro-pill{display:inline-flex;align-items:center;gap:5px;background:var(--ink);color:#F5D9A8;border-radius:999px;padding:4px 12px;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.pro-pill::before{content:"★";color:var(--gold)}
+.tagchips{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px}
+.tagchip{display:inline-flex;align-items:center;gap:6px;background:var(--cream);border:1.5px solid #EDE4D3;border-radius:999px;padding:5px 12px;font-size:11.5px;font-weight:700}
+.tagchip i{font-style:normal;font-size:12px}
+.edit-grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:14px}
+
+/* ============ S11 stat tiles + guard rows ============ */
+.tiles{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;margin-top:4px}
+.tile{background:var(--cream);border-radius:14px;padding:12px 13px;text-align:center}
+.tile .tv{font-family:'Sora';font-weight:800;font-size:19px;line-height:1.15;color:var(--orange)}
+.tile .tl{font-size:10px;color:var(--ink-soft);margin-top:3px;line-height:1.35}
+.guard{display:flex;align-items:flex-start;gap:11px;padding:8px 0;border-bottom:1px solid var(--cream-deep)}
+.guard:last-child{border-bottom:none}
+.guard .gi{width:30px;height:30px;border-radius:10px;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:14px;flex:none}
+.guard b{font-size:12.5px;display:block}
+.guard span{font-size:11px;color:var(--ink-soft);line-height:1.4;display:block}
+
+/* ============ modal / lightbox ============ */
+.modal{position:fixed;inset:0;background:rgba(30,24,17,.62);backdrop-filter:blur(6px);z-index:100;display:none;align-items:center;justify-content:center;padding:34px}
+.modal.open{display:flex}
+.modal-card{background:var(--card);border-radius:20px;box-shadow:0 30px 90px rgba(30,20,5,.4);max-width:min(1060px,94vw);max-height:92vh;display:flex;flex-direction:column;overflow:hidden;width:100%}
+.modal-head{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid #F0E8DA;flex:none}
+.modal-head h3{font-size:15px;flex:1}
+.modal-head .mh-sub{font-size:11.5px;color:var(--ink-soft)}
+.modal-x{width:32px;height:32px;border-radius:10px;border:none;background:var(--cream-deep);font-size:15px;cursor:pointer;color:var(--ink);flex:none}
+.modal-x:hover{background:var(--orange);color:#fff}
+.modal-body{flex:1;min-height:0;overflow:auto;display:flex;align-items:center;justify-content:center;background:var(--cream);position:relative}
+.modal-body img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.modal-body iframe{width:100%;height:78vh;border:none;background:#fff}
+.modal-foot{flex:none;display:flex;align-items:center;gap:10px;padding:11px 20px;border-top:1px solid #F0E8DA}
+.modal-foot .mcap{flex:1;font-size:12px;color:var(--ink-soft);line-height:1.4}
+.mnav-btn{width:34px;height:34px;border-radius:11px;border:1.5px solid #E4DACB;background:var(--card);cursor:pointer;font-size:15px;color:var(--ink)}
+.mnav-btn:hover:not(:disabled){background:var(--orange);color:#fff;border-color:var(--orange)}
+.mnav-btn:disabled{opacity:.3;cursor:default}
+.mcount{font-size:11px;font-weight:700;color:var(--ink-soft);min-width:40px;text-align:center}
+.shot{cursor:pointer;transition:transform .15s ease, box-shadow .15s ease}
+.shot:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(90,70,40,.18)}
+.shot .zoom-hint{position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:8px;background:rgba(255,253,249,.9);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink-soft)}
+.shot{position:relative}
+
+/* ============ S13 survey ============ */
+.survey{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.sq{background:var(--card);border:1px solid #F0E8DA;border-radius:16px;box-shadow:var(--shadow);padding:13px 16px}
+.sq h3{font-size:12.5px;margin-bottom:8px}
+.sq .qn{color:var(--orange);margin-right:5px}
+.schips{display:flex;flex-wrap:wrap;gap:6px}
+.schip{border:1.5px solid #E4DACB;background:var(--cream);border-radius:999px;padding:5px 12px;font-size:11.5px;font-weight:700;cursor:pointer;font-family:inherit;color:var(--ink);transition:.15s}
+.schip:hover{border-color:var(--orange)}
+.schip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.snotes{width:100%;border:1.5px solid #E4DACB;border-radius:12px;background:var(--card);padding:9px 12px;font-family:inherit;font-size:12px;resize:none;height:56px;color:var(--ink)}
+.snotes:focus{outline:none;border-color:var(--orange)}
+.survey-foot{display:flex;align-items:center;gap:10px;margin-top:12px}
+.survey-foot .hint{flex:1;font-size:11.5px;color:var(--ink-soft)}
 </style>
 </head>
 <body>
@@ -230,7 +303,8 @@ h1,h2,h3,.display{font-family:'Sora',sans-serif}
       <span class="tb"><svg width="58" height="58" viewBox="0 0 64 64"><use href="#bg-apex"/></svg><span class="nm">Apex</span></span>
     </div>
     <div class="title-links">
-      <a class="btn primary" href="Flowz-Segmentation-Research.pdf" target="_blank">Full research report (PDF)</a>
+      <a class="btn primary" href="#" data-open-report>View full report</a>
+      <a class="btn ghost" href="Flowz-Segmentation-Research.pdf" target="_blank">Download PDF</a>
       <a class="btn ghost" href="../">Back to hub</a>
     </div>
   </div>
@@ -338,31 +412,45 @@ h1,h2,h3,.display{font-family:'Sora',sans-serif}
     <h2 class="h-title">Two ladders in the brand's own language</h2>
     <p class="h-sub">Flowz is flow – water gives us ladders that are on-brand, calm enough for a retreat, big enough for a festival. A stranger ranks both in under 2 seconds.</p>
 
-    <div class="ladder">
+    <div class="ladder compact">
       <div class="meta">
         <h3>WAVES</h3>
         <p>Energy magnitude. The crowd version – reads perfectly for bass, parties, festivals.</p>
         <span class="pill" style="background:var(--blue-soft);color:#1D4ED8">Flowz brand</span>
       </div>
       <div class="rungs">
-        <span class="rung"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-ripple"/></svg><span class="nm">Ripple</span><span class="th">first event</span></span>
-        <span class="rung"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-wave"/></svg><span class="nm">Wave</span><span class="th">2+ events</span></span>
-        <span class="rung"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-surge"/></svg><span class="nm">Surge</span><span class="th">4+ events · LTV floor</span></span>
-        <span class="rung apex"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-tsunami"/></svg><span class="nm">Tsunami</span><span class="th">top of the ladder</span></span>
+        <span class="rung"><svg width="50" height="50" viewBox="0 0 64 64"><use href="#bg-ripple"/></svg><span class="nm">Ripple</span><span class="th">first event</span></span>
+        <span class="rung"><svg width="50" height="50" viewBox="0 0 64 64"><use href="#bg-wave"/></svg><span class="nm">Wave</span><span class="th">2+ events</span></span>
+        <span class="rung"><svg width="50" height="50" viewBox="0 0 64 64"><use href="#bg-surge"/></svg><span class="nm">Surge</span><span class="th">4+ events · LTV floor</span></span>
+        <span class="rung apex"><svg width="50" height="50" viewBox="0 0 64 64"><use href="#bg-tsunami"/></svg><span class="nm">Tsunami</span><span class="th">top of the ladder</span></span>
       </div>
     </div>
 
-    <div class="ladder">
+    <div class="ladder compact">
       <div class="meta">
         <h3>WATERS</h3>
         <p>Scale of water. The universal version – drop &lt; stream &lt; river &lt; ocean needs zero explanation in any vertical.</p>
         <span class="pill" style="background:var(--teal-soft);color:var(--teal)">Flowz brand</span>
       </div>
       <div class="rungs">
-        <span class="rung"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-drop"/></svg><span class="nm">Drop</span><span class="th">first event</span></span>
-        <span class="rung"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-stream"/></svg><span class="nm">Stream</span><span class="th">2+ events</span></span>
-        <span class="rung"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-river"/></svg><span class="nm">River</span><span class="th">4+ events · LTV floor</span></span>
-        <span class="rung apex"><svg width="62" height="62" viewBox="0 0 64 64"><use href="#bg-ocean"/></svg><span class="nm">Ocean</span><span class="th">top of the ladder</span></span>
+        <span class="rung"><svg width="50" height="50" viewBox="0 0 64 64"><use href="#bg-drop"/></svg><span class="nm">Drop</span><span class="th">first event</span></span>
+        <span class="rung"><svg width="50" height="50" viewBox="0 0 64 64"><use href="#bg-stream"/></svg><span class="nm">Stream</span><span class="th">2+ events</span></span>
+        <span class="rung"><svg width="50" height="50" viewBox="0 0 64 64"><use href="#bg-river"/></svg><span class="nm">River</span><span class="th">4+ events · LTV floor</span></span>
+        <span class="rung apex"><svg width="50" height="50" viewBox="0 0 64 64"><use href="#bg-ocean"/></svg><span class="nm">Ocean</span><span class="th">top of the ladder</span></span>
+      </div>
+    </div>
+
+    <div class="ladder compact choice">
+      <div class="meta">
+        <h3>ELAD'S CURRENT CHOICE</h3>
+        <p>The working pick – water scale with the Wave step and the Tsunami apex. Persona-name variant below each rung as an option.</p>
+        <span class="pill" style="background:var(--orange-soft);color:var(--orange)">Working pick</span>
+      </div>
+      <div class="rungs">
+        <span class="rung"><svg width="50" height="50" viewBox="0 0 64 64"><use href="#bg-drop"/></svg><span class="nm">Drop</span><span class="alt">Droper</span><span class="th">first event</span></span>
+        <span class="rung"><svg width="50" height="50" viewBox="0 0 64 64"><use href="#bg-wave"/></svg><span class="nm">Wave</span><span class="alt">Waver</span><span class="th">2+ events</span></span>
+        <span class="rung"><svg width="50" height="50" viewBox="0 0 64 64"><use href="#bg-stream"/></svg><span class="nm">Stream</span><span class="alt">Streamer</span><span class="th">4+ events · LTV floor</span></span>
+        <span class="rung apex"><svg width="50" height="50" viewBox="0 0 64 64"><use href="#bg-tsunami"/></svg><span class="nm">Tsunami</span><span class="alt">Tsunami?</span><span class="th">top of the ladder</span></span>
       </div>
     </div>
 
@@ -444,13 +532,14 @@ h1,h2,h3,.display{font-family:'Sora',sans-serif}
   <div class="slide-inner">
     <div class="kicker">Research base</div>
     <h2 class="h-title">What the big platforms actually ship</h2>
+    <p class="h-sub" style="margin-top:2px">Click any screenshot to open it full size – some have extra screens to page through.</p>
     <div class="shots">
-      <div class="shot"><div class="imgwrap"><img src="img/hubspot.png" alt="HubSpot lifecycle stage editor"></div><div class="cap"><b>HubSpot</b><span>Lifecycle stages: a simple ordered-list editor with a "Used In" dependency guard. Scores live separately and drive stage transitions.</span></div></div>
-      <div class="shot"><div class="imgwrap"><img src="img/salesforce.png" alt="Salesforce Loyalty tiers"></div><div class="cap"><b>Salesforce</b><span>Loyalty tier = name + rank + one threshold + color. Instant upgrade, period-end downgrade, currency split.</span></div></div>
-      <div class="shot"><div class="imgwrap"><img src="img/klaviyo.png" alt="Klaviyo RFM"></div><div class="cap"><b>Klaviyo</b><span>RFM scores are invisible plumbing – only 6 fixed group names surface. Thresholds editable with preview-before-save.</span></div></div>
-      <div class="shot"><div class="imgwrap"><img src="img/clevertap.png" alt="CleverTap RFM grid"></div><div class="cap"><b>CleverTap</b><span>Recency × Frequency grid, 10 named cells, percentile-based so it auto-fits any audience size.</span></div></div>
-      <div class="shot"><div class="imgwrap"><img src="img/braze.gif" alt="Braze churn histogram"></div><div class="cap"><b>Braze</b><span>Churn-score histogram with a draggable threshold slider showing live counts – the editing UX to copy.</span></div></div>
-      <div class="shot" style="display:flex;align-items:center;justify-content:center;background:var(--cream-deep);border-style:dashed"><div class="cap" style="text-align:center"><b>The consensus</b><span>Score ≠ tier ≠ stage everywhere. Scores are plumbing, names are the product. Clients edit definitions, never the math.</span></div></div>
+      <div class="shot" data-gallery="hubspot"><span class="zoom-hint">⤢</span><div class="imgwrap"><img src="img/hubspot.png" alt="HubSpot lifecycle stage editor"></div><div class="cap"><b>HubSpot</b><span>Lifecycle stages: a simple ordered-list editor with a "Used In" dependency guard. Scores live separately and drive stage transitions.</span></div></div>
+      <div class="shot" data-gallery="salesforce"><span class="zoom-hint">⤢</span><div class="imgwrap"><img src="img/salesforce.png" alt="Salesforce Loyalty tiers"></div><div class="cap"><b>Salesforce</b><span>Loyalty tier = name + rank + one threshold + color. Instant upgrade, period-end downgrade, currency split.</span></div></div>
+      <div class="shot" data-gallery="klaviyo"><span class="zoom-hint">⤢</span><div class="imgwrap"><img src="img/klaviyo.png" alt="Klaviyo RFM"></div><div class="cap"><b>Klaviyo</b><span>RFM scores are invisible plumbing – only 6 fixed group names surface. Thresholds editable with preview-before-save.</span></div></div>
+      <div class="shot" data-gallery="clevertap"><span class="zoom-hint">⤢</span><div class="imgwrap"><img src="img/clevertap.png" alt="CleverTap RFM grid"></div><div class="cap"><b>CleverTap</b><span>Recency × Frequency grid, 10 named cells, percentile-based so it auto-fits any audience size.</span></div></div>
+      <div class="shot" data-gallery="braze"><span class="zoom-hint">⤢</span><div class="imgwrap"><img src="img/braze.gif" alt="Braze churn histogram"></div><div class="cap"><b>Braze</b><span>Churn-score histogram with a draggable threshold slider showing live counts – the editing UX to copy.</span></div></div>
+      <div class="shot" style="display:flex;align-items:center;justify-content:center;background:var(--cream-deep);border-style:dashed;cursor:default"><div class="cap" style="text-align:center"><b>The consensus</b><span>Score ≠ tier ≠ stage everywhere. Scores are plumbing, names are the product. Clients edit definitions, never the math.</span></div></div>
     </div>
   </div>
 </section>
@@ -458,22 +547,36 @@ h1,h2,h3,.display{font-family:'Sora',sans-serif}
 <!-- ════════ S10 · EDITABILITY ════════ -->
 <section class="slide" data-n="10">
   <div class="slide-inner">
-    <div class="kicker">B2B config</div>
+    <div class="kicker">B2B config &nbsp;<span class="pro-pill">Pro plan · optional upgrade</span></div>
     <h2 class="h-title">Clients edit definitions, never the math</h2>
-    <p class="h-sub">Every threshold is a sentence. Every edit shows its impact before saving. Defaults are seeded from the client's own history – nobody starts from a blank rule builder.</p>
+    <p class="h-sub">Threshold editing and custom tags are a <b>Pro-plan upgrade</b> – the base plan runs on our opinionated defaults. On Pro, every threshold is a sentence, every edit previews its impact, and a Flowz rep tunes it with the client.</p>
     <div class="sentence">Backstage&nbsp; = &nbsp;attended <span class="slot">4 +</span> events &nbsp;AND&nbsp; spent <span class="slot">₪ 2,500 +</span> &nbsp;over the last <span class="slot">24 months</span></div>
-    <div class="edit-grid">
+    <div class="edit-grid3">
       <div class="card">
-        <h3 style="font-size:14px">Histogram + drag handles <span style="font-weight:400;color:var(--ink-soft)">(Braze pattern)</span></h3>
+        <h3 style="font-size:13.5px">Histogram + drag handles <span style="font-weight:400;color:var(--ink-soft)">(Braze)</span></h3>
         <div class="histo">
           <i style="height:22%"></i><i style="height:38%"></i><i style="height:58%"></i><i style="height:74%"></i><i style="height:100%"></i><i style="height:82%"></i><i class="hot" style="height:60%"></i><i class="hot" style="height:42%"></i><i class="hot" style="height:26%"></i><i class="hot" style="height:14%"></i>
         </div>
-        <p style="font-size:12px;color:var(--ink-soft)">The producer sees their real attendee distribution and drags the boundary – counts update live, one click materializes the band as a segment.</p>
+        <p style="font-size:11.5px;color:var(--ink-soft)">The producer drags the boundary over their real attendee distribution – counts update live.</p>
       </div>
       <div class="card">
-        <h3 style="font-size:14px">Impact preview <span style="font-weight:400;color:var(--ink-soft)">(Klaviyo pattern)</span></h3>
+        <h3 style="font-size:13.5px">Impact preview <span style="font-weight:400;color:var(--ink-soft)">(Klaviyo)</span></h3>
         <div class="impact" style="margin:12px 0 10px">⚠ This change moves 1,240 attendees from Backstage → Front Row</div>
-        <p style="font-size:12px;color:var(--ink-soft)">Plus a periodic validation nudge: "62% of Cooling actually lapsed – thresholds look healthy." Pro plan: a Flowz rep tunes it with the client.</p>
+        <p style="font-size:11.5px;color:var(--ink-soft)">Nothing saves blind. Plus a validation nudge: "62% of Cooling actually lapsed – thresholds look healthy."</p>
+      </div>
+      <div class="card" style="border:1.5px solid var(--gold)">
+        <h3 style="font-size:13.5px">Custom Tags <span class="pro-pill" style="font-size:8.5px;padding:2px 8px">Pro</span></h3>
+        <p style="font-size:11.5px;color:var(--ink-soft);margin-top:6px">Producers define their own auto-badges with the same sentence rules:</p>
+        <div class="tagchips">
+          <span class="tagchip"><i>👥</i>Group Captain</span>
+          <span class="tagchip"><i>⛺</i>Camper</span>
+          <span class="tagchip"><i>🚌</i>Shuttle Rider</span>
+          <span class="tagchip"><i>🍸</i>Bar Big-Spender</span>
+          <span class="tagchip"><i>👕</i>Merch Collector</span>
+          <span class="tagchip"><i>🌅</i>Sunrise Crowd</span>
+          <span class="tagchip"><i>✈️</i>Out-of-Towner</span>
+          <span class="tagchip"><i>💞</i>Couple Ticket</span>
+        </div>
       </div>
     </div>
   </div>
@@ -484,27 +587,25 @@ h1,h2,h3,.display{font-family:'Sora',sans-serif}
   <div class="slide-inner">
     <div class="kicker">Shipping defaults</div>
     <h2 class="h-title">Opinionated defaults, hard guardrails</h2>
-    <div class="grid2" style="margin-top:18px">
+    <div class="grid2" style="margin-top:18px;grid-template-columns:0.92fr 1.08fr">
       <div class="card">
-        <h3 style="font-size:15px;margin-bottom:10px">Industry-baseline defaults</h3>
-        <table class="tbl">
-          <tr><td>Frequent / core</td><td><b>3+ events</b> per rolling 24 months</td></tr>
-          <tr><td>Top tier size</td><td><b>≤ 5–10%</b> of the audience</td></tr>
-          <tr><td>Lapsed</td><td><b>2 missed editions</b> they used to attend</td></tr>
-          <tr><td>New</td><td>first purchase, first 90 days</td></tr>
-          <tr><td>Tier window</td><td>rolling 24 months · season-end downgrade</td></tr>
-          <tr><td>Seeding</td><td>percentiles over the client's own history</td></tr>
-        </table>
+        <h3 style="font-size:15px;margin-bottom:12px">📦 The defaults we ship</h3>
+        <div class="tiles">
+          <div class="tile"><div class="tv">3+</div><div class="tl">events / 24 mo<br>= frequent / core</div></div>
+          <div class="tile"><div class="tv">5–10%</div><div class="tl">max size of<br>the top tier</div></div>
+          <div class="tile"><div class="tv">2</div><div class="tl">missed editions<br>= lapsed</div></div>
+          <div class="tile"><div class="tv">90d</div><div class="tl">first purchase<br>= new</div></div>
+          <div class="tile"><div class="tv">24 mo</div><div class="tl">rolling tier window<br>season-end downgrade</div></div>
+          <div class="tile"><div class="tv">auto</div><div class="tl">seeded from the<br>client's own history</div></div>
+        </div>
       </div>
       <div class="card">
-        <h3 style="font-size:15px;margin-bottom:10px">Guardrails from the failure research</h3>
-        <table class="tbl">
-          <tr><td>Hard caps</td><td>≤ 5 lifecycle stages · ≤ 4 tiers. One segment = one default action; if two trigger the same campaign, merge them.</td></tr>
-          <tr><td>No weight sliders</td><td>Ever. Weights are meeting-room guesses nobody backtests.</td></tr>
-          <tr><td>Dependency guard</td><td>"Used in 3 flows" blocks deletion – the HubSpot pattern.</td></tr>
-          <tr><td>Explainability</td><td>Every state shows its fired rule: "Cooling ↓ – 1 missed edition, opens down 60%".</td></tr>
-          <tr><td>Vocabulary rule</td><td>No word appears on two axes – tier names never reuse lifecycle words.</td></tr>
-        </table>
+        <h3 style="font-size:15px;margin-bottom:6px">🛡️ Guardrails from the failure research</h3>
+        <div class="guard"><span class="gi">🔢</span><div><b>Hard caps: 5 stages, 4 tiers</b><span>One segment = one default action. If two trigger the same campaign, merge them.</span></div></div>
+        <div class="guard"><span class="gi">🚫</span><div><b>No weight sliders, ever</b><span>Weights are meeting-room guesses nobody backtests.</span></div></div>
+        <div class="guard"><span class="gi">🔗</span><div><b>Dependency guard</b><span>"Used in 3 flows" blocks deletion – the HubSpot pattern.</span></div></div>
+        <div class="guard"><span class="gi">💬</span><div><b>Every state explains itself</b><span>"Cooling ↓ – 1 missed edition, opens down 60%".</span></div></div>
+        <div class="guard"><span class="gi">🔤</span><div><b>One word, one axis</b><span>Tier names never reuse lifecycle words.</span></div></div>
       </div>
     </div>
   </div>
@@ -517,21 +618,110 @@ h1,h2,h3,.display{font-family:'Sora',sans-serif}
     <h2 class="h-title">Two open calls, then we spec it</h2>
     <div class="decide">
       <div class="card">
-        <h3>1 · Lifecycle renames</h3>
-        <p>Research says "Rising" and "Core" need a legend; "Returning / Regular" don't. Proposal: <b>New → Returning → Regular → Cooling → Lapsed</b>, with the engagement split on Cooling. Keeping Rising/Core is a brand-personality call – just never reuse those words on the tier axis.</p>
+        <h3>1 · Lifecycle names</h3>
+        <div class="opt-row lead"><span class="radio"></span><div><b>New → Returning → Regular → Cooling → Lapsed</b><br><span>Self-describing – a producer parses it in one read. Engagement splits Cooling.</span></div></div>
+        <div class="opt-row"><span class="radio"></span><div><b>Keep Rising / Core</b><br><span>Brand personality, but needs a legend. Either way: no word repeats on the tier axis.</span></div></div>
       </div>
       <div class="card">
-        <h3>2 · Pick the default ladder</h3>
-        <p>Five candidates on slides 6–7: Waves · Waters · Backstage · Fire · Apex. My lean: <b>Backstage as default skin</b>, Waters for wellness clients, Apex's dynamic top-% as the differentiator feature regardless of which names ship.</p>
+        <h3>2 · The default tier ladder</h3>
+        <div class="opt-row lead"><span class="radio"></span><div><b>Elad's pick: Drop → Wave → Stream → Tsunami</b><br><span>Brand-language water ladder, persona-name variant optional.</span></div></div>
+        <div class="opt-row"><span class="radio"></span><div><b>Backstage / Waters / Fire / Apex</b><br><span>Full candidates on slides 6–7. Dynamic top-% apex worth shipping regardless.</span></div></div>
       </div>
     </div>
-    <div class="lad-note" style="margin-top:16px">Next: lock the two calls above → spec the ledger fields + engines with Aviv → thresholds config UI in productv2 → badge rule editor. Full research: <a href="Flowz-Segmentation-Research.pdf" target="_blank" style="color:var(--orange);font-weight:700">the 9-track report (PDF)</a>.</div>
+    <div class="steps">
+      <div class="step"><span class="sn">1</span><b>Lock the calls</b><span>survey on the next slide</span></div>
+      <div class="step"><span class="sn">2</span><b>Spec with Aviv</b><span>ledger fields + engines</span></div>
+      <div class="step"><span class="sn">3</span><b>Config UI</b><span>thresholds in productv2</span></div>
+      <div class="step"><span class="sn">4</span><b>Badge editor</b><span>rules + Pro custom tags</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ S13 · DECISION SURVEY ════════ -->
+<section class="slide" data-n="13">
+  <div class="slide-inner">
+    <div class="kicker">Decide now</div>
+    <h2 class="h-title" style="font-size:28px">The decision survey – answer, export, ship</h2>
+    <div class="survey">
+      <div class="sq">
+        <h3><span class="qn">Q1</span>Default tier ladder</h3>
+        <div class="schips" data-q="Default tier ladder">
+          <button class="schip">Elad's pick: Drop–Wave–Stream–Tsunami</button>
+          <button class="schip">Waves</button>
+          <button class="schip">Waters</button>
+          <button class="schip">Backstage</button>
+          <button class="schip">Fire</button>
+          <button class="schip">Apex</button>
+        </div>
+      </div>
+      <div class="sq">
+        <h3><span class="qn">Q2</span>Persona-name variant (Droper / Waver / Streamer)?</h3>
+        <div class="schips" data-q="Persona-name variant">
+          <button class="schip">Yes – persona names</button>
+          <button class="schip">No – noun ladder</button>
+          <button class="schip">Offer both as skins</button>
+        </div>
+      </div>
+      <div class="sq">
+        <h3><span class="qn">Q3</span>Lifecycle names</h3>
+        <div class="schips" data-q="Lifecycle names">
+          <button class="schip">New–Returning–Regular–Cooling–Lapsed</button>
+          <button class="schip">Keep Rising / Core</button>
+        </div>
+      </div>
+      <div class="sq">
+        <h3><span class="qn">Q4</span>Dynamic top-% apex tier</h3>
+        <div class="schips" data-q="Dynamic apex">
+          <button class="schip">Ship in v1</button>
+          <button class="schip">Later phase</button>
+        </div>
+      </div>
+      <div class="sq">
+        <h3><span class="qn">Q5</span>Cooling split (reachable vs silent)</h3>
+        <div class="schips" data-q="Cooling engagement split">
+          <button class="schip">Ship in v1</button>
+          <button class="schip">Later phase</button>
+        </div>
+      </div>
+      <div class="sq">
+        <h3><span class="qn">Q6</span>Custom tags (Pro)</h3>
+        <div class="schips" data-q="Custom tags Pro">
+          <button class="schip">Ship in v1</button>
+          <button class="schip">Later phase</button>
+        </div>
+      </div>
+    </div>
+    <textarea class="snotes" id="surveyNotes" placeholder="Notes, tweaks, new ideas – anything the chips don't capture…" style="margin-top:12px"></textarea>
+    <div class="survey-foot">
+      <span class="hint" id="surveyHint">0 / 6 answered · export includes your notes</span>
+      <button class="btn ghost" id="surveyCopy" style="cursor:pointer;font-family:inherit">Copy as Markdown</button>
+      <button class="btn primary" id="surveyDl" style="cursor:pointer;border:none;font-family:inherit">Download decisions (.md)</button>
+    </div>
   </div>
 </section>
 
 </div>
 
-<a class="foot-link" href="Flowz-Segmentation-Research.pdf" target="_blank">📄 Full report</a>
+<!-- ════════ MODAL (screenshot galleries + report viewer) ════════ -->
+<div class="modal" id="modal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 id="modalTitle"></h3>
+      <span class="mh-sub" id="modalSub"></span>
+      <a class="btn ghost" id="modalPdf" href="Flowz-Segmentation-Research.pdf" target="_blank" style="display:none;padding:7px 14px;font-size:12px">Download PDF</a>
+      <button class="modal-x" id="modalX">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-foot" id="modalFoot">
+      <span class="mcap" id="modalCap"></span>
+      <button class="mnav-btn" id="mPrev">←</button>
+      <span class="mcount" id="mCount"></span>
+      <button class="mnav-btn" id="mNext">→</button>
+    </div>
+  </div>
+</div>
+
+<a class="foot-link" href="#" data-open-report>📄 Full report</a>
 <div class="nav" id="nav"></div>
 <div class="arrows">
   <button class="arrow-btn" id="prev">←</button>
@@ -561,10 +751,127 @@ function go(i) {
 document.getElementById('next').addEventListener('click', () => go(cur + 1));
 document.getElementById('prev').addEventListener('click', () => go(cur - 1));
 document.addEventListener('keydown', e => {
+  // typing in the survey must never drive the deck
+  if (/^(TEXTAREA|INPUT)$/.test(e.target.tagName)) return;
+  // with the modal open, arrows page the gallery and Escape closes
+  if (modal.classList.contains('open')) {
+    if (e.key === 'Escape') closeModal();
+    if (e.key === 'ArrowRight') galStep(1);
+    if (e.key === 'ArrowLeft') galStep(-1);
+    return;
+  }
   if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') go(cur + 1);
   if (e.key === 'ArrowLeft' || e.key === 'PageUp') go(cur - 1);
   if (e.key === 'Home') go(0);
   if (e.key === 'End') go(slides.length - 1);
+});
+
+/* ---- modal: screenshot galleries + report viewer ---- */
+const GALLERIES = {
+  hubspot: { title: 'HubSpot', imgs: [
+    { src: 'img/hubspot.png',  cap: 'Lifecycle Stage settings: ordered-list editor with the "Used In" dependency column that blocks unsafe deletes.' },
+    { src: 'img/hubspot2.png', cap: 'The lead-score builder’s "Preview distribution" bar: test a record or preview how scores spread before turning the model on.' },
+  ]},
+  salesforce: { title: 'Salesforce Loyalty Management', imgs: [
+    { src: 'img/salesforce.png',  cap: 'Tier setup: each tier is a name, a rank, one points threshold and a color. Silver 0 · Gold 1,000 · Platinum 5,000.' },
+    { src: 'img/salesforce2.png', cap: 'The tier-group step before it: qualifying-points name, Fixed vs Anniversary tier model, qualifying period and tier duration.' },
+  ]},
+  klaviyo: { title: 'Klaviyo RFM', imgs: [
+    { src: 'img/klaviyo.png',  cap: 'The six fixed RFM groups (Champions → Inactive) compared across two dates – names are locked, thresholds are editable.' },
+    { src: 'img/klaviyo2.png', cap: 'Group change over time: a Sankey of customers flowing between groups – the transition history our lifecycle needs too.' },
+  ]},
+  clevertap: { title: 'CleverTap RFM Grid', imgs: [
+    { src: 'img/clevertap.png',  cap: 'Recency × Frequency treemap, 10 named cells with user counts and monetary value – percentile-based, auto-fits any audience.' },
+    { src: 'img/clevertap2.png', cap: 'Cell inspect popover: definition, reachability per channel, and one-click Save segment / Create message.' },
+  ]},
+  braze: { title: 'Braze Predictive Churn', imgs: [
+    { src: 'img/braze.gif',  cap: 'The histogram + draggable threshold slider – live counts as you drag. The threshold-editing UX we copy.' },
+    { src: 'img/braze2.png', cap: 'Estimated Accuracy beside it: expected churners vs non-churners in the selected range, honesty built into the UI.' },
+  ]},
+};
+const modal = document.getElementById('modal');
+const mBody = document.getElementById('modalBody'), mCap = document.getElementById('modalCap');
+const mCount = document.getElementById('mCount'), mFoot = document.getElementById('modalFoot');
+const mTitle = document.getElementById('modalTitle'), mSub = document.getElementById('modalSub');
+const mPdf = document.getElementById('modalPdf');
+let gal = null, gi = 0;
+
+function openGallery(key) {
+  gal = GALLERIES[key]; gi = 0;
+  mTitle.textContent = gal.title;
+  mSub.textContent = 'real product UI';
+  mPdf.style.display = 'none';
+  mFoot.style.display = 'flex';
+  renderGal();
+  modal.classList.add('open');
+}
+function renderGal() {
+  const it = gal.imgs[gi];
+  mBody.innerHTML = '<img src="' + it.src + '" alt="">';
+  mCap.textContent = it.cap;
+  mCount.textContent = (gi + 1) + ' / ' + gal.imgs.length;
+  document.getElementById('mPrev').disabled = gi === 0;
+  document.getElementById('mNext').disabled = gi === gal.imgs.length - 1;
+}
+function galStep(d) {
+  if (!gal) return;
+  const n = gi + d;
+  if (n < 0 || n >= gal.imgs.length) return;
+  gi = n; renderGal();
+}
+function openReport() {
+  gal = null;
+  mTitle.textContent = 'Full Research Report';
+  mSub.textContent = '34 pages · 9 research tracks';
+  mPdf.style.display = 'inline-block';
+  mFoot.style.display = 'none';
+  mBody.innerHTML = '<iframe src="report.html" title="Flowz Segmentation Research"></iframe>';
+  modal.classList.add('open');
+}
+function closeModal() { modal.classList.remove('open'); mBody.innerHTML = ''; gal = null; }
+document.getElementById('modalX').addEventListener('click', closeModal);
+modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+document.getElementById('mPrev').addEventListener('click', () => galStep(-1));
+document.getElementById('mNext').addEventListener('click', () => galStep(1));
+document.querySelectorAll('.shot[data-gallery]').forEach(sh =>
+  sh.addEventListener('click', () => openGallery(sh.dataset.gallery)));
+document.querySelectorAll('[data-open-report]').forEach(el =>
+  el.addEventListener('click', e => { e.preventDefault(); openReport(); }));
+
+/* ---- decision survey ---- */
+const answers = {};
+document.querySelectorAll('.schips').forEach(group => {
+  group.querySelectorAll('.schip').forEach(chip => chip.addEventListener('click', () => {
+    group.querySelectorAll('.schip').forEach(c => c.classList.remove('on'));
+    chip.classList.add('on');
+    answers[group.dataset.q] = chip.textContent.trim();
+    const n = Object.keys(answers).length;
+    document.getElementById('surveyHint').textContent = n + ' / 6 answered · export includes your notes';
+  }));
+});
+function surveyMd() {
+  const d = new Date();
+  const stamp = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  const qs = ['Default tier ladder', 'Persona-name variant', 'Lifecycle names', 'Dynamic apex', 'Cooling engagement split', 'Custom tags Pro'];
+  let md = '# Flowz Segmentation – Decisions\n\n';
+  md += 'Date: ' + stamp + '\nSource: flowz-hub.pages.dev/tiers (S13 survey)\nStatus: input for production spec\n\n';
+  qs.forEach((q, i) => { md += '## Q' + (i + 1) + ' · ' + q + '\n' + (answers[q] || '_unanswered_') + '\n\n'; });
+  const notes = document.getElementById('surveyNotes').value.trim();
+  md += '## Notes\n' + (notes || '_none_') + '\n';
+  return md;
+}
+document.getElementById('surveyDl').addEventListener('click', () => {
+  const blob = new Blob([surveyMd()], { type: 'text/markdown' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'flowz-segmentation-decisions.md';
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+document.getElementById('surveyCopy').addEventListener('click', async e => {
+  await navigator.clipboard.writeText(surveyMd());
+  e.target.textContent = 'Copied ✓';
+  setTimeout(() => e.target.textContent = 'Copy as Markdown', 1600);
 });
 let tx = null;
 document.addEventListener('touchstart', e => tx = e.touches[0].clientX, {passive: true});
@@ -574,7 +881,14 @@ document.addEventListener('touchend', e => {
   if (Math.abs(dx) > 60) (dx < 0 ? go(cur + 1) : go(cur - 1));
   tx = null;
 }, {passive: true});
+/* deep-link: #s7 opens slide 7 */
+function goFromHash() {
+  const m = location.hash.match(/^#s(\d+)$/);
+  if (m) go(parseInt(m[1], 10) - 1);
+}
+window.addEventListener('hashchange', goFromHash);
 go(0);
+goFromHash();
 </script>
 </body>
 </html>
