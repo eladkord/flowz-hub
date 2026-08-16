@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flowz — Mission &amp; Vision · Working Deck</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23F0641E'/><text x='50' y='72' font-size='62' font-weight='800' font-family='Arial' text-anchor='middle' fill='white'>Z</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FAF6EF; --cream-deep:#F3EDE2; --card:#FFFDF9;
+  --ink:#2B2620; --ink-soft:#6E6659;
+  --orange:#F0641E; --orange-soft:#FDE8DC;
+  --blue:#3B82F6; --blue-soft:#DBEAFE; --lightblue-bg:#EAF4FB;
+  --green:#3E8914; --green-soft:#DCF3C8;
+  --purple:#8B5CF6; --purple-soft:#EFE3FA;
+  --teal:#0D9488; --teal-soft:#CCF3EC;
+  --gold:#E8A93D; --gold-soft:#FCF0D8; --gold-ink:#A8720F;
+  --red:#D14343; --red-soft:#FBE3E3;
+  --radius:22px; --shadow:0 10px 34px rgba(90,70,40,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--cream);color:var(--ink);overflow:hidden}
+h1,h2,h3,.display{font-family:'Sora',sans-serif}
+
+/* ---------- deck chrome ---------- */
+.deck{position:relative;width:100vw;height:100vh}
+.slide{
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:48px 64px 84px;opacity:0;visibility:hidden;transform:translateY(24px);
+  transition:opacity .55s ease,transform .55s ease,visibility 0s .55s;
+}
+.slide.active{opacity:1;visibility:visible;transform:translateY(0);transition:opacity .55s ease,transform .55s ease}
+.slide-inner{width:100%;max-width:1150px}
+.progress{position:fixed;left:0;top:0;height:4px;background:var(--orange);width:0;transition:width .4s ease;z-index:60;border-radius:0 4px 4px 0}
+.nav{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:60}
+.dot{width:9px;height:9px;border-radius:50%;background:#D9CFBE;cursor:pointer;transition:.25s;border:none}
+.dot.on{background:var(--orange);transform:scale(1.35)}
+.arrows{position:fixed;bottom:14px;right:22px;display:flex;gap:8px;z-index:60}
+.arrow-btn{width:42px;height:42px;border-radius:14px;border:1.5px solid #E4DACB;background:var(--card);font-size:17px;color:var(--ink);cursor:pointer;transition:.2s;box-shadow:0 3px 10px rgba(90,70,40,.07)}
+.arrow-btn:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.slide-num{position:fixed;bottom:24px;left:26px;font-size:12px;letter-spacing:.14em;color:#B4A890;z-index:60;font-weight:600}
+.home-link{position:fixed;top:16px;right:22px;z-index:60;font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--ink-soft);text-decoration:none;background:var(--card);border:1.5px solid #E4DACB;border-radius:999px;padding:7px 14px;transition:.2s}
+.home-link:hover{color:var(--orange);border-color:var(--orange)}
+
+/* ---------- shared ---------- */
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--orange);margin-bottom:16px}
+.eyebrow .dotmark{width:8px;height:8px;border-radius:50%;background:var(--orange);animation:pulse 2.4s infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.5}}
+.h-xl{font-size:56px;line-height:1.06;font-weight:800;letter-spacing:-.02em}
+.h-lg{font-size:38px;line-height:1.12;font-weight:800;letter-spacing:-.018em}
+.h-md{font-size:21px;font-weight:700}
+.lede{font-size:18px;line-height:1.6;color:var(--ink-soft);max-width:760px}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px 26px;border:1px solid rgba(120,95,60,.06)}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:5px 13px;border-radius:999px;font-size:12px;font-weight:700}
+.chev{color:var(--orange);font-weight:800}
+.rise{opacity:0;transform:translateY(18px)}
+.active .rise{animation:riseIn .7s cubic-bezier(.2,.7,.2,1) forwards}
+.active .rise.d1{animation-delay:.12s}.active .rise.d2{animation-delay:.26s}
+.active .rise.d3{animation-delay:.40s}.active .rise.d4{animation-delay:.54s}
+.active .rise.d5{animation-delay:.68s}
+@keyframes riseIn{to{opacity:1;transform:translateY(0)}}
+
+.decision-chip{background:var(--orange);color:#fff;font-family:'Sora';font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:6px 14px;border-radius:999px;display:inline-flex;align-items:center;gap:7px}
+.decision-chip::before{content:"";width:6px;height:6px;border-radius:50%;background:#fff}
+.locked-chip{background:var(--green-soft);color:var(--green);font-family:'Sora';font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:6px 14px;border-radius:999px}
+.context-chip{background:var(--blue-soft);color:#1D5FCC;font-family:'Sora';font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:6px 14px;border-radius:999px}
+
+/* slot colors */
+.sl{border-radius:6px;padding:1px 6px;font-weight:600}
+.sl-prod{background:#EFEAE1;color:var(--ink);font-weight:800}
+.sl-who{background:var(--blue-soft);color:#1D5FCC}
+.sl-need{background:var(--orange-soft);color:#C24E12}
+.sl-cat{background:var(--purple-soft);color:#6D3FC4}
+.sl-ben{background:var(--teal-soft);color:#0B7267}
+.sl-unlike{background:var(--gold-soft);color:var(--gold-ink)}
+.sl-diff{background:var(--green-soft);color:var(--green)}
+
+/* statement blocks */
+.statement{font-family:'Sora';font-size:21.5px;line-height:1.75;font-weight:600;letter-spacing:-.01em}
+.statement .sl{padding:2px 7px}
+
+/* option cards (need slot + why placement) */
+.opts{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:18px}
+.opt{background:var(--card);border:2px solid #EFE7D8;border-radius:16px;padding:15px 15px 13px;cursor:pointer;transition:.18s;position:relative;display:flex;flex-direction:column;gap:7px}
+.opt:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(90,70,40,.14)}
+.opt.sel{border-color:var(--orange);background:#FFF8F2;box-shadow:0 12px 30px rgba(240,100,30,.16)}
+.opt .k{font-family:'Sora';font-size:12.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
+.opt .t{font-size:12px;line-height:1.5;color:var(--ink-soft)}
+.opt .note{font-size:10.5px;line-height:1.4;color:#B4A890;font-weight:600;margin-top:auto}
+.opt .rec{position:absolute;top:-9px;right:10px;background:var(--green);color:#fff;font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:999px}
+.opt .pick-dot{position:absolute;top:12px;right:12px;width:14px;height:14px;border-radius:50%;border:2px solid #D9CFBE;transition:.18s}
+.opt.sel .pick-dot{border-color:var(--orange);background:var(--orange);box-shadow:inset 0 0 0 3px #FFF8F2}
+
+/* name test */
+.nt-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 16px}
+.nt-tab{font-family:'Sora';font-size:13px;font-weight:700;padding:8px 16px;border-radius:999px;border:1.5px solid #E4DACB;background:var(--card);cursor:pointer;transition:.18s;color:var(--ink-soft)}
+.nt-tab:hover{border-color:var(--orange);color:var(--orange)}
+.nt-tab.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.nt-row{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px dashed #EBE2D2;font-size:14px;line-height:1.5}
+.nt-row:first-child{border-top:none}
+.nt-mark{font-weight:800;font-size:13px;flex:0 0 60px;text-align:center;border-radius:8px;padding:2px 0}
+.nt-mark.brk{background:var(--red-soft);color:var(--red)}
+.nt-mark.srv{background:var(--green-soft);color:var(--green)}
+.nt-verdict{margin-top:14px;font-family:'Sora';font-weight:700;font-size:15px}
+
+/* assumptions */
+.asm{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+.asm .card{padding:18px 20px}
+.asm .id{font-family:'Sora';font-size:11px;font-weight:800;letter-spacing:.12em;color:var(--ink-soft)}
+.asm h3{font-size:15.5px;margin:6px 0 8px;line-height:1.35}
+.asm p{font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
+.pill{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:999px;margin-top:10px}
+
+/* checklist */
+.check{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.chk{display:flex;align-items:center;gap:14px;background:var(--card);border:1.5px solid #EFE7D8;border-radius:14px;padding:14px 18px;cursor:pointer;transition:.18s;text-align:left}
+.chk:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(90,70,40,.12)}
+.chk .box{width:22px;height:22px;border-radius:7px;border:2px solid #D9CFBE;flex:0 0 22px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;transition:.18s}
+.chk.done .box{background:var(--green);border-color:var(--green)}
+.chk .lbl{font-size:14.5px;font-weight:600}
+.chk .lbl small{display:block;font-weight:500;font-size:12px;color:var(--ink-soft);margin-top:2px}
+.chk.done .lbl{text-decoration:line-through;color:#B4A890}
+.chk .dtag{margin-left:auto;font-family:'Sora';font-size:10.5px;font-weight:800;letter-spacing:.1em;color:var(--orange)}
+
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.loop-line{font-family:'Sora';font-weight:700;font-size:17px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.loop-line .step{background:var(--card);border:1.5px solid #EFE7D8;border-radius:12px;padding:8px 16px;box-shadow:var(--shadow)}
+.foot-note{margin-top:16px;font-size:12.5px;color:#B4A890;font-weight:600}
+
+/* ---------- mobile: become a scroll doc ---------- */
+@media (max-width:860px), (max-height:600px){
+  body{overflow:auto}
+  .deck{width:auto;height:auto}
+  .slide{position:relative;inset:auto;opacity:1;visibility:visible;transform:none;min-height:0;padding:40px 20px;border-bottom:1.5px dashed #E4DACB}
+  .rise{opacity:1;transform:none;animation:none!important}
+  .nav,.arrows,.slide-num,.progress{display:none}
+  .h-xl{font-size:34px}.h-lg{font-size:26px}
+  .statement{font-size:16px;line-height:1.8}
+  .opts{grid-template-columns:1fr}
+  .asm{grid-template-columns:1fr}
+  .two-col{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="progress"></div>
+<a class="home-link" href="../">← Hub</a>
+
+<div class="deck">
+
+<!-- 1 · TITLE -->
+<section class="slide active">
+  <div class="slide-inner" style="text-align:center">
+    <div class="rise"><div class="eyebrow" style="justify-content:center;display:flex"><span class="dotmark"></span>Flowz · Working Deck · For Elad + Aviv</div></div>
+    <h1 class="h-xl rise d1">Mission &amp; Vision</h1>
+    <p class="lede rise d2" style="margin:22px auto 0">One sentence that says what Flowz is, who it's for, and why it's different — plus the <b>three decisions</b> we need to close to lock it.</p>
+    <div class="rise d3" style="margin-top:30px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <span class="decision-chip">3 decisions inside</span>
+      <span class="locked-chip">Category already locked</span>
+    </div>
+    <p class="foot-note rise d4">Sources: FZ · Mission &amp; Vision v1 (2026-07-20) · Category &amp; Naming Strategy · Discovery Assumption Register · working session 2026-08-16</p>
+  </div>
+</section>
+
+<!-- 2 · LOCKED: CATEGORY -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="locked-chip">✓ Locked — no decision needed</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:14px">The category: <span style="color:var(--orange)">Decision Intelligence</span><br>for the Experience Economy</h2>
+    <div class="two-col rise d2" style="margin-top:24px">
+      <div class="card">
+        <h3 class="h-md">Why this category is real</h3>
+        <p style="font-size:14px;line-height:1.65;color:var(--ink-soft);margin-top:8px">
+          Gartner published its <b>first-ever Magic Quadrant for Decision Intelligence Platforms in January 2026</b>. Their definition — <i>"combines data, analytics and AI to create decision flows that support and automate complex judgments"</i> — is literally our loop.
+        </p>
+      </div>
+      <div class="card">
+        <h3 class="h-md">Why the space is ours</h3>
+        <p style="font-size:14px;line-height:1.65;color:var(--ink-soft);margin-top:8px">
+          Every DI leader is <b>horizontal enterprise</b> — Aera does supply chains, Quantexa does financial crime. <b>Nobody has built DI for the experience economy.</b> That empty vertical quadrant is the company.
+        </p>
+      </div>
+    </div>
+    <div class="rise d3" style="margin-top:22px">
+      <div class="loop-line"><span class="step">Data</span><span class="chev">→</span><span class="step">Insights</span><span class="chev">→</span><span class="step">Actions</span><span class="chev">→</span><span class="step" style="border-color:var(--orange);color:var(--orange)">Flows</span></div>
+      <p class="foot-note">The loop every screen, deck and doc already uses. "Not another CRM/BI" stays our stance.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · THE WHY -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="context-chip">Context — from the Sinek session</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:14px">The WHY behind all of it</h2>
+    <div class="card rise d2" style="margin-top:22px;padding:30px 34px">
+      <p class="statement" style="font-size:24px">"We believe the people who bring people together make the world better — <span style="color:var(--orange)">and they shouldn't have to do it alone.</span>"</p>
+      <p dir="rtl" style="font-size:17px;margin-top:14px;color:var(--ink-soft);font-weight:600">אנחנו מאמינים שהאנשים שמחברים אנשים — עושים את העולם טוב יותר. והם לא צריכים לעשות את זה לבד.</p>
+    </div>
+    <div class="two-col rise d3" style="margin-top:18px">
+      <div class="card"><h3 class="h-md" style="color:var(--ink-soft);font-size:13px;letter-spacing:.14em;text-transform:uppercase">How</h3><p style="font-size:15px;margin-top:6px;font-weight:600">"Read the signal, run the flow." We turn scattered data, gut calls and sleepless spreadsheets into clarity and confident action.</p></div>
+      <div class="card"><h3 class="h-md" style="color:var(--ink-soft);font-size:13px;letter-spacing:.14em;text-transform:uppercase">What</h3><p style="font-size:15px;margin-top:6px;font-weight:600">We happen to make a decision-intelligence platform for the experience economy. Built to act, not just to store.</p></div>
+    </div>
+    <p class="foot-note rise d4">The loneliness insight — "alone at the front" — returns on the next slides. Keep an eye on it.</p>
+  </div>
+</section>
+
+<!-- 4 · THE TEMPLATE + THE TWO TESTS -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="context-chip">Context — how to read the next slides</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:14px">The template, and the two tests</h2>
+    <div class="card rise d2" style="margin-top:22px">
+      <p class="statement" style="font-size:18px;line-height:2">
+        <span class="sl sl-prod">Product</span> is for <span class="sl sl-who">target customer</span> who <span class="sl sl-need">need / pain</span>. It is a <span class="sl sl-cat">category</span> that <span class="sl sl-ben">key benefit</span>. Unlike <span class="sl sl-unlike">the alternative</span>, our product <span class="sl sl-diff">does what only it can do</span>.
+      </p>
+    </div>
+    <div class="two-col rise d3" style="margin-top:18px">
+      <div class="card">
+        <h3 class="h-md">Test 1 · The name test</h3>
+        <p style="font-size:14px;line-height:1.6;color:var(--ink-soft);margin-top:8px">Swap a competitor's name into the sentence. <b>If it still reads true, the sentence says nothing.</b> We run this on slide 7.</p>
+      </div>
+      <div class="card">
+        <h3 class="h-md">Test 2 · Ten real users</h3>
+        <p style="font-size:14px;line-height:1.6;color:var(--ink-soft);margin-top:8px">The sentence is a <b>guess until ten real producers react to it</b>. Slide 8 turns it into a testable plan inside the discovery interviews.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · THE STATEMENT TODAY -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="context-chip">Where we stand — written 2026-07-20</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:14px">The statement we already have</h2>
+    <div class="card rise d2" style="margin-top:20px;padding:28px 32px">
+      <p class="statement" style="font-size:17.5px;line-height:2">
+        <span class="sl sl-prod">Flowz</span> is for <span class="sl sl-who">event and festival producers in the experience economy</span> who <span class="sl sl-need">are losing buyers they already won — and can't see why, because their truth is scattered across ten tools and every decision lands on them alone</span>. Flowz is a <span class="sl sl-cat">vertical decision-intelligence platform</span> that <span class="sl sl-ben">turns ticketing, marketing, community and finance data into ready-to-run actions — insights that become flows, tasks and campaigns, fast enough to matter</span>. Unlike <span class="sl sl-unlike">generic CRMs, BI dashboards and spreadsheets — which store data and wait for you to figure it out</span>, our product <span class="sl sl-diff">acts: it reads the signal and runs the flow, pre-loaded with event-sector playbooks and market behavior data no horizontal tool has</span>.
+      </p>
+    </div>
+    <div class="rise d3" style="margin-top:18px;display:flex;gap:12px;flex-wrap:wrap">
+      <span class="tag" style="background:var(--green-soft);color:var(--green)">✓ Five slots still feel right</span>
+      <span class="tag" style="background:var(--orange-soft);color:#C24E12">⚠ One slot in play: the NEED — Elad wants it rebuilt (next slide)</span>
+    </div>
+    <p class="foot-note rise d4">New thread from the 2026-08-16 session, not in the doc yet: <b>"moving the whole organization together, on the same mission, at the same time."</b> It's the flip side of "every decision lands on them alone" — deciding alone hurts, but moving everyone on that decision is what breaks people. It also matches our PMF gate: org adoption, not one enthusiastic user.</p>
+  </div>
+</section>
+
+<!-- 6 · DECISION 1: THE NEED SLOT -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="decision-chip">Decision 1 of 3</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:12px">Pick the need. <span style="color:var(--ink-soft);font-weight:600;font-size:24px">Click a card — the sentence updates live.</span></h2>
+    <div class="card rise d2" style="margin-top:16px;padding:22px 26px">
+      <p class="statement" style="font-size:16.5px;line-height:1.95">
+        <span class="sl sl-prod">Flowz</span> is for <span class="sl sl-who">event and festival producers</span> who <span class="sl sl-need" id="needSlot">are losing buyers they already won — and can't see why, because their truth is scattered across ten tools and every decision lands on them alone</span>. Flowz is a <span class="sl sl-cat">vertical decision-intelligence platform</span> that <span class="sl sl-ben">turns ticketing, marketing, community and finance data into ready-to-run actions, fast enough to matter</span> — unlike <span class="sl sl-unlike">CRMs, BI and spreadsheets</span>, <span class="sl sl-diff">it acts: reads the signal, runs the flow</span>.
+      </p>
+    </div>
+    <div class="opts rise d3">
+      <div class="opt sel" data-need="keep" data-text="are losing buyers they already won — and can't see why, because their truth is scattered across ten tools and every decision lands on them alone">
+        <span class="pick-dot"></span><span class="k">Keep · Jul 20</span>
+        <p class="t">"losing buyers they already won… truth scattered across ten tools… every decision lands on them alone"</p>
+        <p class="note">The current doc version. Leads with churn.</p>
+      </div>
+      <div class="opt" data-need="A" data-text="see their truth scattered across ten tools — so problems surface late, insights don't become action, and the team never moves as one">
+        <span class="rec">Claude's pick</span><span class="pick-dot"></span><span class="k">A · Cause → effects</span>
+        <p class="t">"truth scattered across ten tools — so problems surface late, insights don't become action, and the team never moves as one"</p>
+        <p class="note">Keeps the 'ten tools' cause, lands all three new pains.</p>
+      </div>
+      <div class="opt" data-need="B" data-text="see problems too late, carry every decision alone, and struggle to turn each decision into one mission the whole team runs together">
+        <span class="pick-dot"></span><span class="k">B · Alone → together</span>
+        <p class="t">"see problems too late, carry every decision alone, and struggle to turn each decision into one mission the whole team runs together"</p>
+        <p class="note">Builds on the loneliness insight from the WHY.</p>
+      </div>
+      <div class="opt" data-need="C" data-text="spot problems too late, can't easily turn data into action, and struggle to move the whole organization on the same mission at the same time">
+        <span class="pick-dot"></span><span class="k">C · Plain three beats</span>
+        <p class="t">"spot problems too late, can't easily turn data into action, and struggle to move the whole organization on the same mission at the same time"</p>
+        <p class="note">Elad's words, unstyled. Honest baseline.</p>
+      </div>
+      <div class="opt" data-need="D" data-text="have the data but not the 'what now' — and no easy way to get everyone moving on it together">
+        <span class="pick-dot"></span><span class="k">D · Short &amp; punchy</span>
+        <p class="t">"have the data but not the 'what now' — and no easy way to get everyone moving on it together"</p>
+        <p class="note">Hits hardest. Drops the 'too late' beat.</p>
+      </div>
+    </div>
+    <p class="foot-note rise d4">The churn pain doesn't disappear if we move off "losing buyers" — it moves to the outcome, e.g. <i>"more of this year's crowd shows up to your next event"</i> (softened per Elad, 2026-08-16). Your pick is saved on this device and shows on the last slide.</p>
+  </div>
+</section>
+
+<!-- 7 · NAME TEST -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="context-chip">Proof — the name test</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:14px">Swap in a competitor. Does it break?</h2>
+    <div class="nt-tabs rise d2" id="ntTabs"></div>
+    <div class="card rise d3" id="ntPanel" style="min-height:280px"></div>
+    <p class="foot-note rise d4">Rule of thumb: a slot that survives <b>every</b> swap is decoration. Our sentence breaks somewhere for each of them — that's what "positioning" means.</p>
+  </div>
+</section>
+
+<!-- 8 · DECISION 2: HIDDEN GUESSES → 10 USERS -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="decision-chip">Decision 2 of 3</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:12px">Approve the test plan — the sentence is three guesses in a trench coat</h2>
+    <div class="asm rise d2">
+      <div class="card">
+        <span class="id">ASM-P01 · in the register</span>
+        <h3>"Losing repeat buyers is the acute pain"</h3>
+        <p>Untested. If churn doesn't surface <b>unprompted</b> in the first three interviews, that's the quarter's biggest finding — and the need slot changes.</p>
+        <span class="pill" style="background:var(--orange-soft);color:#C24E12">untested</span>
+      </div>
+      <div class="card">
+        <span class="id">ASM-S01 · in the register</span>
+        <h3>"Operators want decisions, not dashboards"</h3>
+        <p>The whole DI bet. Desert Bass usage is founder-adjacent and doesn't count as independent evidence. Ten outside producers do.</p>
+        <span class="pill" style="background:var(--orange-soft);color:#C24E12">untested</span>
+      </div>
+      <div class="card" style="border:2px dashed var(--gold)">
+        <span class="id">NEW · needs logging</span>
+        <h3>"Moving the org together is a felt, top-3 pain"</h3>
+        <p>Elad's new thread (2026-08-16). Not in the register yet. If we put it in the sentence, we test it like the others.</p>
+        <span class="pill" style="background:var(--gold-soft);color:var(--gold-ink)">to log</span>
+      </div>
+    </div>
+    <div class="card rise d3" style="margin-top:16px">
+      <h3 class="h-md">The 10-user protocol (inside the interviews we already planned)</h3>
+      <p style="font-size:14px;line-height:1.7;color:var(--ink-soft);margin-top:8px">
+        <b>1.</b> Problem-first, Mom-Test style — never open with the sentence. &nbsp;<b>2.</b> Show the sentence <b>only at the end</b>: "what would you expect this to do for you?" &nbsp;<b>3.</b> <span style="color:var(--green);font-weight:700">Pass</span> = they name a real, recent situation where they'd want it. <span style="color:var(--red);font-weight:700">Fail</span> = polite nodding, "sounds cool." &nbsp;<b>4.</b> First ten: Itai, Bar, Amit + the design-partner longlist. Count honestly.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- 9 · DECISION 3: WHY PLACEMENT -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="decision-chip">Decision 3 of 3</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:12px">Where does the WHY go in the client deck?</h2>
+    <p class="lede rise d2" style="margin-top:12px">Open question since July 20 — the belief line exists but the deck doesn't use it yet.</p>
+    <div class="opts rise d3" style="grid-template-columns:repeat(3,1fr)">
+      <div class="opt" data-why="open">
+        <span class="pick-dot"></span><span class="k">Open with it · Slide 1</span>
+        <p class="t">New opening beat before the product story. Strong identity, Apple-speech energy.</p>
+        <p class="note">Risk: slows the hook for a cold client audience.</p>
+      </div>
+      <div class="opt" data-why="close">
+        <span class="pick-dot"></span><span class="k">Close with it · Slide 12</span>
+        <p class="t">Replace the closing lede — end on the belief, leave the room with the feeling.</p>
+        <p class="note">Safe, emotional exit. The pitch stays product-first.</p>
+      </div>
+      <div class="opt" data-why="leave">
+        <span class="pick-dot"></span><span class="k">Leave for now</span>
+        <p class="t">Deck unchanged; WHY stays in pitches as Elad's spoken open.</p>
+        <p class="note">Zero work. Revisit after the first design-partner round.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 · CLOSE: THE DECISION LIST -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><div class="eyebrow"><span class="dotmark"></span>Close the loop</div></div>
+    <h2 class="h-lg rise d1">Three ticks and this becomes v1.1</h2>
+    <div class="check rise d2">
+      <button class="chk" data-k="d1"><span class="box">✓</span><span class="lbl">Decision 1 — pick the need phrasing<small>Current pick on this device: <b id="needPickLabel">Keep (Jul 20)</b></small></span><span class="dtag">SLIDE 6</span></button>
+      <button class="chk" data-k="d2"><span class="box">✓</span><span class="lbl">Decision 2 — approve the test plan<small>Log the new "together" assumption · add statement-at-end step to the interview guide</small></span><span class="dtag">SLIDE 8</span></button>
+      <button class="chk" data-k="d3"><span class="box">✓</span><span class="lbl">Decision 3 — WHY placement in the client deck<small>Open with it · close with it · or leave for now</small></span><span class="dtag">SLIDE 9</span></button>
+    </div>
+    <div class="card rise d3" style="margin-top:18px;background:var(--orange-soft);border:none">
+      <p style="font-size:14.5px;line-height:1.65;font-weight:600;color:#7A3A12">When you've decided: tell Claude the three answers → the Mission &amp; Vision doc goes to v1.1, the Hebrew interview version gets written, and the decisions land in the Discovery registers. Ticks are saved per device.</p>
+    </div>
+    <p class="foot-note rise d4">Flowz · Mission &amp; Vision working deck · built 2026-08-16 · canonical copy lives in the vault, this is the hub mirror</p>
+  </div>
+</section>
+
+</div>
+
+<div class="nav" id="dots"></div>
+<div class="arrows">
+  <button class="arrow-btn" id="prev" aria-label="Previous">←</button>
+  <button class="arrow-btn" id="next" aria-label="Next">→</button>
+</div>
+<div class="slide-num" id="snum">01 / 10</div>
+
+<script>
+/* ---------- slide engine ---------- */
+const slides=[...document.querySelectorAll('.slide')];
+const dotsWrap=document.getElementById('dots');
+slides.forEach((_,i)=>{const d=document.createElement('button');d.className='dot'+(i===0?' on':'');d.onclick=()=>go(i);dotsWrap.appendChild(d);});
+const dots=[...dotsWrap.children];
+let cur=0;
+function go(i){
+  cur=Math.max(0,Math.min(slides.length-1,i));
+  slides.forEach((s,k)=>s.classList.toggle('active',k===cur));
+  dots.forEach((d,k)=>d.classList.toggle('on',k===cur));
+  document.querySelector('.progress').style.width=((cur+1)/slides.length*100)+'%';
+  document.getElementById('snum').textContent=String(cur+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
+}
+go(0);
+document.getElementById('next').onclick=()=>go(cur+1);
+document.getElementById('prev').onclick=()=>go(cur-1);
+addEventListener('keydown',e=>{
+  if(['ArrowRight',' ','PageDown'].includes(e.key)){e.preventDefault();go(cur+1);}
+  if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(cur-1);}
+});
+let tx=null;
+addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+addEventListener('touchend',e=>{
+  if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;tx=null;
+  if(Math.abs(dx)>60 && matchMedia('(min-width:861px)').matches){go(cur+(dx<0?1:-1));}
+},{passive:true});
+
+/* ---------- decision 1: need-slot swapper ---------- */
+const needLabels={keep:'Keep (Jul 20)',A:'A · Cause → effects',B:'B · Alone → together',C:'C · Plain three beats',D:'D · Short & punchy'};
+const needOpts=[...document.querySelectorAll('.opt[data-need]')];
+function pickNeed(el,save){
+  needOpts.forEach(o=>o.classList.toggle('sel',o===el));
+  document.getElementById('needSlot').textContent=el.dataset.text;
+  document.getElementById('needPickLabel').textContent=needLabels[el.dataset.need];
+  if(save)try{localStorage.setItem('fz-mv-need',el.dataset.need);}catch(e){}
+}
+needOpts.forEach(o=>o.onclick=()=>pickNeed(o,true));
+try{
+  const saved=localStorage.getItem('fz-mv-need');
+  const el=needOpts.find(o=>o.dataset.need===saved);
+  if(el)pickNeed(el,false);
+}catch(e){}
+
+/* ---------- decision 3: why placement (visual pick only) ---------- */
+const whyOpts=[...document.querySelectorAll('.opt[data-why]')];
+whyOpts.forEach(o=>o.onclick=()=>{
+  whyOpts.forEach(x=>x.classList.toggle('sel',x===o));
+  try{localStorage.setItem('fz-mv-why',o.dataset.why);}catch(e){}
+});
+try{
+  const savedW=localStorage.getItem('fz-mv-why');
+  const elW=whyOpts.find(o=>o.dataset.why===savedW);
+  if(elW)elW.classList.add('sel');
+}catch(e){}
+
+/* ---------- name test ---------- */
+const NT=[
+  {name:'monday.com',rows:[
+    {ok:false,t:'"vertical decision-intelligence platform" — it\'s a horizontal work OS; you build everything yourself.'},
+    {ok:false,t:'"ticketing, marketing, community and finance data" — knows nothing about events or fans.'},
+    {ok:false,t:'"pre-loaded with event-sector playbooks and market behavior data" — has neither.'},
+    {ok:true,t:'"store data and wait for you to figure it out" — that IS them. Our "Unlike" clause is aimed correctly.'}],
+   v:'Breaks in three places. The sentence is not monday.com.'},
+  {name:'HubSpot',rows:[
+    {ok:false,t:'"for event and festival producers" — generic CRM for everyone means built for no one in this room.'},
+    {ok:false,t:'"reads the signal and runs the flow" — workflows exist, but YOU author them from scratch.'},
+    {ok:false,t:'"event-sector playbooks, market behavior data" — none. Zero knowledge of what a sell-out curve looks like.'}],
+   v:'Breaks immediately on vertical depth. Not HubSpot.'},
+  {name:'Eventbrite',rows:[
+    {ok:true,t:'"event producers" — yes, they know our customer exists.'},
+    {ok:false,t:'"marketing, community and finance data" — it sells tickets; it doesn\'t watch the business.'},
+    {ok:false,t:'"insights that become flows, tasks and campaigns" — no decision layer at all.'}],
+   v:'Knows the customer, does a different job. Not Eventbrite.'},
+  {name:'Audience Republic',rows:[
+    {ok:true,t:'"event producers… marketing and fan data" — the closest neighbor we have; they can claim this part.'},
+    {ok:false,t:'"decision-intelligence… finance, community, the whole business" — they do fan marketing, not org-wide decisions.'},
+    {ok:false,t:'"one mission the whole team runs" — campaigns for the marketer, not moves for the organization.'}],
+   v:'Closest competitor — and exactly why our edge must stay "decisions + whole-org + playbooks", not "fan CRM".'}
+];
+const ntTabs=document.getElementById('ntTabs'),ntPanel=document.getElementById('ntPanel');
+NT.forEach((c,i)=>{
+  const b=document.createElement('button');b.className='nt-tab'+(i===0?' on':'');b.textContent=c.name;
+  b.onclick=()=>{[...ntTabs.children].forEach((x,k)=>x.classList.toggle('on',k===i));renderNT(i);};
+  ntTabs.appendChild(b);
+});
+function renderNT(i){
+  const c=NT[i];
+  ntPanel.innerHTML=
+    '<p class="statement" style="font-size:16px;margin-bottom:14px">"<span class="sl sl-prod">'+c.name+'</span> is for event and festival producers who… is a vertical decision-intelligence platform that… reads the signal and runs the flow."</p>'
+    +c.rows.map(r=>'<div class="nt-row"><span class="nt-mark '+(r.ok?'srv':'brk')+'">'+(r.ok?'holds':'breaks')+'</span><span>'+r.t+'</span></div>').join('')
+    +'<p class="nt-verdict" style="color:'+(i===3?'var(--gold-ink)':'var(--green)')+'">'+c.v+'</p>';
+}
+renderNT(0);
+
+/* ---------- checklist ---------- */
+[...document.querySelectorAll('.chk')].forEach(c=>{
+  const k='fz-mv-'+c.dataset.k;
+  try{if(localStorage.getItem(k)==='1')c.classList.add('done');}catch(e){}
+  c.onclick=()=>{c.classList.toggle('done');try{localStorage.setItem(k,c.classList.contains('done')?'1':'0');}catch(e){}};
+});
+</script>
+</body>
+</html>
