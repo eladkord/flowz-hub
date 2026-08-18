@@ -117,13 +117,12 @@ h1,h2,h3,.display{font-family:'Sora',sans-serif}
 
 /* checklist */
 .check{display:flex;flex-direction:column;gap:10px;margin-top:18px}
-.chk{display:flex;align-items:center;gap:14px;background:var(--card);border:1.5px solid #EFE7D8;border-radius:14px;padding:14px 18px;cursor:pointer;transition:.18s;text-align:left}
+.chk{display:flex;align-items:center;gap:14px;background:var(--card);border:1.5px solid #EFE7D8;border-radius:14px;padding:14px 18px;transition:.18s;text-align:left}
 .chk:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(90,70,40,.12)}
 .chk .box{width:22px;height:22px;border-radius:7px;border:2px solid #D9CFBE;flex:0 0 22px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;transition:.18s}
 .chk.done .box{background:var(--green);border-color:var(--green)}
 .chk .lbl{font-size:14.5px;font-weight:600}
 .chk .lbl small{display:block;font-weight:500;font-size:12px;color:var(--ink-soft);margin-top:2px}
-.chk.done .lbl{text-decoration:line-through;color:#B4A890}
 .chk .dtag{margin-left:auto;font-family:'Sora';font-size:10.5px;font-weight:800;letter-spacing:.1em;color:var(--orange)}
 
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px}
@@ -158,12 +157,12 @@ h1,h2,h3,.display{font-family:'Sora',sans-serif}
   <div class="slide-inner" style="text-align:center">
     <div class="rise"><div class="eyebrow" style="justify-content:center;display:flex"><span class="dotmark"></span>Flowz · Working Deck · For Elad + Aviv</div></div>
     <h1 class="h-xl rise d1">Mission &amp; Vision</h1>
-    <p class="lede rise d2" style="margin:22px auto 0">One sentence that says what Flowz is, who it's for, and why it's different — plus the <b>four decisions</b> we need to close to lock it.</p>
+    <p class="lede rise d2" style="margin:22px auto 0">One sentence that says what Flowz is, who it's for, and why it's different. <b>Decided 2026-08-18.</b> This deck is the record — what we chose, why, and the alternatives we weighed.</p>
     <div class="rise d3" style="margin-top:30px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-      <span class="decision-chip">4 decisions inside</span>
-      <span class="locked-chip">Category already locked</span>
+      <span class="locked-chip">✓ 4 decisions closed · 2026-08-18</span>
+      <span class="locked-chip">Category locked</span>
     </div>
-    <p class="foot-note rise d4">Sources: FZ · Mission &amp; Vision v1 (2026-07-20) · Category &amp; Naming Strategy · Discovery Assumption Register · working session 2026-08-16</p>
+    <p class="foot-note rise d4">Sources: FZ · Mission &amp; Vision v1 (2026-07-20) · Category &amp; Naming Strategy · Discovery Assumption Register · sessions 2026-08-16 + 2026-08-18 (Elad + Aviv)</p>
   </div>
 </section>
 
@@ -193,25 +192,25 @@ h1,h2,h3,.display{font-family:'Sora',sans-serif}
   </div>
 </section>
 
-<!-- 3 · DECISION 1: THE WHY -->
+<!-- 3 · DECIDED: THE WHY -->
 <section class="slide">
   <div class="slide-inner">
-    <div class="rise"><span class="decision-chip">Decision 1 of 4</span></div>
-    <h2 class="h-lg rise d1" style="margin-top:12px">The WHY — pick the belief. <span style="color:var(--ink-soft);font-weight:600;font-size:22px">Click a card to hear it.</span></h2>
+    <div class="rise"><span class="locked-chip">✓ Decided · 2026-08-18</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:12px">The WHY we chose <span style="color:var(--ink-soft);font-weight:600;font-size:22px">— click the others to see why they didn't win.</span></h2>
     <div class="card rise d2" style="margin-top:14px;padding:22px 28px">
-      <p class="statement" id="whyEn" style="font-size:20px">"We believe the people who bring people together make the world better — and they shouldn't have to do it alone."</p>
-      <p dir="rtl" id="whyHe" style="font-size:16px;margin-top:10px;color:var(--ink-soft);font-weight:600">אנחנו מאמינים שהאנשים שמחברים אנשים — עושים את העולם טוב יותר. והם לא צריכים לעשות את זה לבד.</p>
-      <p id="whyNote" style="font-size:12.5px;line-height:1.55;margin-top:12px;color:#B4A890;font-weight:600">Judge's verdict: holds at 8/10 — a belief about people, converged in two separate sessions. Weakness: "world better" alone is swappable, and "shouldn't have to" names the wound as a wish, not a stance.</p>
+      <p class="statement" id="whyEn" style="font-size:20px">"We believe no one should have to create togetherness alone — least of all the people who create it for the rest of us."</p>
+      <p dir="rtl" id="whyHe" style="font-size:16px;margin-top:10px;color:var(--ink-soft);font-weight:600">אנחנו מאמינים שמי שיוצר את הביחד של כולנו — לא צריך לעשות את זה לבד.</p>
+      <p id="whyNote" style="font-size:12.5px;line-height:1.55;margin-top:12px;color:#B4A890;font-weight:600">CHOSEN — keeps the twice-validated "not alone" DNA but earns it through an irony only we can own: the makers of togetherness are the loneliest people in the room. Judge score 9/10; passes the present-tense, no-hedge and swap tests.</p>
     </div>
     <div class="opts rise d3" style="grid-template-columns:repeat(3,1fr)">
-      <div class="opt sel" data-whystmt="keep"><span class="pick-dot"></span><span class="k">Keep · Jul 20 <span style="color:#B4A890">· 8</span></span><p class="t">"…make the world better — and they shouldn't have to do it alone."</p><p class="note">The incumbent. Strong, but wish-form.</p></div>
-      <div class="opt" data-whystmt="A"><span class="rec">Judge's pick</span><span class="pick-dot"></span><span class="k">A · Togetherness paradox <span style="color:#B4A890">· 9</span></span><p class="t">"No one should have to create togetherness alone — least of all the people who create it for the rest of us."</p><p class="note">The 'not alone' DNA, earned through irony.</p></div>
-      <div class="opt" data-whystmt="B"><span class="pick-dot"></span><span class="k">B · Stance at the front <span style="color:#B4A890">· 8.5</span></span><p class="t">"…make the world better. So we stand at the front with them."</p><p class="note">Same belief, wish → four-word stance.</p></div>
-      <div class="opt" data-whystmt="C"><span class="pick-dot"></span><span class="k">C · Against the screen <span style="color:#B4A890">· 8.2</span></span><p class="t">"You can't fix a lonely world through a screen. You fix it in a field, on a dancefloor, in a room full of people."</p><p class="note">The only one with an enemy.</p></div>
-      <div class="opt" data-whystmt="D"><span class="pick-dot"></span><span class="k">D · Hidden hero <span style="color:#B4A890">· 8</span></span><p class="t">"The world doesn't get better on its own. It gets better every time people come together — and someone always makes that happen."</p><p class="note">'World better' becomes a mechanism.</p></div>
-      <div class="opt" data-whystmt="E"><span class="pick-dot"></span><span class="k">E · Spoken flip <span style="color:#B4A890">· 7.8</span></span><p class="t">"Everyone shows up to dance. We show up for the people who make the night happen."</p><p class="note">Built for the mouth, not the page.</p></div>
+      <div class="opt sel" data-whystmt="A"><span class="rec" style="background:var(--orange)">Chosen</span><span class="pick-dot"></span><span class="k">Togetherness paradox <span style="color:#B4A890">· 9</span></span><p class="t">"No one should have to create togetherness alone — least of all the people who create it for the rest of us."</p><p class="note">The decision — 2026-08-18.</p></div>
+      <div class="opt" data-whystmt="bet"><span class="pick-dot"></span><span class="k">The Bet · runner-up ♥</span><p class="t">"Betting on joy is one of the bravest ways to make a living — and the people who take that bet should win more often."</p><p class="note">Loved — kept alive as the stage/pitch line.</p></div>
+      <div class="opt" data-whystmt="mix"><span class="pick-dot"></span><span class="k">The 1+3 Mix</span><p class="t">"…make the world a better place, and no one should have to create togetherness alone."</p><p class="note">Nice alternative — two beliefs in one breath.</p></div>
+      <div class="opt" data-whystmt="B"><span class="pick-dot"></span><span class="k">Stance at the front <span style="color:#B4A890">· 8.5</span></span><p class="t">"…make the world better. So we stand at the front with them."</p><p class="note">Its stance energy survives in the mix.</p></div>
+      <div class="opt" data-whystmt="keep"><span class="pick-dot"></span><span class="k">Origin · Jul 20 <span style="color:#B4A890">· 8</span></span><p class="t">"…make the world better — and they shouldn't have to do it alone."</p><p class="note">Evolved, not discarded — its DNA is in the winner.</p></div>
+      <div class="opt" data-whystmt="more"><span class="pick-dot"></span><span class="k">Also weighed</span><p class="t">"Against the screen" (8.2) · "Hidden hero" (8) · "Spoken flip" (7.8) · Elad's navigate draft (5.5)</p><p class="note">Full verdicts preserved in the session log.</p></div>
     </div>
-    <p class="foot-note rise d4">Elad's 2026-08-16 candidate ("…we would like to help them navigate that mission") scored 5.5 as written — right instinct (navigate, don't rescue), but "we would like" hedges and "navigate" is HOW-creep. Options B and E carry that instinct declaratively; the navigation idea already lives in the HOW: <b>"read the signal, run the flow."</b> Whichever wins still faces the 10-producer test.</p>
+    <p class="foot-note rise d4">Runner-up we love: <b>The Bet</b> stays alive as a stage/pitch line, with Elad's product bridge — <i>"Meet Flowz — increasing your chances to create joy."</i> The chosen WHY enters the client deck (which slide: still open, see slide 9). And per our own method, the winner still faces the 10-producer test.</p>
   </div>
 </section>
 
@@ -241,39 +240,39 @@ h1,h2,h3,.display{font-family:'Sora',sans-serif}
 <!-- 5 · THE STATEMENT TODAY -->
 <section class="slide">
   <div class="slide-inner">
-    <div class="rise"><span class="context-chip">Where we stand — written 2026-07-20</span></div>
-    <h2 class="h-lg rise d1" style="margin-top:14px">The statement we already have</h2>
+    <div class="rise"><span class="locked-chip">✓ Statement v1.1 · decided 2026-08-18</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:14px">The statement — locked <span style="color:var(--ink-soft);font-weight:600;font-size:22px">(one word under test)</span></h2>
     <div class="card rise d2" style="margin-top:20px;padding:28px 32px">
       <p class="statement" style="font-size:17.5px;line-height:2">
-        <span class="sl sl-prod">Flowz</span> is for <span class="sl sl-who">event and festival producers in the experience economy</span> who <span class="sl sl-need">are losing buyers they already won — and can't see why, because their truth is scattered across ten tools and every decision lands on them alone</span>. Flowz is a <span class="sl sl-cat">vertical decision-intelligence platform</span> that <span class="sl sl-ben">turns ticketing, marketing, community and finance data into ready-to-run actions — insights that become flows, tasks and campaigns, fast enough to matter</span>. Unlike <span class="sl sl-unlike">generic CRMs, BI dashboards and spreadsheets — which store data and wait for you to figure it out</span>, our product <span class="sl sl-diff">acts: it reads the signal and runs the flow, pre-loaded with event-sector playbooks and market behavior data no horizontal tool has</span>.
+        <span class="sl sl-prod">Flowz</span> is for <span class="sl sl-who">event and festival producers*</span> who <span class="sl sl-need">see their truth scattered across ten tools — so problems surface late, insights don't become action, and the team never moves as one</span>. Flowz is a <span class="sl sl-cat">vertical decision-intelligence platform</span> that <span class="sl sl-ben">turns ticketing, marketing, community and finance data into ready-to-run actions — insights that become flows, tasks and campaigns, fast enough to matter</span>. Unlike <span class="sl sl-unlike">generic CRMs, BI dashboards and spreadsheets — which store data and wait for you to figure it out</span>, our product <span class="sl sl-diff">acts: it reads the signal and runs the flow, pre-loaded with event-sector playbooks and market behavior data no horizontal tool has</span>.
       </p>
     </div>
     <div class="rise d3" style="margin-top:18px;display:flex;gap:12px;flex-wrap:wrap">
-      <span class="tag" style="background:var(--green-soft);color:var(--green)">✓ Five slots still feel right</span>
-      <span class="tag" style="background:var(--orange-soft);color:#C24E12">⚠ One slot in play: the NEED — Elad wants it rebuilt (next slide)</span>
+      <span class="tag" style="background:var(--green-soft);color:var(--green)">✓ Need slot decided — cause → three effects</span>
+      <span class="tag" style="background:var(--gold-soft);color:var(--gold-ink)">🧪 *Under test: the WHO word</span>
     </div>
-    <p class="foot-note rise d4">New thread from the 2026-08-16 session, not in the doc yet: <b>"moving the whole organization together, on the same mission, at the same time."</b> It's the flip side of "every decision lands on them alone" — deciding alone hurts, but moving everyone on that decision is what breaks people. It also matches our PMF gate: org adoption, not one enthusiastic user.</p>
+    <p class="foot-note rise d4">The WHO test Elad added (2026-08-18): does our customer actually call themselves a <b>producer</b>? Alternatives to test in the interviews: <b>"events &amp; festivals teams"</b> · <b>"entertainment &amp; experiences teams/organizers"</b>. We listen for the word they use about themselves — the statement adopts <i>their</i> word, not ours. The choice also decides who we're speaking to: the owner alone, or the whole team (buyer ≠ user).</p>
   </div>
 </section>
 
 <!-- 6 · DECISION 1: THE NEED SLOT -->
 <section class="slide">
   <div class="slide-inner">
-    <div class="rise"><span class="decision-chip">Decision 2 of 4</span></div>
-    <h2 class="h-lg rise d1" style="margin-top:12px">Pick the need. <span style="color:var(--ink-soft);font-weight:600;font-size:24px">Click a card — the sentence updates live.</span></h2>
+    <div class="rise"><span class="locked-chip">✓ Decided · 2026-08-18 — option A</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:12px">The need slot — what won, what didn't. <span style="color:var(--ink-soft);font-weight:600;font-size:24px">Click to compare.</span></h2>
     <div class="card rise d2" style="margin-top:16px;padding:22px 26px">
       <p class="statement" style="font-size:16.5px;line-height:1.95">
-        <span class="sl sl-prod">Flowz</span> is for <span class="sl sl-who">event and festival producers</span> who <span class="sl sl-need" id="needSlot">are losing buyers they already won — and can't see why, because their truth is scattered across ten tools and every decision lands on them alone</span>. Flowz is a <span class="sl sl-cat">vertical decision-intelligence platform</span> that <span class="sl sl-ben">turns ticketing, marketing, community and finance data into ready-to-run actions, fast enough to matter</span> — unlike <span class="sl sl-unlike">CRMs, BI and spreadsheets</span>, <span class="sl sl-diff">it acts: reads the signal, runs the flow</span>.
+        <span class="sl sl-prod">Flowz</span> is for <span class="sl sl-who">event and festival producers</span> who <span class="sl sl-need" id="needSlot">see their truth scattered across ten tools — so problems surface late, insights don't become action, and the team never moves as one</span>. Flowz is a <span class="sl sl-cat">vertical decision-intelligence platform</span> that <span class="sl sl-ben">turns ticketing, marketing, community and finance data into ready-to-run actions, fast enough to matter</span> — unlike <span class="sl sl-unlike">CRMs, BI and spreadsheets</span>, <span class="sl sl-diff">it acts: reads the signal, runs the flow</span>.
       </p>
     </div>
     <div class="opts rise d3">
-      <div class="opt sel" data-need="keep" data-text="are losing buyers they already won — and can't see why, because their truth is scattered across ten tools and every decision lands on them alone">
-        <span class="pick-dot"></span><span class="k">Keep · Jul 20</span>
+      <div class="opt" data-need="keep" data-text="are losing buyers they already won — and can't see why, because their truth is scattered across ten tools and every decision lands on them alone">
+        <span class="pick-dot"></span><span class="k">Origin · Jul 20</span>
         <p class="t">"losing buyers they already won… truth scattered across ten tools… every decision lands on them alone"</p>
-        <p class="note">The current doc version. Leads with churn.</p>
+        <p class="note">Retired — led with churn we haven't evidenced yet.</p>
       </div>
-      <div class="opt" data-need="A" data-text="see their truth scattered across ten tools — so problems surface late, insights don't become action, and the team never moves as one">
-        <span class="rec">Claude's pick</span><span class="pick-dot"></span><span class="k">A · Cause → effects</span>
+      <div class="opt sel" data-need="A" data-text="see their truth scattered across ten tools — so problems surface late, insights don't become action, and the team never moves as one">
+        <span class="rec" style="background:var(--orange)">Chosen</span><span class="pick-dot"></span><span class="k">A · Cause → effects</span>
         <p class="t">"truth scattered across ten tools — so problems surface late, insights don't become action, and the team never moves as one"</p>
         <p class="note">Keeps the 'ten tools' cause, lands all three new pains.</p>
       </div>
@@ -293,7 +292,7 @@ h1,h2,h3,.display{font-family:'Sora',sans-serif}
         <p class="note">Hits hardest. Drops the 'too late' beat.</p>
       </div>
     </div>
-    <p class="foot-note rise d4">The churn pain doesn't disappear if we move off "losing buyers" — it moves to the outcome, e.g. <i>"more of this year's crowd shows up to your next event"</i> (softened per Elad, 2026-08-16). Your pick is saved on this device and shows on the last slide.</p>
+    <p class="foot-note rise d4">Decided 2026-08-18: option A won — it keeps the "ten tools" cause and lands Elad's three beats (late · can't act · team doesn't move as one). The churn pain didn't disappear — it moved to the outcome: <i>"more of this year's crowd shows up to your next event."</i></p>
   </div>
 </section>
 
@@ -311,8 +310,8 @@ h1,h2,h3,.display{font-family:'Sora',sans-serif}
 <!-- 8 · DECISION 2: HIDDEN GUESSES → 10 USERS -->
 <section class="slide">
   <div class="slide-inner">
-    <div class="rise"><span class="decision-chip">Decision 3 of 4</span></div>
-    <h2 class="h-lg rise d1" style="margin-top:12px">Approve the test plan — the sentence is three guesses in a trench coat</h2>
+    <div class="rise"><span class="locked-chip">✓ Approved · 2026-08-18</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:12px">The test plan — approved. The sentence is three guesses in a trench coat</h2>
     <div class="asm rise d2">
       <div class="card">
         <span class="id">ASM-P01 · in the register</span>
@@ -327,16 +326,16 @@ h1,h2,h3,.display{font-family:'Sora',sans-serif}
         <span class="pill" style="background:var(--orange-soft);color:#C24E12">untested</span>
       </div>
       <div class="card" style="border:2px dashed var(--gold)">
-        <span class="id">NEW · needs logging</span>
+        <span class="id">NEW · entering the register</span>
         <h3>"Moving the org together is a felt, top-3 pain"</h3>
-        <p>Elad's new thread (2026-08-16). Not in the register yet. If we put it in the sentence, we test it like the others.</p>
-        <span class="pill" style="background:var(--gold-soft);color:var(--gold-ink)">to log</span>
+        <p>Elad's new thread — now load-bearing in the locked need slot, so it gets tested like the others.</p>
+        <span class="pill" style="background:var(--gold-soft);color:var(--gold-ink)">logging → register</span>
       </div>
     </div>
     <div class="card rise d3" style="margin-top:16px">
       <h3 class="h-md">The 10-user protocol (inside the interviews we already planned)</h3>
       <p style="font-size:14px;line-height:1.7;color:var(--ink-soft);margin-top:8px">
-        <b>1.</b> Problem-first, Mom-Test style — never open with the sentence. &nbsp;<b>2.</b> Show the sentence <b>only at the end</b>: "what would you expect this to do for you?" &nbsp;<b>3.</b> <span style="color:var(--green);font-weight:700">Pass</span> = they name a real, recent situation where they'd want it. <span style="color:var(--red);font-weight:700">Fail</span> = polite nodding, "sounds cool." &nbsp;<b>4.</b> First ten: Itai, Bar, Amit + the design-partner longlist. Count honestly.
+        <b>1.</b> Problem-first, Mom-Test style — never open with the sentence. &nbsp;<b>2.</b> Show the sentence + WHY <b>only at the end</b>: "what would you expect this to do for you?" &nbsp;<b>3.</b> <span style="color:var(--green);font-weight:700">Pass</span> = they name a real, recent situation where they'd want it. <span style="color:var(--red);font-weight:700">Fail</span> = polite nodding, "sounds cool." &nbsp;<b>4.</b> <b>The label test (added 2026-08-18):</b> listen for the word they use about themselves — <i>producer</i>? <i>events &amp; festivals team</i>? <i>experiences organizer</i>? Their word takes the WHO slot. &nbsp;<b>5.</b> First ten: Itai, Bar, Amit + the design-partner longlist. Count honestly.
       </p>
     </div>
   </div>
@@ -345,9 +344,9 @@ h1,h2,h3,.display{font-family:'Sora',sans-serif}
 <!-- 9 · DECISION 3: WHY PLACEMENT -->
 <section class="slide">
   <div class="slide-inner">
-    <div class="rise"><span class="decision-chip">Decision 4 of 4</span></div>
+    <div class="rise"><span class="locked-chip">✓ Half-decided · 2026-08-18</span></div>
     <h2 class="h-lg rise d1" style="margin-top:12px">Where does the WHY go in the client deck?</h2>
-    <p class="lede rise d2" style="margin-top:12px">Open question since July 20 — the belief line exists but the deck doesn't use it yet.</p>
+    <p class="lede rise d2" style="margin-top:12px"><b>Decided: it goes in.</b> The remaining choice is where — the opening beat or the closing lede.</p>
     <div class="opts rise d3" style="grid-template-columns:repeat(3,1fr)">
       <div class="opt" data-why="open">
         <span class="pick-dot"></span><span class="k">Open with it · Slide 1</span>
@@ -359,10 +358,10 @@ h1,h2,h3,.display{font-family:'Sora',sans-serif}
         <p class="t">Replace the closing lede — end on the belief, leave the room with the feeling.</p>
         <p class="note">Safe, emotional exit. The pitch stays product-first.</p>
       </div>
-      <div class="opt" data-why="leave">
+      <div class="opt" data-why="leave" style="opacity:.55">
         <span class="pick-dot"></span><span class="k">Leave for now</span>
         <p class="t">Deck unchanged; WHY stays in pitches as Elad's spoken open.</p>
-        <p class="note">Zero work. Revisit after the first design-partner round.</p>
+        <p class="note">Ruled out 2026-08-18 — Elad: it's going in.</p>
       </div>
     </div>
   </div>
@@ -371,18 +370,18 @@ h1,h2,h3,.display{font-family:'Sora',sans-serif}
 <!-- 10 · CLOSE: THE DECISION LIST -->
 <section class="slide">
   <div class="slide-inner">
-    <div class="rise"><div class="eyebrow"><span class="dotmark"></span>Close the loop</div></div>
-    <h2 class="h-lg rise d1">Four ticks and this becomes v1.1</h2>
+    <div class="rise"><div class="eyebrow"><span class="dotmark"></span>The record</div></div>
+    <h2 class="h-lg rise d1">Closed 2026-08-18 — and what's next</h2>
     <div class="check rise d2">
-      <button class="chk" data-k="d0"><span class="box">✓</span><span class="lbl">Decision 1 — pick the WHY belief<small>Current pick on this device: <b id="whyPickLabel">Keep (Jul 20)</b></small></span><span class="dtag">SLIDE 3</span></button>
-      <button class="chk" data-k="d1"><span class="box">✓</span><span class="lbl">Decision 2 — pick the need phrasing<small>Current pick on this device: <b id="needPickLabel">Keep (Jul 20)</b></small></span><span class="dtag">SLIDE 6</span></button>
-      <button class="chk" data-k="d2"><span class="box">✓</span><span class="lbl">Decision 3 — approve the test plan<small>Log the new "together" assumption · add statement-at-end step to the interview guide</small></span><span class="dtag">SLIDE 8</span></button>
-      <button class="chk" data-k="d3"><span class="box">✓</span><span class="lbl">Decision 4 — WHY placement in the client deck<small>Open with it · close with it · or leave for now</small></span><span class="dtag">SLIDE 9</span></button>
+      <div class="chk done"><span class="box">✓</span><span class="lbl">The WHY — "We believe no one should have to create togetherness alone — least of all the people who create it for the rest of us."<small>The Bet kept as stage line · 1+3 mix noted as alternative</small></span><span class="dtag">SLIDE 3</span></div>
+      <div class="chk done"><span class="box">✓</span><span class="lbl">The need slot — option A, cause → three effects<small>"ten tools → late · no action · team never moves as one" · churn moved to the outcome</small></span><span class="dtag">SLIDE 6</span></div>
+      <div class="chk done"><span class="box">✓</span><span class="lbl">The test plan — approved, + the WHO label test<small>producer vs events team vs experiences organizer — their word wins</small></span><span class="dtag">SLIDE 8</span></div>
+      <div class="chk done"><span class="box">✓</span><span class="lbl">The WHY enters the client deck<small>placement (open vs close) — the one thread still open</small></span><span class="dtag">SLIDE 9</span></div>
     </div>
     <div class="card rise d3" style="margin-top:18px;background:var(--orange-soft);border:none">
-      <p style="font-size:14.5px;line-height:1.65;font-weight:600;color:#7A3A12">When you've decided: tell Claude the three answers → the Mission &amp; Vision doc goes to v1.1, the Hebrew interview version gets written, and the decisions land in the Discovery registers. Ticks are saved per device.</p>
+      <p style="font-size:14.5px;line-height:1.65;font-weight:600;color:#7A3A12">In motion: Mission &amp; Vision doc → v1.1 · decisions + the new "together" assumption → Discovery registers · Hebrew interview version. Still open: which client-deck slide gets the WHY, and the 10-producer test (statement + WHY shown at interview end, WHO-label listening throughout).</p>
     </div>
-    <p class="foot-note rise d4">Flowz · Mission &amp; Vision working deck · built 2026-08-16 · canonical copy lives in the vault, this is the hub mirror</p>
+    <p class="foot-note rise d4">Flowz · Mission &amp; Vision — the positioning canon · decisions closed 2026-08-18 (Elad + Aviv) · canonical copy in the vault, this is the hub mirror</p>
   </div>
 </section>
 
@@ -423,59 +422,36 @@ addEventListener('touchend',e=>{
   if(Math.abs(dx)>60 && matchMedia('(min-width:861px)').matches){go(cur+(dx<0?1:-1));}
 },{passive:true});
 
-/* ---------- decision 1: need-slot swapper ---------- */
-const needLabels={keep:'Keep (Jul 20)',A:'A · Cause → effects',B:'B · Alone → together',C:'C · Plain three beats',D:'D · Short & punchy'};
+/* ---------- the need-slot record: chosen + alternatives (click to compare) ---------- */
 const needOpts=[...document.querySelectorAll('.opt[data-need]')];
-function pickNeed(el,save){
-  needOpts.forEach(o=>o.classList.toggle('sel',o===el));
-  document.getElementById('needSlot').textContent=el.dataset.text;
-  document.getElementById('needPickLabel').textContent=needLabels[el.dataset.need];
-  if(save)try{localStorage.setItem('fz-mv-need',el.dataset.need);}catch(e){}
-}
-needOpts.forEach(o=>o.onclick=()=>pickNeed(o,true));
-try{
-  const saved=localStorage.getItem('fz-mv-need');
-  const el=needOpts.find(o=>o.dataset.need===saved);
-  if(el)pickNeed(el,false);
-}catch(e){}
+needOpts.forEach(o=>o.onclick=()=>{
+  needOpts.forEach(x=>x.classList.toggle('sel',x===o));
+  document.getElementById('needSlot').textContent=o.dataset.text;
+});
 
-/* ---------- decision 1: WHY belief picker ---------- */
+/* ---------- the WHY record: chosen + alternatives (click to compare) ---------- */
 const WHYS={
-  keep:{label:'Keep (Jul 20)',en:'"We believe the people who bring people together make the world better — and they shouldn\'t have to do it alone."',he:'אנחנו מאמינים שהאנשים שמחברים אנשים — עושים את העולם טוב יותר. והם לא צריכים לעשות את זה לבד.',note:'Judge\'s verdict: holds at 8/10 — a belief about people, converged in two separate sessions. Weakness: "world better" alone is swappable, and "shouldn\'t have to" names the wound as a wish, not a stance.'},
-  A:{label:'A · Togetherness paradox',en:'"We believe no one should have to create togetherness alone — least of all the people who create it for the rest of us."',he:'אנחנו מאמינים שמי שיוצר את הביחד של כולנו — לא צריך לעשות את זה לבד.',note:'9/10 — keeps every gram of the twice-validated "not alone" DNA but earns it through an irony only we can own: the makers of togetherness are the loneliest people in the room. Risk: still opens on a negative.'},
-  B:{label:'B · Stance at the front',en:'"We believe the people who bring people together make the world better. So we stand at the front with them."',he:'אנחנו מאמינים שהאנשים שמחברים אנשים עושים את העולם טוב יותר. אז אנחנו איתם בחזית.',note:'8.5/10 — the ship-tomorrow option: the exact belief both sessions converged on, with the wish replaced by a four-word present-tense stance. "איתם בחזית" pulls the emotional gold straight into the WHY. Risk: sentence one still swappable; "בחזית" can sound military.'},
-  C:{label:'C · Against the screen',en:'"We believe you can\'t fix a lonely world through a screen. You fix it in a field, on a dancefloor, in a room full of people."',he:'אנחנו מאמינים שעולם בודד לא מתקנים דרך מסך. מתקנים אותו בשדה, על הרחבה, בחדר מלא אנשים.',note:'8.2/10 — the only candidate with a named enemy, which makes it falsifiable enough to rally believers. Pairs perfectly with the canon closer "We just happen to make software." Risk: without that punchline nearby, a software company preaching against screens is a one-tweet mock.'},
-  D:{label:'D · Hidden hero',en:'"We believe the world doesn\'t get better on its own. It gets better every time people come together — and someone always makes that happen."',he:'אנחנו מאמינים שהעולם לא משתפר מעצמו — הוא משתפר בכל פעם שאנשים נפגשים. ותמיד יש מישהו שהפגיש אותם.',note:'8/10 — turns "world better" from consensus mush into a mechanism you can disagree with, then crowns the unseen person who made the gathering happen. The most joinable version. Risk: three clauses — reads like a voiceover, not a chantable belief line.'},
-  E:{label:'E · Spoken flip',en:'"Everyone shows up to dance. We show up for the people who make the night happen."',he:'כולם באים לרקוד. אנחנו באים בשביל מי שמרים את זה.',note:'7.8/10 — built for the mouth: ten words and an applause beat; "מי שמרים את זה" is verbatim how producers describe themselves. Risk: strictly a stance line, not a world-belief — and "the night" narrows us to nightlife.'}
+  A:{en:'"We believe no one should have to create togetherness alone — least of all the people who create it for the rest of us."',he:'אנחנו מאמינים שמי שיוצר את הביחד של כולנו — לא צריך לעשות את זה לבד.',note:'CHOSEN — keeps the twice-validated "not alone" DNA but earns it through an irony only we can own: the makers of togetherness are the loneliest people in the room. Judge score 9/10; passes the present-tense, no-hedge and swap tests.'},
+  bet:{en:'"We believe betting on joy is one of the bravest ways to make a living — and the people who take that bet should win more often."',he:'אנחנו מאמינים שלהמר על שמחה זו אחת הדרכים הכי אמיצות להתפרנס — ומי שלוקח את ההימור הזה צריך לנצח יותר.',note:'RUNNER-UP WE LOVE — names the economic truth of producing without pity, and quietly makes better decisions our destiny. Kept alive as the stage/pitch line, with Elad\'s bridge: "Meet Flowz — increasing your chances to create joy."'},
+  mix:{en:'"We believe the people who bring people together make the world a better place, and no one should have to create togetherness alone."',he:'אנחנו מאמינים שהאנשים שמחברים אנשים עושים את העולם טוב יותר — ואף אחד לא צריך ליצור את הביחד הזה לבד.',note:'THE 1+3 MIX — two beliefs in one breath: the world-claim plus the togetherness line. Nice alternative; a touch long, and the winner says the second half sharper on its own.'},
+  B:{en:'"We believe the people who bring people together make the world better. So we stand at the front with them."',he:'אנחנו מאמינים שהאנשים שמחברים אנשים עושים את העולם טוב יותר. אז אנחנו איתם בחזית.',note:'8.5/10 — the wish replaced by a four-word present-tense stance. Not chosen, but its stance energy lives on in the mix and in how we pitch.'},
+  keep:{en:'"We believe the people who bring people together make the world better — and they shouldn\'t have to do it alone."',he:'אנחנו מאמינים שהאנשים שמחברים אנשים — עושים את העולם טוב יותר. והם לא צריכים לעשות את זה לבד.',note:'THE ORIGIN (Jul 20, scored 8) — evolved, not discarded: its "not alone" DNA is the spine of the winner. Retired because "world better" is swappable and "shouldn\'t have to" named the wound as a wish.'},
+  more:{en:'C · "You can\'t fix a lonely world through a screen…" (8.2) — D · "The world doesn\'t get better on its own…" (8) — E · "Everyone shows up to dance. We show up for the people who make the night happen." (7.8)',he:'',note:'ALSO WEIGHED — three strong moves kept in the record for future campaign copy, plus Elad\'s navigate draft (5.5): right instinct, and the navigation idea now lives where it belongs — the HOW: "read the signal, run the flow."'}
 };
 const whyStmtOpts=[...document.querySelectorAll('.opt[data-whystmt]')];
-function pickWhyStmt(el,save){
-  whyStmtOpts.forEach(o=>o.classList.toggle('sel',o===el));
-  const w=WHYS[el.dataset.whystmt];
+whyStmtOpts.forEach(o=>o.onclick=()=>{
+  whyStmtOpts.forEach(x=>x.classList.toggle('sel',x===o));
+  const w=WHYS[o.dataset.whystmt];
   document.getElementById('whyEn').textContent=w.en;
   document.getElementById('whyHe').textContent=w.he;
   document.getElementById('whyNote').textContent=w.note;
-  document.getElementById('whyPickLabel').textContent=w.label;
-  if(save)try{localStorage.setItem('fz-mv-whystmt',el.dataset.whystmt);}catch(e){}
-}
-whyStmtOpts.forEach(o=>o.onclick=()=>pickWhyStmt(o,true));
-try{
-  const savedWS=localStorage.getItem('fz-mv-whystmt');
-  const elWS=whyStmtOpts.find(o=>o.dataset.whystmt===savedWS);
-  if(elWS)pickWhyStmt(elWS,false);
-}catch(e){}
+});
 
-/* ---------- decision 4: why placement (visual pick only) ---------- */
+/* ---------- placement: open vs close (still open — visual compare only) ---------- */
 const whyOpts=[...document.querySelectorAll('.opt[data-why]')];
 whyOpts.forEach(o=>o.onclick=()=>{
   whyOpts.forEach(x=>x.classList.toggle('sel',x===o));
-  try{localStorage.setItem('fz-mv-why',o.dataset.why);}catch(e){}
 });
-try{
-  const savedW=localStorage.getItem('fz-mv-why');
-  const elW=whyOpts.find(o=>o.dataset.why===savedW);
-  if(elW)elW.classList.add('sel');
-}catch(e){}
 
 /* ---------- name test ---------- */
 const NT=[
@@ -516,12 +492,7 @@ function renderNT(i){
 }
 renderNT(0);
 
-/* ---------- checklist ---------- */
-[...document.querySelectorAll('.chk')].forEach(c=>{
-  const k='fz-mv-'+c.dataset.k;
-  try{if(localStorage.getItem(k)==='1')c.classList.add('done');}catch(e){}
-  c.onclick=()=>{c.classList.toggle('done');try{localStorage.setItem(k,c.classList.contains('done')?'1':'0');}catch(e){}};
-});
+/* checklist replaced by the static decision record (slide 10) */
 </script>
 </body>
 </html>
