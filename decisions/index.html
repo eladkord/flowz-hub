@@ -77,9 +77,11 @@ h1,h2,h3,.display{font-family:'Sora',sans-serif}
 .tl-card{background:var(--card);border:1px solid #F0E8DA;border-radius:16px;box-shadow:var(--shadow);padding:14px 15px;position:relative}
 .tl-card::after{content:"→";position:absolute;right:-13px;top:42%;color:#C9BDA6;font-size:15px;z-index:2}
 .tl-card:last-child::after{content:""}
-.tl-step{width:24px;height:24px;border-radius:9px;background:var(--ink);color:#fff;font-family:'Sora';font-weight:700;font-size:11px;display:flex;align-items:center;justify-content:center;margin-bottom:8px}
+/* .tl-card .tl-step must outrank the generic .tl-card span rule below, or the
+   digit inherits block/soft-brown and hides in the badge corner */
+.tl-card .tl-step{width:24px;height:24px;border-radius:9px;background:var(--ink);color:#fff;font-family:'Sora';font-weight:700;font-size:11px;line-height:1;display:grid;place-items:center;margin-bottom:8px}
 .tl-card b{font-size:12.5px;display:block;margin-bottom:3px}
-.tl-card span{font-size:10.5px;color:var(--ink-soft);line-height:1.4;display:block}
+.tl-card span:not(.tl-step){font-size:10.5px;color:var(--ink-soft);line-height:1.4;display:block}
 .tl-card a{font-size:10px;font-weight:700;color:var(--orange);text-decoration:none;display:inline-block;margin-top:6px}
 .tl-card.hot{border-color:var(--orange);background:linear-gradient(135deg,#FFF7F0,var(--card))}
 
@@ -107,7 +109,7 @@ h1,h2,h3,.display{font-family:'Sora',sans-serif}
 .lf-row{display:grid;grid-template-columns:44px 1fr auto;gap:13px;align-items:center;background:var(--card);border:1px solid #F0E8DA;border-radius:15px;padding:11px 15px;box-shadow:var(--shadow)}
 .lf-ic{width:40px;height:40px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:18px}
 .lf-row b{font-size:13.5px;display:block}
-.lf-row span{font-size:11.5px;color:var(--ink-soft);line-height:1.4;display:block}
+.lf-row div span{font-size:11.5px;color:var(--ink-soft);line-height:1.4;display:block}
 .lf-tag{font-size:9.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;border-radius:999px;padding:3px 9px;white-space:nowrap}
 .loop-side{background:var(--ink);border-radius:var(--radius);padding:18px 19px;color:#F5EFE4;display:flex;flex-direction:column;gap:10px}
 .loop-side h3{color:#fff;font-size:14px}
@@ -141,7 +143,7 @@ h1,h2,h3,.display{font-family:'Sora',sans-serif}
 .fork{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;margin-top:18px}
 .risk{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--cream-deep)}
 .risk:last-child{border-bottom:none}
-.risk .ri{flex:none;width:26px;height:26px;border-radius:9px;background:#FBE2E2;display:flex;align-items:center;justify-content:center;font-size:12px}
+.risk .ri{flex:none;width:28px;height:28px;border-radius:9px;background:#FBE2E2;display:flex;align-items:center;justify-content:center;font-size:14px}
 .risk b{font-size:12px;display:block}
 .risk span{font-size:10.5px;color:var(--ink-soft);line-height:1.4;display:block}
 
@@ -447,10 +449,10 @@ h1,h2,h3,.display{font-family:'Sora',sans-serif}
       </div>
       <div class="card">
         <h3 style="font-size:15px;margin-bottom:6px">Honest risks</h3>
-        <div class="risk"><span class="ri">🪤</span><div><b>Feature-not-product trap</b><span>The standalone graveyard is real: Cloverpop fled upmarket after a decade, Almanac and Loqbooq shut down, Tome died at &lt;$4M ARR. H1 is a feature; the fork must be earned.</span></div></div>
-        <div class="risk"><span class="ri">🎓</span><div><b>Fast-follow exposure</b><span>Zeck moving down from boardrooms, or Decisions adding data-generated agendas – each is one leap away. Our defense is owning the operator's live data and the execution tail.</span></div></div>
+        <div class="risk"><span class="ri">☠️</span><div><b>Feature-not-product trap</b><span>The standalone graveyard is real: Cloverpop fled upmarket after a decade, Almanac and Loqbooq shut down, Tome died at &lt;$4M ARR. H1 is a feature; the fork must be earned.</span></div></div>
+        <div class="risk"><span class="ri">⚡</span><div><b>Fast-follow exposure</b><span>Zeck moving down from boardrooms, or Decisions adding data-generated agendas – each is one leap away. Our defense is owning the operator's live data and the execution tail.</span></div></div>
         <div class="risk"><span class="ri">🪑</span><div><b>Meeting culture inertia</b><span>Some orgs simply won't decide in an artifact. The deck must also work as the agenda ON the table, not only instead of it.</span></div></div>
-        <div class="risk"><span class="ri">📵</span><div><b>Garbage framing risk</b><span>An AI deck with wrong options is worse than no deck. Human review stays in the loop until defaults earn trust, decision by decision.</span></div></div>
+        <div class="risk"><span class="ri">🗑️</span><div><b>Garbage framing risk</b><span>An AI deck with wrong options is worse than no deck. Human review stays in the loop until defaults earn trust, decision by decision.</span></div></div>
       </div>
     </div>
   </div>
