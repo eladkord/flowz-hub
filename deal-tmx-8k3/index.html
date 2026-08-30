@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Flowz — עסקת toMix · מצגת עבודה</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23F0641E'/><text x='50' y='72' font-size='62' font-weight='800' font-family='Arial' text-anchor='middle' fill='white'>Z</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FAF6EF; --cream-deep:#F3EDE2; --card:#FFFDF9;
+  --ink:#2B2620; --ink-soft:#6E6659;
+  --orange:#F0641E; --orange-soft:#FDE8DC;
+  --blue:#3B82F6; --blue-soft:#DBEAFE;
+  --green:#3E8914; --green-soft:#DCF3C8;
+  --purple:#8B5CF6; --purple-soft:#EFE3FA;
+  --teal:#0D9488; --teal-soft:#CCF3EC;
+  --gold:#E8A93D; --gold-soft:#FCF0D8; --gold-ink:#A8720F;
+  --red:#D14343; --red-soft:#FBE3E3;
+  --radius:22px; --shadow:0 10px 34px rgba(90,70,40,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'Rubik',system-ui,sans-serif;background:var(--cream);color:var(--ink);overflow:hidden;direction:rtl}
+h1,h2,h3{font-family:'Rubik',sans-serif}
+.en{font-family:'Sora',sans-serif;direction:ltr;unicode-bidi:isolate;display:inline-block}
+.num{direction:ltr;unicode-bidi:isolate;font-variant-numeric:tabular-nums}
+b,strong{font-weight:700}
+
+/* ---------- gate ---------- */
+#gate{position:fixed;inset:0;background:var(--cream);z-index:999;display:flex;align-items:center;justify-content:center;text-align:center}
+#gate .box{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:36px 40px;max-width:420px}
+#gate input{font-family:'Sora';font-size:18px;padding:10px 14px;border:1.5px solid #E4DACB;border-radius:12px;width:100%;margin:16px 0 10px;text-align:center;direction:ltr}
+#gate button{font-family:'Rubik';font-weight:700;font-size:15px;background:var(--orange);color:#fff;border:none;border-radius:12px;padding:10px 22px;cursor:pointer}
+#gate .err{color:var(--red);font-size:13px;min-height:18px;margin-top:6px}
+
+/* ---------- deck chrome ---------- */
+.deck{position:relative;width:100vw;height:100vh}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:44px 64px 84px;opacity:0;visibility:hidden;transform:translateY(24px);transition:opacity .5s ease,transform .5s ease,visibility 0s .5s}
+.slide.active{opacity:1;visibility:visible;transform:translateY(0);transition:opacity .5s ease,transform .5s ease}
+.slide-inner{width:100%;max-width:1180px;max-height:calc(100vh - 120px);overflow:auto;padding:4px 2px 12px}
+.slide-inner::-webkit-scrollbar{width:6px}.slide-inner::-webkit-scrollbar-thumb{background:#E4DACB;border-radius:4px}
+.progress{position:fixed;right:0;top:0;height:4px;background:var(--orange);width:0;transition:width .4s ease;z-index:60;border-radius:4px 0 0 4px}
+.nav{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:60;flex-wrap:wrap;justify-content:center;max-width:60vw}
+.dot{width:9px;height:9px;border-radius:50%;background:#D9CFBE;cursor:pointer;transition:.25s;border:none}
+.dot.on{background:var(--orange);transform:scale(1.35)}
+.arrows{position:fixed;bottom:14px;left:22px;display:flex;gap:8px;z-index:60}
+.arrow-btn{height:42px;padding:0 16px;border-radius:14px;border:1.5px solid #E4DACB;background:var(--card);font-size:14px;font-weight:700;font-family:'Rubik';color:var(--ink);cursor:pointer;transition:.2s;box-shadow:0 3px 10px rgba(90,70,40,.07)}
+.arrow-btn:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.slide-num{position:fixed;bottom:24px;right:26px;font-size:12px;letter-spacing:.14em;color:#B4A890;z-index:60;font-weight:600;direction:ltr}
+.home-link{position:fixed;top:16px;left:22px;z-index:60;font-size:12px;font-weight:700;color:var(--ink-soft);text-decoration:none;background:var(--card);border:1.5px solid #E4DACB;border-radius:999px;padding:7px 14px;transition:.2s;font-family:'Sora'}
+.home-link:hover{color:var(--orange);border-color:var(--orange)}
+.conf{position:fixed;top:16px;right:22px;z-index:60;font-size:11.5px;font-weight:800;letter-spacing:.1em;color:var(--red);background:var(--red-soft);border-radius:999px;padding:7px 14px}
+
+/* ---------- shared ---------- */
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;letter-spacing:.08em;color:var(--orange);margin-bottom:14px}
+.eyebrow .dotmark{width:8px;height:8px;border-radius:50%;background:var(--orange);animation:pulse 2.4s infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.5}}
+.h-xl{font-size:54px;line-height:1.1;font-weight:800;letter-spacing:-.01em}
+.h-lg{font-size:34px;line-height:1.18;font-weight:800}
+.h-md{font-size:19px;font-weight:700}
+.lede{font-size:17px;line-height:1.7;color:var(--ink-soft);max-width:820px}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 24px;border:1px solid rgba(120,95,60,.06)}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:5px 13px;border-radius:999px;font-size:12px;font-weight:700}
+.rise{opacity:0;transform:translateY(18px)}
+.active .rise{animation:riseIn .7s cubic-bezier(.2,.7,.2,1) forwards}
+.active .rise.d1{animation-delay:.1s}.active .rise.d2{animation-delay:.22s}.active .rise.d3{animation-delay:.34s}.active .rise.d4{animation-delay:.46s}.active .rise.d5{animation-delay:.58s}
+@keyframes riseIn{to{opacity:1;transform:translateY(0)}}
+.chip{font-family:'Rubik';font-size:11.5px;font-weight:700;letter-spacing:.04em;padding:6px 14px;border-radius:999px;display:inline-flex;align-items:center;gap:7px}
+.chip-or{background:var(--orange);color:#fff}.chip-gr{background:var(--green-soft);color:var(--green)}.chip-bl{background:var(--blue-soft);color:#1D5FCC}.chip-rd{background:var(--red-soft);color:var(--red)}.chip-go{background:var(--gold-soft);color:var(--gold-ink)}.chip-pu{background:var(--purple-soft);color:#6D3FC4}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.foot-note{margin-top:14px;font-size:12.5px;color:#B4A890;font-weight:600}
+p.body{font-size:14.5px;line-height:1.75;color:var(--ink-soft)}
+ul.list{list-style:none;display:flex;flex-direction:column;gap:8px}
+ul.list li{font-size:14px;line-height:1.6;padding-right:22px;position:relative;color:var(--ink)}
+ul.list li::before{content:"";position:absolute;right:2px;top:10px;width:8px;height:8px;border-radius:50%;background:var(--orange)}
+ul.list.ok li::before{background:var(--green)}
+ul.list.bad li::before{background:var(--red)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:13.5px;line-height:1.6}
+.kv dt{font-weight:700;color:var(--ink);white-space:nowrap}
+.kv dd{color:var(--ink-soft)}
+
+/* glossary */
+.gl{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+.gl-card{background:var(--card);border:1.5px solid #EFE7D8;border-radius:16px;padding:14px 15px;display:flex;flex-direction:column;gap:6px;min-height:120px}
+.gl-term{font-family:'Sora';font-size:14px;font-weight:800;color:var(--orange);direction:ltr;text-align:left}
+.gl-he{font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
+.gl-he b{color:var(--ink)}
+
+/* offer table + generic table */
+table.t{width:100%;border-collapse:collapse;font-size:13px;background:var(--card);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+table.t th{background:var(--cream-deep);font-weight:800;text-align:right;padding:10px 12px;font-size:12px;letter-spacing:.03em}
+table.t td{padding:9px 12px;border-top:1px solid #F0E9DC;vertical-align:top;line-height:1.5}
+table.t td.en,table.t th.en{text-align:left}
+.st-ok{color:var(--green);font-weight:700}.st-warn{color:var(--gold-ink);font-weight:700}.st-bad{color:var(--red);font-weight:700}
+
+/* fork */
+.fork{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:16px}
+.fork .card h3{font-size:17px;margin-bottom:8px}
+.fork .card.a{border-top:5px solid var(--blue)}.fork .card.b{border-top:5px solid var(--gold)}
+.fork .big{font-family:'Sora';font-size:30px;font-weight:800;direction:ltr;display:inline-block}
+.resolve{margin-top:16px;background:var(--ink);color:#fff;border-radius:var(--radius);padding:18px 24px;font-size:16px;line-height:1.6;font-weight:600}
+.resolve .en{color:#FFB38A}
+
+/* structure diagram */
+.houses{display:grid;grid-template-columns:1fr 80px 1fr;gap:12px;align-items:stretch;margin-top:14px}
+.house{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 20px;border-top:6px solid var(--blue)}
+.house.jv{border-top-color:var(--orange)}
+.house h3{font-size:18px;margin-bottom:4px}
+.house .sub{font-family:'Sora';font-size:11.5px;font-weight:700;color:var(--ink-soft);direction:ltr;text-align:right;margin-bottom:10px}
+.house ul.list li{font-size:13px}
+.bridge{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-size:11px;font-weight:700;color:var(--ink-soft);text-align:center}
+.bridge .arr{font-size:26px;color:var(--orange)}
+.split{display:flex;gap:0;border-radius:10px;overflow:hidden;height:20px;margin:10px 0 6px;font-size:10.5px;font-weight:800;color:#fff;direction:ltr}
+.split div{display:flex;align-items:center;justify-content:center}
+
+/* comparison matrix */
+table.cmp{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px;background:var(--card);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+table.cmp th{background:var(--cream-deep);padding:10px 10px;font-size:12px;font-weight:800}
+table.cmp td{padding:8px 10px;border-top:1px solid #F0E9DC;text-align:center;line-height:1.45}
+table.cmp td:first-child{text-align:right;font-weight:700;background:#FCF9F3}
+.m-good{background:var(--green-soft);color:var(--green);font-weight:800;border-radius:8px;padding:3px 8px;display:inline-block}
+.m-mid{background:var(--gold-soft);color:var(--gold-ink);font-weight:800;border-radius:8px;padding:3px 8px;display:inline-block}
+.m-bad{background:var(--red-soft);color:var(--red);font-weight:800;border-radius:8px;padding:3px 8px;display:inline-block}
+
+/* scenarios */
+.scen{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+.sc{background:var(--card);border:2px solid #EFE7D8;border-radius:18px;padding:18px 18px 14px;display:flex;flex-direction:column;gap:8px;position:relative}
+.sc.rec{border-color:var(--green)}
+.sc .badge{position:absolute;top:-10px;right:14px;background:var(--green);color:#fff;font-size:10px;font-weight:800;padding:3px 9px;border-radius:999px}
+.sc h3{font-size:17px}
+.sc .sub{font-size:12px;color:var(--ink-soft);line-height:1.5;min-height:36px}
+.sc .stat{display:flex;justify-content:space-between;align-items:baseline;border-top:1px dashed #EBE2D2;padding-top:7px;font-size:12.5px;color:var(--ink-soft)}
+.sc .stat b{font-family:'Sora';font-size:16px;color:var(--ink);direction:ltr}
+.sc .stat b.warn{color:var(--red)}.sc .stat b.good{color:var(--green)}
+.btn{font-family:'Rubik';font-weight:700;font-size:13.5px;background:var(--orange);color:#fff;border:none;border-radius:12px;padding:10px 18px;cursor:pointer;transition:.18s;box-shadow:0 6px 16px rgba(240,100,30,.25)}
+.btn:hover{transform:translateY(-2px)}
+.btn.ghost{background:var(--card);color:var(--ink);border:1.5px solid #E4DACB;box-shadow:none}
+.btn.sm{font-size:12px;padding:7px 12px}
+
+/* modal calculator */
+.modal{position:fixed;inset:0;background:rgba(43,38,32,.55);z-index:200;display:none;align-items:center;justify-content:center;padding:24px}
+.modal.open{display:flex}
+.mbox{background:var(--cream);border-radius:26px;width:min(1240px,96vw);max-height:92vh;overflow:auto;box-shadow:0 30px 80px rgba(0,0,0,.35);padding:22px 26px 26px;position:relative}
+.mbox .close{position:absolute;top:14px;left:16px;width:36px;height:36px;border-radius:12px;border:1.5px solid #E4DACB;background:var(--card);cursor:pointer;font-size:16px}
+.mtabs{display:flex;gap:8px;margin:8px 0 14px;flex-wrap:wrap}
+.mtab{font-family:'Rubik';font-size:13px;font-weight:700;padding:8px 16px;border-radius:999px;border:1.5px solid #E4DACB;background:var(--card);cursor:pointer;color:var(--ink-soft)}
+.mtab.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.mgrid{display:grid;grid-template-columns:330px 1fr;gap:18px;align-items:start}
+.inputs{background:var(--card);border-radius:18px;padding:16px;box-shadow:var(--shadow)}
+.inputs h4{font-size:13px;font-weight:800;margin:8px 0 6px;color:var(--orange)}
+.inputs h4:first-child{margin-top:0}
+.inp{display:grid;grid-template-columns:1fr 110px;align-items:center;gap:8px;font-size:12.5px;padding:3px 0}
+.inp input{font-family:'Sora';font-size:12.5px;padding:5px 8px;border:1.5px solid #E4DACB;border-radius:8px;direction:ltr;text-align:right;width:110px;background:#fff}
+.inp input:focus{outline:none;border-color:var(--orange)}
+.out{display:flex;flex-direction:column;gap:14px}
+.out h4{font-size:14px;font-weight:800;margin-bottom:6px}
+table.calc{width:100%;border-collapse:collapse;font-size:12.5px;background:var(--card);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+table.calc th{background:var(--cream-deep);padding:8px 10px;font-size:11.5px;font-weight:800;text-align:right}
+table.calc td{padding:7px 10px;border-top:1px solid #F0E9DC;direction:ltr;text-align:right;font-family:'Sora';font-size:12px}
+table.calc td:first-child{direction:rtl;text-align:right;font-family:'Rubik';font-weight:600}
+table.calc tr.hl td{background:#FFF4EC;font-weight:800}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.kpi{background:var(--card);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow)}
+.kpi .l{font-size:11px;color:var(--ink-soft);font-weight:700}
+.kpi .v{font-family:'Sora';font-size:20px;font-weight:800;direction:ltr;text-align:right;margin-top:3px}
+.kpi .v.bad{color:var(--red)}.kpi .v.good{color:var(--green)}
+.mnote{font-size:12px;color:var(--ink-soft);line-height:1.6;background:var(--gold-soft);border-radius:12px;padding:10px 14px}
+
+/* timeline */
+.tl{position:relative;margin-top:18px;padding-top:26px}
+.tl .line{position:absolute;top:36px;right:0;left:0;height:4px;background:#E4DACB;border-radius:4px}
+.tl .fill{position:absolute;top:36px;right:0;height:4px;background:var(--orange);border-radius:4px}
+.tl .pts{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.tl .pt{position:relative;padding-top:26px;font-size:12px;line-height:1.45}
+.tl .pt::before{content:"";position:absolute;top:4px;right:calc(50% - 8px);width:16px;height:16px;border-radius:50%;background:var(--card);border:4px solid var(--orange)}
+.tl .pt.m::before{border-color:var(--green)}
+.tl .pt.s::before{border-color:var(--blue)}
+.tl .pt b{display:block;font-size:12.5px}
+.tl .pt .when{font-family:'Sora';font-size:10.5px;font-weight:800;color:var(--ink-soft);direction:ltr}
+.budget-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}
+.budget-bar .card{padding:12px 14px}
+.budget-bar .card .l{font-size:11.5px;color:var(--ink-soft);font-weight:700}
+.budget-bar .card .v{font-family:'Sora';font-size:17px;font-weight:800;direction:ltr;text-align:right}
+
+/* demands */
+.dem{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.dem .d{background:var(--card);border-radius:14px;padding:12px 14px;border:1.5px solid #EFE7D8;display:flex;gap:12px;align-items:flex-start}
+.dem .n{font-family:'Sora';font-weight:800;color:var(--orange);font-size:16px;flex:0 0 26px}
+.dem .t{font-size:13px;line-height:1.55}
+.dem .t b{display:block;font-size:13.5px;margin-bottom:2px}
+
+/* red lines */
+.rl{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+.rl .card{border-top:5px solid var(--red);padding:16px 18px}
+.rl h3{font-size:15px;margin-bottom:6px}
+.rl p{font-size:12.5px;line-height:1.6;color:var(--ink-soft)}
+
+/* process */
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:14px}
+.step{background:var(--card);border-radius:14px;padding:14px;box-shadow:var(--shadow);font-size:12.5px;line-height:1.5;position:relative}
+.step .k{font-family:'Sora';font-weight:800;color:var(--orange);font-size:20px;direction:ltr;text-align:right}
+.step b{display:block;font-size:13.5px;margin:4px 0}
+.docs{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.docs span{background:var(--card);border:1.5px solid #EFE7D8;border-radius:999px;padding:6px 13px;font-size:12px;font-weight:600}
+
+/* questions */
+.qs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.q{background:var(--card);border-radius:14px;padding:11px 14px;border:1.5px solid #EFE7D8;font-size:12.8px;line-height:1.55;display:flex;gap:10px}
+.q .n{font-family:'Sora';font-weight:800;color:var(--ink-soft);flex:0 0 22px}
+.q b{color:var(--ink)}
+
+/* decisions */
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+.opts.four{grid-template-columns:repeat(4,1fr)}
+.opt{background:var(--card);border:2px solid #EFE7D8;border-radius:16px;padding:14px 14px 12px;cursor:pointer;transition:.18s;position:relative;display:flex;flex-direction:column;gap:6px;min-height:118px}
+.opt:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(90,70,40,.14)}
+.opt.sel{border-color:var(--orange);background:#FFF8F2;box-shadow:0 12px 30px rgba(240,100,30,.16)}
+.opt .k{font-size:14px;font-weight:800;color:var(--ink);padding-left:22px}
+.opt .t{font-size:12.2px;line-height:1.5;color:var(--ink-soft)}
+.opt .note{font-size:10.5px;line-height:1.4;color:#B4A890;font-weight:600;margin-top:auto}
+.opt .rec{position:absolute;top:-9px;right:10px;background:var(--green);color:#fff;font-size:9px;font-weight:800;letter-spacing:.08em;padding:3px 8px;border-radius:999px}
+.opt .pick-dot{position:absolute;top:12px;left:12px;width:14px;height:14px;border-radius:50%;border:2px solid #D9CFBE;transition:.18s}
+.opt.sel .pick-dot{border-color:var(--orange);background:var(--orange);box-shadow:inset 0 0 0 3px #FFF8F2}
+.dblock{margin-top:16px}
+.dblock .dh{display:flex;align-items:center;gap:10px;margin-bottom:2px}
+.dblock .dh .did{font-family:'Sora';font-size:11px;font-weight:800;background:var(--orange);color:#fff;padding:4px 10px;border-radius:999px}
+.dblock .dh h3{font-size:17px}
+.dblock .dh .state{margin-right:auto;font-size:11.5px;font-weight:700;color:var(--ink-soft)}
+.dblock .dh .state.done{color:var(--green)}
+.multi .opt.sel{border-color:var(--red);background:#FFF3F3}
+.multi .opt.sel .pick-dot{border-color:var(--red);background:var(--red);box-shadow:inset 0 0 0 3px #FFF3F3}
+
+/* summary */
+.sum{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}
+.sum .card{padding:16px 18px}
+.sum .row{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-top:1px dashed #EBE2D2;font-size:13px;line-height:1.5}
+.sum .row:first-of-type{border-top:none}
+.sum .row .did{font-family:'Sora';font-size:10.5px;font-weight:800;color:var(--orange);flex:0 0 30px;padding-top:2px}
+.sum .row .val{font-weight:700}
+.sum .row .val.none{color:#B4A890;font-weight:500}
+.check{display:flex;flex-direction:column;gap:8px}
+.chk{display:flex;align-items:center;gap:12px;background:var(--card);border:1.5px solid #EFE7D8;border-radius:12px;padding:10px 14px;cursor:pointer;transition:.18s;text-align:right;font-family:'Rubik'}
+.chk:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(90,70,40,.1)}
+.chk .box{width:20px;height:20px;border-radius:6px;border:2px solid #D9CFBE;flex:0 0 20px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff}
+.chk.done .box{background:var(--green);border-color:var(--green)}
+.chk .lbl{font-size:13px;font-weight:600}
+
+@media (max-width:900px), (max-height:620px){
+  body{overflow:auto}
+  .deck{width:auto;height:auto}
+  .slide{position:relative;inset:auto;opacity:1;visibility:visible;transform:none;min-height:0;padding:36px 18px;border-bottom:1.5px dashed #E4DACB}
+  .slide-inner{max-height:none;overflow:visible}
+  .rise{opacity:1;transform:none;animation:none!important}
+  .nav,.arrows,.slide-num,.progress{display:none}
+  .h-xl{font-size:34px}.h-lg{font-size:25px}
+  .gl,.opts,.opts.four,.scen,.three-col,.two-col,.fork,.dem,.qs,.rl,.steps,.sum,.kpis{grid-template-columns:1fr}
+  .houses{grid-template-columns:1fr}.bridge .arr{transform:rotate(90deg)}
+  .mgrid{grid-template-columns:1fr}
+  .tl .pts{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="box">
+    <div class="chip chip-rd">סודי · Elad + Aviv בלבד</div>
+    <h2 style="font-size:22px;margin-top:14px">עסקת toMix — מצגת עבודה</h2>
+    <p style="font-size:13px;color:var(--ink-soft);margin-top:8px;line-height:1.6">הדף לא מקושר מההאב ולא מאונדקס. קוד גישה:</p>
+    <input id="gateIn" type="password" placeholder="access code" autocomplete="off">
+    <button onclick="gateTry()">כניסה</button>
+    <div class="err" id="gateErr"></div>
+  </div>
+</div>
+
+<div class="progress"></div>
+<a class="home-link" href="../">Hub ←</a>
+<div class="conf">סודי · טיוטת עבודה · 23.08.2026</div>
+
+<div class="deck">
+
+<!-- 1 · TITLE -->
+<section class="slide active">
+  <div class="slide-inner" style="text-align:center">
+    <div class="rise"><div class="eyebrow" style="justify-content:center;display:flex"><span class="dotmark"></span>Flowz · מצגת עבודה · אלעד + אביב · לקראת פגישת עו"ד 24.08</div></div>
+    <h1 class="h-xl rise d1">עסקת <span class="en">toMix</span><br><span style="color:var(--orange)">איך בונים את זה נכון</span></h1>
+    <p class="lede rise d2" style="margin:22px auto 0">הצעה אסטרטגית: <span class="en">30%+</span> מהחברה, הפצה בלעדית בישראל, דאטה של <span class="en">1.5M</span> כרטיסים בשנה, תקציב ממומן. זו לא עסקה אחת — זו הכרעה על <b>איזו חברה אנחנו</b>. המצגת הזו מסדרת את המושגים, את הבעד והנגד, את המבנים האפשריים, שלושה תרחישים כלכליים עם מחשבון, ודפי החלטות.</p>
+    <div class="rise d3" style="margin-top:28px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <span class="chip chip-or">20 שקפים</span>
+      <span class="chip chip-bl">מילון מושגים</span>
+      <span class="chip chip-go">3 תרחישים + מחשבון</span>
+      <span class="chip chip-pu">8 החלטות אינטראקטיביות</span>
+      <span class="chip chip-gr">הכנה לעו"ד</span>
+    </div>
+    <p class="foot-note rise d4">מקורות: בריף בעל-פה מאלעד 23.08 · <span class="en">toMix_Deal_Structure_Brief</span> · <span class="en">Advisor Equity Policy</span> · מודל ה-<span class="en">SAFE</span> ומאגר האופציות · מכתב ההתקשרות של <span class="en">GGS</span></p>
+  </div>
+</section>
+
+<!-- 2 · GLOSSARY A -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-bl">מילון · חלק א'</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">המושגים שנדבר בהם <span style="color:var(--ink-soft);font-weight:500;font-size:20px">— באנגלית, כי כך מדברים בחדר</span></h2>
+    <div class="gl rise d2">
+      <div class="gl-card"><div class="gl-term">Earn-in</div><div class="gl-he"><b>המשקיע מרוויח מניות בכך שהוא מספק.</b> לקוחות, הכנסות, דאטה, אינטגרציה — כל אבן דרך משחררת נתח. זה בדיוק מה שטומיקס תיארו כ"מדורג ומותנה".</div></div>
+      <div class="gl-card"><div class="gl-term">Earn-out</div><div class="gl-he"><b>תשלום נוסף למוכרים אחרי מכירה</b> אם עומדים ביעדים. רלוונטי לנו רק אם טומיקס קונה רוב. לא לבלבל עם <span class="en">earn-in</span> — המילה קובעת מי על הקרס.</div></div>
+      <div class="gl-card"><div class="gl-term">Captive company</div><div class="gl-he"><b>חברה "שבויה".</b> כך קוראים משקיעים לסטארטאפ ששחקן אסטרטגי מחזיק בו נתח גדול. מוריד את הסיכוי לסבבי <span class="en">VC</span> ולרוכשים שמתחרים באותו שחקן.</div></div>
+      <div class="gl-card"><div class="gl-term">Two Houses · HoldCo / JV</div><div class="gl-he"><b>שני בתים.</b> חברת-אם גלובלית (<span class="en">HoldCo</span>) שמחזיקה את ה-<span class="en">IP</span>, ומיזם משותף ישראלי (<span class="en">JV</span>) שבו טומיקס מקבלת את הנתח הגדול.</div></div>
+      <div class="gl-card"><div class="gl-term">Exclusive distribution</div><div class="gl-he"><b>בלעדיות על מכירה</b> בטריטוריה. אפשר לתת. שונה לחלוטין מ-<span class="en">exclusive integration</span> — בלעדיות על איזה דאטה המוצר קולט — שאסור לתת.</div></div>
+      <div class="gl-card"><div class="gl-term">Minimum performance commitments</div><div class="gl-he"><b>מינימום ביצועים.</b> התנאי של כל בלעדיות: לקוחות, <span class="en">ARR</span>, דאטה — עד תאריך. לא עמדת? הבלעדיות פוקעת. <span class="en">"Use it or lose it."</span></div></div>
+      <div class="gl-card"><div class="gl-term">Pre-money / Post-money</div><div class="gl-he"><b>שווי לפני ואחרי ההשקעה.</b> אחוז המשקיע = השקעה חלקי <span class="en">post-money</span>. כשמבקשים 30% בלי לנקוב בשווי — המספר החסר הוא הכול.</div></div>
+      <div class="gl-card"><div class="gl-term">Term Sheet · מזכר הבנות</div><div class="gl-he"><b>מסמך לא-מחייב</b> שקובע את המבנה לפני שעורכי הדין מנסחים הסכמים. מי שמנסח אותו — שולט בנייר.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · GLOSSARY B -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-bl">מילון · חלק ב'</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">מושגי שליטה, יציאה והגנה</h2>
+    <div class="gl rise d2">
+      <div class="gl-card"><div class="gl-term">Call / Put option</div><div class="gl-he"><b>Call</b> — זכות שלנו לקנות את חלקם לפי נוסחה. <b>Put</b> — זכות שלהם למכור לנו. שתיהן יחד = דרך יציאה מסודרת מה-<span class="en">JV</span>.</div></div>
+      <div class="gl-card"><div class="gl-term">Change of Control</div><div class="gl-he"><b>שינוי שליטה.</b> אם טומיקס נרכשת (למשל ע"י <span class="en">Live Nation</span>) — הבלעדיות והרישיון מתבטלים ונפתח לנו <span class="en">call</span>. תרחיש אמיתי בעולם הכרטיסים.</div></div>
+      <div class="gl-card"><div class="gl-term">ROFR / ROFN</div><div class="gl-he"><b>ROFR</b> — זכות סירוב ראשונה (חזקה, לסרב בגלובלית). <b>ROFN</b> — זכות משא-ומתן ראשונה (חלשה, מוגבלת בזמן — לכל היותר זה מה שנותנים על טריטוריות).</div></div>
+      <div class="gl-card"><div class="gl-term">Protective provisions</div><div class="gl-he"><b>זכויות וטו</b> למשקיע על החלטות מסוימות. ב-30%+ הם יבקשו רשימה ארוכה. אנחנו נותנים רשימה קצרה — ובלי וטו על גיוסים.</div></div>
+      <div class="gl-card"><div class="gl-term">Vesting · Acceleration</div><div class="gl-he"><b>הבשלה</b> של מניות מייסדים לאורך זמן. <b>Double-trigger acceleration</b> — האצה מלאה אם יש גם מכירה וגם פיטורין. הגנת המייסד הבסיסית.</div></div>
+      <div class="gl-card"><div class="gl-term">Drag-along · Tag-along</div><div class="gl-he"><b>Drag</b> — רוב יכול לגרור מיעוט למכירה (סף גבוה = הגנה עלינו). <b>Tag</b> — מיעוט יכול להצטרף למכירה של הרוב (הגנה על מי שלא שולט).</div></div>
+      <div class="gl-card"><div class="gl-term">הסדר כובל · Block exemption</div><div class="gl-he"><b>חוק התחרות הכלכלית.</b> בלעדיות + רשימה שחורה + שחקן כרטיסים גדול עלולים להיות הסדר כובל. <span class="en">Block exemption</span> = פטור סוג שצריך להתאים אליו.</div></div>
+      <div class="gl-card"><div class="gl-term">Grant-back · Data license · DPA</div><div class="gl-he"><b>Grant-back</b> — שיפורים שנבנו ב-<span class="en">JV</span> חוזרים לחברה-האם. <b>Data license</b> — רישיון לדאטה שלהם. <b>DPA</b> — הסכם עיבוד נתונים (תיקון 13 לחוק הגנת הפרטיות).</div></div>
+    </div>
+    <p class="foot-note rise d3">עוד שניים: <span class="en">No-shop</span> — התחייבות לא לנהל מו"מ עם אחרים (מגבילים ל-30–45 יום, ורק אחרי <span class="en">term sheet</span>) · <span class="en">Non-compete / Non-solicit</span> — אי-תחרות / אי-שידול עובדים.</p>
+  </div>
+</section>
+
+<!-- 4 · THE OFFER -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-go">ההצעה · כפי שהוצגה בעל-פה</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">מה טומיקס ביקשו <span style="color:var(--ink-soft);font-weight:500;font-size:20px">— שום דבר בכתב עדיין</span></h2>
+    <table class="t rise d2" style="margin-top:14px">
+      <thead><tr><th style="width:150px">רכיב</th><th>מה נאמר</th><th style="width:260px">הערכה שלנו</th></tr></thead>
+      <tbody>
+        <tr><td><b>נתח</b></td><td>"<span class="en">30%</span> וצפונה" מהחברה; אפשר <b>מדורג</b> (<span class="en">tranched</span>) ו/או <b>מותנה</b> (<span class="en">conditional</span>)</td><td class="st-warn">המספר פחות חשוב מ<b>איפה</b> הוא יושב</td></tr>
+        <tr><td><b>מודל הפעלה</b></td><td>לא סטארטאפ — יותר "חברת שירות / תפעול" שהם עוזרים לפתח, עם גישה מלאה לדאטה שלהם</td><td class="st-bad">התנגשות עם מסלול ה-<span class="en">VC</span></td></tr>
+        <tr><td><b>דאטה</b></td><td><span class="en">1.5M+</span> כרטיסים בשנה: אירועים, תיירות, קולינריה, חוויות — כל ורטיקל שבמפת הדרכים שלנו</td><td class="st-ok">התרומה הכי שווה שלהם</td></tr>
+        <tr><td><b>Design partner</b></td><td>טומיקס כשותף-עיצוב מס' 1</td><td class="st-ok">כבר מתוכנן</td></tr>
+        <tr><td><b>הפצה</b></td><td>מפיץ <b>בלעדי</b> בישראל — "עשרות אם לא מאות" שחקנים מרכזיים</td><td class="st-warn">הכי מרגש — והכי מסוכן</td></tr>
+        <tr><td><b>הכרטיסים שלהם</b></td><td>פיתחו מערכת כרטיסים חדשה שרוצים לקדם; "איזשהו חיבור" בין המערכות, לא מוגדר</td><td class="st-warn">סיכון נייטרליות</td></tr>
+        <tr><td><b>מותג / טריטוריה</b></td><td>בית אחד בישראל (מותג מחובר, אולי מוצר מאוחד); <b>בעולם Flowz מוצר נפרד</b>, טומיקס אולי שותף כרטיסים בחו"ל</td><td class="st-ok">האינסטינקט של אלעד — זה המפתח למבנה</td></tr>
+        <tr><td><b>רשימה שחורה</b></td><td>לא לעבוד עם קופות תל אביב ולא עם <span class="en">Live Nation</span></td><td class="st-bad">רגיש בדיני תחרות</td></tr>
+        <tr><td><b>כסף</b></td><td>"קצת כסף אחורה", משכורות למייסדים + מפתחים + שירות לפי צורך; תקציב לפי <span class="en">roadmap</span></td><td class="st-warn">להפוך לתקציב מחויב עם אבני דרך</td></tr>
+        <tr><td><b>Earn-out</b></td><td>הוזכר, לא הוגדר (של מי, על מה)</td><td class="st-warn">המושג הנכון הוא <span class="en">earn-in</span></td></tr>
+        <tr><td><b>סוג העסקה</b></td><td>לא ברור: רכישה / השקעה / מיזם משותף</td><td class="st-bad">השאלה הפתוחה המרכזית</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 5 · PROS -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-gr">חיובי</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">למה זו הזדמנות אמיתית</h2>
+    <div class="two-col rise d2" style="margin-top:14px">
+      <div class="card">
+        <h3 class="h-md" style="color:var(--green)">מה שאי-אפשר לקנות בכסף</h3>
+        <ul class="list ok" style="margin-top:10px">
+          <li><b>הפצה מיום ראשון.</b> עשרות-מאות לקוחות מרכזיים דרך מערכת יחסים קיימת — זה החסם הכי קשה שלנו (<span class="en">client acquisition</span>), והם מציעים לפתור אותו.</li>
+          <li><b>דאטה בקנה מידה.</b> <span class="en">1.5M</span> כרטיסים בשנה, בכל הורטיקלים שתכננו להגיע אליהם תוך שנים — אירועים, תיירות, קולינריה. מודלי <span class="en">LTV</span>, צ'רן ותובנות שלא ניתן לבנות על לקוח אחד.</li>
+          <li><b>הכנסות ו-<span class="en">PMF</span> מהר.</b> במקום 5–8 שותפי-עיצוב שצריך לגייס אחד-אחד — שוק שלם שמגיע דרך שחקן אחד.</li>
+          <li><b>אמינות.</b> "טומיקס בחרו בנו" פותח דלתות בשוק הישראלי ובמשקיעים.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="h-md" style="color:var(--green)">מה שמוריד סיכון</h3>
+        <ul class="list ok" style="margin-top:10px">
+          <li><b>משכורות ותקציב.</b> מייסדים, מפתחים ואנשי שירות ממומנים — מסלול <span class="en">runway</span> בלי סבב גיוס עכשיו.</li>
+          <li><b>"כסף אחורה".</b> הכרה בעבודה שנעשתה — נדיר בשלב הזה.</li>
+          <li><b>אבן בוחן לאינטגרציות.</b> <span class="en">Meta / WhatsApp</span> — "עקב אכילס" שלנו — נבדק על לקוח אמיתי עם משקל.</li>
+          <li><b>מסלול לחו"ל.</b> אם מערכת הכרטיסים שלהם מתרחבת — שותף הפצה פוטנציאלי בטריטוריות חדשות, בלי לוותר על עצמאות המוצר שם.</li>
+          <li><b>הם כבר אמרו את המשפט החשוב:</b> "בעולם — מוצר נפרד". זה הבסיס למבנה שמגן על הגלובלית.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="foot-note rise d3">שורה תחתונה: הפוטנציאל הוא אמיתי. השאלה אינה "כן/לא" — אלא <b>באיזה מבנה</b>.</p>
+  </div>
+</section>
+
+<!-- 6 · CONS -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-rd">שלילי · סיכונים</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">מה יכול להרוס את החברה אם חותמים לא נכון</h2>
+    <div class="two-col rise d2" style="margin-top:14px">
+      <div class="card">
+        <h3 class="h-md" style="color:var(--red)">סיכונים מבניים</h3>
+        <ul class="list bad" style="margin-top:10px">
+          <li><b><span class="en">Captive company</span>.</b> חברת כרטיסים עם <span class="en">30%+</span> — משקיעי <span class="en">VC</span> יראו חברה שבויה. לפי המודל שלנו: מייסדים ב-<span class="en">~67%</span> אחרי <span class="en">Seed</span> הופכים ל-<span class="en">~46%</span>. מתחת לקו שרוב הקרנות משקיעות בו.</li>
+          <li><b>נייטרליות.</b> <span class="en">Decision Intelligence</span> חייב להיות <span class="en">ticketing-agnostic</span>. לקוחות של חברות כרטיסים אחרות לא יאמצו "ה-<span class="en">CRM</span> של טומיקס".</li>
+          <li><b><span class="en">Role stacking</span>.</b> משקיע + מפיץ + שותף-עיצוב + ספק דאטה + שותף אינטגרציה = נקודת כשל אחת. אם היחסים מתקלקלים — הכול מת בבת אחת.</li>
+          <li><b>רוכשים יורדים מהשולחן.</b> <span class="en">Live Nation</span>, <span class="en">Eventim</span> — לא יקנו חברה שמתחרה שלהם מחזיק בה שליש.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="h-md" style="color:var(--red)">סיכונים משפטיים ותפעוליים</h3>
+        <ul class="list bad" style="margin-top:10px">
+          <li><b>הסדר כובל.</b> בלעדיות + רשימה שחורה + שחקן גדול בשוק הכרטיסים — שאלה של חוק התחרות. לא כותבים את זה בשום מקום לפני דעת עו"ד.</li>
+          <li><b>משכורות כרצועה.</b> אם טומיקס מממנת שכר חודש-בחודש — הם שולטים בלי להחזיק. רק תקציב מחויב שמשוחרר לפי אבני דרך.</li>
+          <li><b>הטיית מוצר.</b> שותף-עיצוב שהוא גם בעלים ידחוף את ה-<span class="en">roadmap</span> לכיוון מערכת הכרטיסים שלו.</li>
+          <li><b>עוגן שווי נמוך.</b> "<span class="en">30%</span> תמורת דאטה והפצה" בלי מזומן = שווי משתמע נמוך מאוד שילווה אותנו לסבב הבא.</li>
+          <li><b>אין חברה.</b> אין 30% של כלום למכור. ההתאגדות (ישראל / דלאוור, תושבות מס) נכרכה בעסקה.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 · THE FORK -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-or">ההכרעה</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">זו לא עסקה אחת — זו בחירה בין שתי חברות</h2>
+    <div class="fork rise d2">
+      <div class="card a">
+        <h3>חברה A · סטארטאפ גלובלי</h3>
+        <p class="body"><span class="en">Venture-scale Decision Intelligence platform</span>. דלאוור, <span class="en">QSBS</span>, סבבי <span class="en">VC</span>, אקזיט גלובלי — הכול שבנינו עד היום.</p>
+        <div style="margin-top:10px;font-size:13px;color:var(--ink-soft)">מייסדים אחרי <span class="en">Seed</span> (עם <span class="en">SAFE</span> של 5%):</div>
+        <div class="big" style="color:var(--blue)">~67%</div>
+        <div style="margin-top:6px;font-size:13px;color:var(--ink-soft)">מייסדים אחרי <span class="en">Seed</span> עם טומיקס ב-30%:</div>
+        <div class="big" style="color:var(--red)">~46%</div>
+        <p class="body" style="margin-top:8px;font-size:13px">מתחת לקו שבו רוב הקרנות משקיעות. שחקן אסטרטגי ב-<span class="en">30%+</span> על הקאפ-טייבל הזה הורג את המסלול.</p>
+      </div>
+      <div class="card b">
+        <h3>חברה B · מערכת ההפעלה של כלכלת החוויות בישראל</h3>
+        <p class="body">עם טומיקס. הכנסות מהר, חפיר של דאטה, הפצה. תקרה נמוכה יותר, תלות בשותף אחד.</p>
+        <ul class="list" style="margin-top:10px">
+          <li>מודל "חברת שירות" — בדיוק מה שהם תיארו</li>
+          <li>מצוין כעסק. חלש כסטארטאפ גלובלי.</li>
+          <li>אם זו הבחירה — בוחרים אותה בעיניים פקוחות, לא בטעות.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="resolve rise d3">האינסטינקט של אלעד — "בעולם מוצר נפרד" — הוא הפתרון: <b>בונים את שתיהן, בשני כלים, ושומרים על הגלובלית נקייה.</b> טומיקס מקבלת נתח גדול בדיוק איפה שהתרומה שלה נוחתת — בישראל. זה המבנה שנקרא <span class="en">Two Houses</span>.</div>
+  </div>
+</section>
+
+<!-- 8 · STRUCTURE 1: TWO HOUSES -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-gr">מבנה 1 · מומלץ</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px"><span class="en">Two Houses</span> — שני בתים, תפקיד לכל אחד</h2>
+    <div class="houses rise d2">
+      <div class="house">
+        <h3>בית 1 · <span class="en">Flowz Global</span></h3>
+        <div class="sub">HoldCo · IP owner · the startup</div>
+        <div class="split"><div style="flex:82;background:var(--blue)">מייסדים 82%</div><div style="flex:11;background:var(--orange)">toMix</div><div style="flex:7;background:#B4A890">Pool</div></div>
+        <ul class="list">
+          <li>מחזיקה 100% מה-<span class="en">IP</span>, מהמוצר ומהמותג מחוץ לישראל</li>
+          <li>טומיקס <b>מוגבלת ל-10–15%</b> — דרך <b>השקעה במזומן לפי שווי</b>; אופציה עד מקסימום 20% על אבני דרך <b>גלובליות</b></li>
+          <li>זכויות מיעוט בלבד: <span class="en">information rights, pro-rata, tag-along</span></li>
+          <li><b>בלי</b> בלעדיות · <b>בלי</b> וטו על גיוסים · <b>בלי</b> <span class="en">ROFR</span> על סבבים · המייסדים שולטים בדירקטוריון</li>
+          <li>מאגר יועצים + <span class="en">ESOP</span> יושבים כאן</li>
+        </ul>
+      </div>
+      <div class="bridge"><div>רישיון בלעדי לישראל</div><div class="arr">⇄</div><div><span class="en">Grant-back</span> של שיפורים</div><div class="arr">⇄</div><div>תובנות מצרפיות לגלובל</div></div>
+      <div class="house jv">
+        <h3>בית 2 · <span class="en">Flowz Israel</span></h3>
+        <div class="sub">JV · OpCo · the operating business</div>
+        <div class="split"><div style="flex:60;background:var(--blue)">Global 60%</div><div style="flex:40;background:var(--orange)">toMix 40%</div></div>
+        <ul class="list">
+          <li>טומיקס <b>30–49%</b> — מורווח ב-<span class="en">earn-in</span> לפי אבני דרך; <span class="en">Global</span> שומרת 51%+ ושליטה על מוצר ו-<span class="en">roadmap</span></li>
+          <li>רישיון בלעדי 3 שנים, מתחדש לפי <b>מינימום ביצועים</b> — לא עמדו? הבלעדיות פוקעת ומניות לא-מובשלות מחולטות</li>
+          <li>התרומה שלהם, כל פריט מתומחר: רישיון דאטה · התחייבות הפצה במספרים · <b>תקציב תפעול ממומן</b> · אינטגרציה כקונקטור אחד · מזומן בסגירה</li>
+          <li>יציאה: <span class="en">Call</span> לנו אחרי שנה N · <span class="en">Put</span> להם בנוסחה נמוכה · <span class="en">Change of control</span> בטומיקס מבטל הכול</li>
+          <li><span class="en">Non-compete</span> מטומיקס על <span class="en">CRM/DI</span></li>
+        </ul>
+      </div>
+    </div>
+    <p class="foot-note rise d3">למה זה עובד לשני הצדדים: הם מקבלים את הנתח הגדול שרצו, בכלי שבו ההפצה והדאטה שלהם באמת יוצרים ערך. אנחנו שומרים קאפ-טייבל נקי לגיוס גלובלי. שתי הדלתות נשארות פתוחות.</p>
+  </div>
+</section>
+
+<!-- 9 · STRUCTURE 2: SINGLE ENTITY EARN-IN (deep) -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-go">מבנה 2 · חלופה</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">חברה אחת, <span class="en">Earn-in</span> מדורג — לעומק</h2>
+    <p class="lede rise d1" style="margin-top:8px;font-size:15px">מתי זה המבנה הנכון: עו"ד אומר ששני גופים יקרים/מסורבלים מדי עכשיו · טומיקס מסרבת ל-<span class="en">JV</span> ורוצה "את החברה" · צריך לסגור מהר. זה עובד — אם בונים אותו עם בלמים.</p>
+    <div class="three-col rise d2" style="margin-top:14px">
+      <div class="card">
+        <h3 class="h-md">המכניקה</h3>
+        <ul class="list" style="margin-top:8px">
+          <li><b>בסגירה: 10%</b> תמורת <b>מזומן</b> לפי שווי (למשל <span class="en">$250K</span> על <span class="en">$2.25M pre</span>)</li>
+          <li><b>+5% על כל אבן דרך × 4</b> → תקרה קשיחה של <b>30%</b></li>
+          <li>הכלי: <span class="en">warrants</span> שמומשים בהתקיים יעד, או מניות עם <b>חילוט</b> (<span class="en">forfeiture</span>) אם היעד לא הושג — עו"ד יגיד מה נכון במס</li>
+          <li>כל אבן דרך: יעד מדיד + תאריך + זכות ביקורת (<span class="en">audit right</span>)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="h-md">ארבע אבני הדרך המוצעות</h3>
+        <ul class="list" style="margin-top:8px">
+          <li><b>M1 · חודש 6:</b> צינור דאטה חי + <span class="en">Genesis</span> מחובר + 10 לקוחות משלמים</li>
+          <li><b>M2 · חודש 12:</b> 25 לקוחות משלמים או <span class="en">ARR ₪1M</span></li>
+          <li><b>M3 · חודש 18:</b> אינטגרציית כרטיסים חיה + 40 לקוחות</li>
+          <li><b>M4 · חודש 24:</b> <span class="en">ARR ₪2.5M</span> + 60 לקוחות + נתוני 3 ורטיקלים</li>
+          <li>לא עמדו ביעד עד התאריך? הנתח לא משתחרר. <b>לא "התקדמות משביעת רצון".</b></li>
+        </ul>
+      </div>
+      <div class="card" style="border-top:5px solid var(--red)">
+        <h3 class="h-md" style="color:var(--red)">מה זה עולה לנו — והבלמים</h3>
+        <ul class="list bad" style="margin-top:8px">
+          <li>מסלול ה-<span class="en">VC</span> מצטמצם: מייסדים <span class="en">~49%</span> אחרי <span class="en">Seed</span> (מול <span class="en">~63%</span> ב-<span class="en">Two Houses</span>)</li>
+          <li><b>בלם 1 — זכות פיצול:</b> זכות שלנו להעביר את ישראל ל-<span class="en">JV</span> בעתיד, וטומיקס ממירה את הנתח לשם</li>
+          <li><b>בלם 2 — בלעדיות הפצה בלבד,</b> 3 שנים, מותנית, ישראל בלבד; שום הגבלה על אינטגרציות</li>
+          <li><b>בלם 3 — רשימת וטו קצרה,</b> בלי וטו על גיוסים; רוב מייסדים בדירקטוריון</li>
+          <li><b>בלם 4 — <span class="en">Buy-back</span>:</b> זכות לרכוש בחזרה נתחי <span class="en">earn-in</span> בנוסחה אם טומיקס מפסיקה להפיץ</li>
+        </ul>
+      </div>
+    </div>
+    <p class="foot-note rise d3">הדבר שאסור לשכוח: גם במבנה הזה, ה-30% הם <b>תקרה שמרוויחים</b>, לא נקודת פתיחה. נקודת הפתיחה היא 10% תמורת מזומן.</p>
+  </div>
+</section>
+
+<!-- 10 · STRUCTURES 3+4 -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-pu">מבנים 3–4 · להכיר, לא בהכרח לבחור</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">שתי חלופות נוספות על השולחן</h2>
+    <div class="two-col rise d2" style="margin-top:14px">
+      <div class="card" style="border-top:5px solid var(--teal)">
+        <h3 class="h-md">מבנה 3 · שותפות מסחרית תחילה</h3>
+        <p class="body" style="margin-top:6px"><b>בלי נתח גדול עכשיו.</b> הסכם הפצה עם חלוקת הכנסות (<span class="en">revenue share</span>) + רישיון דאטה + <span class="en">warrant</span> קטן של 5–10% שמומש רק אם ההפצה מוכיחה את עצמה. אחרי 12 חודשים — זכות לשני הצדדים לשדרג ל-<span class="en">JV</span> או להשקעה.</p>
+        <ul class="list" style="margin-top:10px">
+          <li><b>בעד:</b> הכי זול ומהיר לסגור; הכי מגן על הגלובלית; מודדים לפני שמתחתנים</li>
+          <li><b>נגד:</b> טומיקס אמרו במפורש שהם רוצים נתח גדול — עלול להיקרא כ"לא רציניים"; פחות תקציב ממומן</li>
+          <li><b>מתי:</b> אם הפער בשווי גדול מדי, או אם רוצים לבדוק את איכות ההפצה שלהם לפני כל התחייבות</li>
+        </ul>
+      </div>
+      <div class="card" style="border-top:5px solid var(--red)">
+        <h3 class="h-md">מבנה 4 · "כמו שביקשו" — חברת שירות</h3>
+        <p class="body" style="margin-top:6px"><b>30–35% בסגירה</b> תמורת מזומן + דאטה + הפצה, מודל תפעולי, משכורות ממומנות. זה מה שתיארו. חשוב לראות מה זה אומר במספרים.</p>
+        <ul class="list bad" style="margin-top:10px">
+          <li>שווי משתמע: <span class="en">$300K</span> מזומן על 33% = <span class="en">~$0.6M pre-money</span> — פחות משליש ממה שדיברנו ל-<span class="en">SAFE</span></li>
+          <li>מייסדים אחרי <span class="en">Seed</span>: <span class="en">~46%</span>. אחרי <span class="en">Series A</span>: <span class="en">~35%</span></li>
+          <li>בפועל: חברה B. יכול להיות עסק מצוין — אבל זו בחירה, לא ברירת מחדל</li>
+          <li><b>אם הולכים לשם:</b> רק עם <span class="en">earn-out</span> אמיתי למייסדים על רכישה עתידית, חוזי העסקה ארוכים, ו-<span class="en">put</span> שלנו</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 · COMPARISON -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-bl">השוואה</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">ארבעת המבנים מול מה שחשוב לנו</h2>
+    <table class="cmp rise d2" style="margin-top:14px">
+      <thead><tr><th style="text-align:right">קריטריון</th><th>1 · <span class="en">Two Houses</span></th><th>2 · <span class="en">Earn-in</span> בחברה אחת</th><th>3 · מסחרי תחילה</th><th>4 · כמו שביקשו</th></tr></thead>
+      <tbody>
+        <tr><td>מסלול <span class="en">VC</span> גלובלי</td><td><span class="m-good">נשמר</span></td><td><span class="m-mid">מצטמצם</span></td><td><span class="m-good">נשמר</span></td><td><span class="m-bad">נסגר</span></td></tr>
+        <tr><td>מייסדים אחרי <span class="en">Seed</span> (גלובלי)</td><td><span class="m-good">~63%</span></td><td><span class="m-mid">~49%</span></td><td><span class="m-good">~65%</span></td><td><span class="m-bad">~46%</span></td></tr>
+        <tr><td>תיאבון של טומיקס</td><td><span class="m-mid">צריך לשכנע</span></td><td><span class="m-good">גבוה</span></td><td><span class="m-bad">נמוך</span></td><td><span class="m-good">זה מה שרצו</span></td></tr>
+        <tr><td>מהירות סגירה</td><td><span class="m-mid">בינונית</span></td><td><span class="m-good">מהירה</span></td><td><span class="m-good">מהירה מאוד</span></td><td><span class="m-good">מהירה</span></td></tr>
+        <tr><td>עלות משפטית</td><td><span class="m-bad">גבוהה</span></td><td><span class="m-mid">בינונית</span></td><td><span class="m-good">נמוכה</span></td><td><span class="m-mid">בינונית</span></td></tr>
+        <tr><td>שליטה במוצר ו-<span class="en">roadmap</span></td><td><span class="m-good">שלנו</span></td><td><span class="m-mid">שלנו עם וטו</span></td><td><span class="m-good">שלנו</span></td><td><span class="m-bad">משותפת</span></td></tr>
+        <tr><td>תקציב ממומן + משכורות</td><td><span class="m-good">כן, ב-<span class="en">JV</span></span></td><td><span class="m-good">כן</span></td><td><span class="m-mid">חלקי</span></td><td><span class="m-good">כן</span></td></tr>
+        <tr><td>גמישות יציאה</td><td><span class="m-good"><span class="en">Call/Put</span></span></td><td><span class="m-mid"><span class="en">Buy-back</span></span></td><td><span class="m-good">פשוטה</span></td><td><span class="m-bad">נמוכה</span></td></tr>
+        <tr><td>סיכון הסדר כובל</td><td><span class="m-mid">קיים — ניסוח</span></td><td><span class="m-mid">קיים — ניסוח</span></td><td><span class="m-good">נמוך</span></td><td><span class="m-bad">גבוה</span></td></tr>
+      </tbody>
+    </table>
+    <p class="foot-note rise d3">המספרים — מהמחשבון בשקף הבא, על ברירות המחדל שלו. שנו את ההנחות ותראו איך העמודות זזות.</p>
+  </div>
+</section>
+
+<!-- 12 · SCENARIOS -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-go">3 תרחישים כלכליים</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">שווי, נתחים, תקציב — ומה נשאר למייסדים</h2>
+    <div class="scen rise d2" id="scenCards"></div>
+    <div class="rise d3" style="margin-top:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <button class="btn" onclick="openCalc('s1')">פתח את המחשבון — לשנות מספרים ולראות מה קורה</button>
+      <span style="font-size:12.5px;color:var(--ink-soft)">כל שדה ניתן לעריכה · הנתונים נשמרים במכשיר הזה · "איפוס" מחזיר לברירת המחדל</span>
+    </div>
+  </div>
+</section>
+
+<!-- 13 · ROADMAP -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-bl">מפת דרכים · 24 חודשים</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">אבני דרך, תקציב ומה משתחרר מתי</h2>
+    <div class="mtabs rise d1" id="rmTabs"></div>
+    <div class="tl rise d2" id="rmTl"></div>
+    <div class="budget-bar rise d3" id="rmBudget"></div>
+    <p class="foot-note rise d4">העיקרון: כל שחרור של נתח = יעד שעמדו בו. כל שחרור של תקציב = אבן דרך תפעולית. שום דבר לא משתחרר על "תחושה טובה".</p>
+  </div>
+</section>
+
+<!-- 14 · DEMANDS -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-or">מה אנחנו דורשים</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">רשימת הדרישות — 11 סעיפים שנכנסים ל-<span class="en">term sheet</span></h2>
+    <div class="dem rise d2">
+      <div class="d"><div class="n">1</div><div class="t"><b>מזומן לפי שווי אמיתי.</b> לגרום להם לנקוב כמה היו משלמים <u>במזומן</u> על 30%. המספר חושף את ה-<span class="en">valuation</span> האמיתי ומתמחר כל רכיב שאינו מזומן.</div></div>
+      <div class="d"><div class="n">2</div><div class="t"><b>התחייבויות הפצה מינימליות.</b> מספרים, תאריכים, השלכות: חילוט מניות / פקיעת בלעדיות.</div></div>
+      <div class="d"><div class="n">3</div><div class="t"><b>היקף רישיון הדאטה בכתב.</b> מאגרים, שדות, תדירות רענון, בסיס הסכמה, זכויות תובנות-נגזרות לגלובל, הישרדות אחרי סיום.</div></div>
+      <div class="d"><div class="n">4</div><div class="t"><b>נייטרליות מוצר.</b> ה-<span class="en">roadmap</span> שלנו; מערכת הכרטיסים שלהם היא אינטגרציה, לא תלות; הפרדת מותגים בישראל — הרעיון שלהם, נועלים אותו.</div></div>
+      <div class="d"><div class="n">5</div><div class="t"><b>תקציב ממומן ומחויב.</b> 18–24 חודשים, משוחרר לפי אבני דרך. לא שיקול דעת חודשי.</div></div>
+      <div class="d"><div class="n">6</div><div class="t"><b>הגנות מייסדים.</b> <span class="en">Vesting</span> עם <span class="en">double-trigger acceleration</span>, רוב בדירקטוריון הגלובלי, סף <span class="en">drag-along</span> גבוה, <span class="en">tag-along</span>.</div></div>
+      <div class="d"><div class="n">7</div><div class="t"><b>חופש גלובלי.</b> שום הגבלה מחוץ לישראל. לכל היותר <span class="en">ROFN</span> מוגבל בזמן על טריטוריות מוגדרות — תמורת משהו קונקרטי.</div></div>
+      <div class="d"><div class="n">8</div><div class="t"><b>הגנת <span class="en">change of control</span>.</b> טומיקס נרכשת → הבלעדיות והרישיון מתבטלים, נפתח לנו <span class="en">call</span>.</div></div>
+      <div class="d"><div class="n">9</div><div class="t"><b>יעדי <span class="en">earn-in</span> מדידים</b> עם זכויות ביקורת. בלי "התקדמות משביעת רצון".</div></div>
+      <div class="d"><div class="n">10</div><div class="t"><b><span class="en">Non-compete</span> מטומיקס</b> על <span class="en">CRM/DI</span>; <span class="en">non-solicit</span> הדדי.</div></div>
+      <div class="d"><div class="n">11</div><div class="t"><b><span class="en">No-shop</span> מוגבל</b> ל-30–45 יום — ורק אחרי <span class="en">term sheet</span> חתום.</div></div>
+      <div class="d" style="border-color:var(--orange);background:#FFF8F2"><div class="n">+</div><div class="t"><b>אנחנו מנסחים את ה-<span class="en">term sheet</span>.</b> מי ששולט בנייר שולט במסגרת השיחה.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 15 · RED LINES -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-rd">קווים אדומים</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">על מה לא מתפשרים — וממה קמים מהשולחן</h2>
+    <div class="rl rise d2">
+      <div class="card"><h3>בלעדיות על אינטגרציות</h3><p>אם הבלעדיות נוגעת ב<b>איזה דאטה</b> המוצר קולט — לא. ייבוא <span class="en">ticketing-agnostic</span> הוא עמוד השדרה. בלי זה המוצר מת מחוץ לבסיס של טומיקס.</p></div>
+      <div class="card"><h3>וטו על גיוסים בגלובלית</h3><p>שום <span class="en">protective provision</span> על סבבי הון, ושום <span class="en">ROFR</span> על סבבים עתידיים בחברה הגלובלית. זה הופך אותנו ל-<span class="en">captive</span> בפועל.</p></div>
+      <div class="card"><h3>יותר מ-20% בגלובלית</h3><p>התקרה. 10–15% בכניסה, עד 20% על אבני דרך גלובליות. מעבר לזה — הנתח עובר ל-<span class="en">JV</span>, לא לגלובלית.</p></div>
+      <div class="card"><h3>הגבלות מחוץ לישראל</h3><p>שום בלעדיות, שום <span class="en">ROFR</span> על טריטוריות. לכל היותר <span class="en">ROFN</span> מוגבל בזמן — ורק תמורת משהו.</p></div>
+      <div class="card"><h3>משכורות כשיקול דעת</h3><p>תקציב שלא מחויב מראש ומשוחרר לפי אבני דרך — הוא רצועה, לא השקעה. לא חותמים על "נראה לפי הצורך".</p></div>
+      <div class="card"><h3>הסדר כובל לא-מכוסה</h3><p>רשימה שחורה כתובה בלי דעת עו"ד על פטור סוג — לא. חשיפה אישית ולחברה.</p></div>
+    </div>
+    <p class="foot-note rise d3">כל השאר — מחיר, אחוזים, תקופות, אבני דרך — נתון למו"מ. הקווים האדומים לא.</p>
+  </div>
+</section>
+
+<!-- 16 · PROCESS -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-bl">תהליך</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">מהשיחה ועד לחתימה — חמישה שלבים</h2>
+    <div class="steps rise d2">
+      <div class="step"><div class="k">1</div><b>החלטה פנימית</b>אלעד + אביב: חברה A / B / <span class="en">Two Houses</span>. לא נכנסים לחדר בלי עמדה.</div>
+      <div class="step"><div class="k">2</div><b>עו"ד · 24.08</b>מבנה, התאגדות, הסדר כובל, מס, הערכת עלות. לבקש מחיר קבוע לשלב ה-<span class="en">term sheet</span>.</div>
+      <div class="step"><div class="k">3</div><b>הנתונים החסרים</b>מספר המזומן של טומיקס ל-30% · <span class="en">roadmap</span> + תקציב 18–24 חודשים · 4 אבני הדרך שלנו.</div>
+      <div class="step"><div class="k">4</div><b><span class="en">Term Sheet</span> — שלנו</b>מזכר הבנות לא-מחייב שאנחנו מנסחים: מבנה, נתחים, אבני דרך, בלעדיות, דאטה, תקציב, ממשל, יציאה.</div>
+      <div class="step"><div class="k">5</div><b>הסכמים מחייבים</b>ניסוח, <span class="en">DD</span> הדדי, חתימה, סגירה. בדרך כלל 6–10 שבועות מ-<span class="en">term sheet</span> חתום.</div>
+    </div>
+    <h3 class="h-md rise d3" style="margin-top:18px">המסמכים שייוולדו מזה</h3>
+    <div class="docs rise d3">
+      <span><span class="en">Term Sheet</span> / מזכר הבנות</span><span>הסכם בעלי מניות — <span class="en">SHA</span></span><span>הסכם השקעה</span><span>רישיון <span class="en">IP</span> (גלובל → <span class="en">JV</span>)</span><span>הסכם הפצה</span><span>רישיון דאטה + <span class="en">DPA</span></span><span>הסכם תקציב/שירותים</span><span>הסכמי מייסדים + <span class="en">vesting</span></span><span>הסכמי העסקה</span><span><span class="en">NDA</span> ✓ (כבר קיים)</span>
+    </div>
+    <p class="foot-note rise d4">תזכורת: "שותפות אסטרטגית" היא טריגר לתשלום במכתב ההתקשרות של <span class="en">GGS</span> — סגירה מפעילה את ה-₪20K הדחויים. העבודה על העסקה עצמה — לפי שעות, מחוץ לתקרה.</p>
+  </div>
+</section>
+
+<!-- 17 · COUNSEL PREP -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-gr">הכנה לעו"ד · 24.08</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">14 שאלות לגולדפרב — לפי סדר חשיבות</h2>
+    <div class="qs rise d2">
+      <div class="q"><div class="n">1</div><div><b>מבנה:</b> חברה אחת מול <span class="en">Two Houses</span> — יתרונות, חסרונות, עלות, מס, תזמון. אפשר <span class="en">term sheet</span> שמשקף <span class="en">JV</span> לפני שהוא קיים?</div></div>
+      <div class="q"><div class="n">2</div><div><b>התאגדות:</b> עם אסטרטגי ישראלי ב-30%, דלאוור עדיין נכון — או חברה ישראלית עכשיו ו-<span class="en">flip</span> אחר כך? "שליטה וניהול" ותושבות מס.</div></div>
+      <div class="q"><div class="n">3</div><div><b>מניות תמורת תמורה לא-מזומנית</b> (דאטה, הפצה, שירותים): תמחור, אירועי מס בהקצאה, מע"מ.</div></div>
+      <div class="q"><div class="n">4</div><div><b>מנגנון <span class="en">earn-in</span>:</b> <span class="en">warrants</span> מול מניות עם חילוט מול <span class="en">reverse vesting</span>; איך מנסחים אבני דרך שישרדו מחלוקת.</div></div>
+      <div class="q"><div class="n">5</div><div><b>בלעדיות + רשימה שחורה:</b> סיכון הסדר כובל, התאמה לפטור סוג, ניסוח בטוח — טריטוריה, תקופה, תנאי ביצוע, הפצה בלבד.</div></div>
+      <div class="q"><div class="n">6</div><div><b>מה 30%+ פותח</b> לפי חוק החברות והתקנון; אילו <span class="en">protective provisions</span> מקובלות ואילו לסרב; מנגנוני <span class="en">deadlock</span> ב-<span class="en">JV</span>.</div></div>
+      <div class="q"><div class="n">7</div><div><b><span class="en">Earn-out</span> מול <span class="en">earn-in</span>:</b> מס למייסדים; "כסף אחורה" בסגירה — הדרך הנקייה ביותר.</div></div>
+      <div class="q"><div class="n">8</div><div><b>דאטה:</b> בסיס חוקי ל-1.5M רוכשים (תיקון 13), בעל/מעבד מאגר, הסכמה/אנונימיזציה, העברה לחו"ל אם האם זרה.</div></div>
+      <div class="q"><div class="n">9</div><div><b><span class="en">IP</span>:</b> נשאר בגלובלית, רישיון ל-<span class="en">JV</span>, <span class="en">grant-back</span>, מה קורה בסיום.</div></div>
+      <div class="q"><div class="n">10</div><div><b>הגנות מייסדים:</b> <span class="en">vesting</span>/האצה, שליטה בדירקטוריון, ספי <span class="en">drag/tag</span>, תנאי העסקה שממומנים מתקציב טומיקס.</div></div>
+      <div class="q"><div class="n">11</div><div><b>שינוי שליטה בטומיקס:</b> זכויות סיום/<span class="en">call</span>; אכיפות.</div></div>
+      <div class="q"><div class="n">12</div><div><b>ניגוד עניינים:</b> בדיקה בכתב על טומיקס ועל הבודק הטכני (דירקטור/<span class="en">CFO</span>).</div></div>
+      <div class="q"><div class="n">13</div><div><b>תהליך ועלות:</b> מי מנסח, מגבלות <span class="en">no-shop</span>, מחיר קבוע לשלב ה-<span class="en">term sheet</span>.</div></div>
+      <div class="q"><div class="n">14</div><div><b><span class="en">Bundling</span></b> של המוצר עם מערכת הכרטיסים שלהם — חששות <span class="en">tying</span>; סעיפי נייטרליות.</div></div>
+    </div>
+    <p class="foot-note rise d3">מה מביאים לפגישה: ההחלטה הפנימית (שקפים 18–19) · שלושת התרחישים · רשימת הדרישות · הקווים האדומים. עו"ד מייעל מבנה — הוא לא בוחר אותו.</p>
+  </div>
+</section>
+
+<!-- 18 · DECISIONS 1-4 -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise" style="display:flex;gap:10px;align-items:center"><span class="chip chip-or">החלטות · 1–4</span><span style="font-size:12.5px;color:var(--ink-soft)">לחיצה בוחרת · נשמר במכשיר · מסתכם בשקף 20</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:8px">מה אנחנו מחליטים — יחד, לפני שמישהו אחר מחליט בשבילנו</h2>
+
+    <div class="dblock rise d2" data-did="D1">
+      <div class="dh"><span class="did">D1</span><h3>איזו חברה אנחנו?</h3><span class="state">לא הוחלט</span></div>
+      <div class="opts">
+        <div class="opt" data-v="Two Houses — גלובלית נקייה + JV ישראלי"><span class="rec">מומלץ</span><span class="pick-dot"></span><div class="k"><span class="en">Two Houses</span></div><div class="t">גלובלית נקייה (טומיקס ≤15–20%) + <span class="en">JV</span> ישראלי שבו טומיקס מקבלת 30–49%.</div><div class="note">שתי הדלתות פתוחות · עלות משפטית גבוהה יותר</div></div>
+        <div class="opt" data-v="חברה A — סטארטאפ גלובלי, טומיקס קטנה"><span class="pick-dot"></span><div class="k">חברה A · סטארטאפ גלובלי</div><div class="t">טומיקס כמשקיע קטן (≤15%) + שותפות מסחרית. בלי <span class="en">JV</span>.</div><div class="note">הכי נקי · הכי קשה למכור להם</div></div>
+        <div class="opt" data-v="חברה B — מערכת ההפעלה של ישראל, עם טומיקס"><span class="pick-dot"></span><div class="k">חברה B · ישראל עם טומיקס</div><div class="t">30%+ בחברה אחת, מודל שירות. בוחרים את זה בעיניים פקוחות.</div><div class="note">מהיר · סוגר את מסלול ה-<span class="en">VC</span></div></div>
+      </div>
+    </div>
+
+    <div class="dblock rise d3" data-did="D2">
+      <div class="dh"><span class="did">D2</span><h3>תקרת טומיקס בחברה הגלובלית</h3><span class="state">לא הוחלט</span></div>
+      <div class="opts four">
+        <div class="opt" data-v="10% בכניסה, עד 15%"><span class="pick-dot"></span><div class="k"><span class="en">10% → 15%</span></div><div class="t">שמרני. משאיר מקום ל-<span class="en">Seed + A</span> בלי לחץ.</div></div>
+        <div class="opt" data-v="10–15% בכניסה, עד 20% על אבני דרך גלובליות"><span class="rec">מומלץ</span><span class="pick-dot"></span><div class="k"><span class="en">10–15% → 20%</span></div><div class="t">הגיוני. ה-20% רק על יעדים גלובליים (הכרטיסים שלהם בחו"ל).</div></div>
+        <div class="opt" data-v="עד 25%"><span class="pick-dot"></span><div class="k"><span class="en">→ 25%</span></div><div class="t">גבול הסכנה. קרנות יתחילו לשאול שאלות.</div></div>
+        <div class="opt" data-v="אין חברה גלובלית נפרדת"><span class="pick-dot"></span><div class="k">אין גלובלית</div><div class="t">רלוונטי רק אם בחרנו חברה B.</div></div>
+      </div>
+    </div>
+
+    <div class="dblock rise d4" data-did="D3">
+      <div class="dh"><span class="did">D3</span><h3>הבלעדיות בישראל</h3><span class="state">לא הוחלט</span></div>
+      <div class="opts">
+        <div class="opt" data-v="הפצה בלבד · 3 שנים · מותנית מינימום ביצועים"><span class="rec">מומלץ</span><span class="pick-dot"></span><div class="k">הפצה בלבד · 3 שנים · מותנית</div><div class="t">מתחדשת לפי <span class="en">minimum performance</span>. שום הגבלה על אינטגרציות.</div></div>
+        <div class="opt" data-v="הפצה בלבד · 2 שנים · מותנית"><span class="pick-dot"></span><div class="k">הפצה בלבד · 2 שנים</div><div class="t">קצר יותר — מנוף לחץ חזק יותר עלינו, אבל פחות מחויבות מהם.</div></div>
+        <div class="opt" data-v="ללא בלעדיות — עדיפות (ROFN) בלבד"><span class="pick-dot"></span><div class="k">בלי בלעדיות · <span class="en">ROFN</span></div><div class="t">עדיפות ראשונה בלבד. כנראה לא יעבור אצלם.</div></div>
+      </div>
+    </div>
+
+    <div class="dblock rise d5" data-did="D4">
+      <div class="dh"><span class="did">D4</span><h3>מודל המימון</h3><span class="state">לא הוחלט</span></div>
+      <div class="opts">
+        <div class="opt" data-v="מזומן לפי שווי + תקציב ממומן 24 חודשים + כסף אחורה"><span class="rec">מומלץ</span><span class="pick-dot"></span><div class="k">מזומן + תקציב 24ח' + כסף אחורה</div><div class="t">השקעה במזומן בגלובלית, תקציב מחויב ב-<span class="en">JV</span>, מזומן בסגירה על העבר.</div></div>
+        <div class="opt" data-v="מזומן לפי שווי בלבד — בלי תקציב ממומן"><span class="pick-dot"></span><div class="k">מזומן בלבד</div><div class="t">הכי נקי. אנחנו מנהלים את הכסף. פחות "שותפות".</div></div>
+        <div class="opt" data-v="תקציב ממומן בלבד — בלי השקעה במזומן"><span class="pick-dot"></span><div class="k">תקציב בלבד</div><div class="t">מה שהם רמזו. בלי מזומן לפי שווי — אין עוגן שווי. מסוכן.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 19 · DECISIONS 5-8 -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-or">החלטות · 5–8</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:8px">אבני דרך, קווים אדומים, מי מנסח ומתי עונים</h2>
+
+    <div class="dblock rise d2" data-did="D5">
+      <div class="dh"><span class="did">D5</span><h3>על מה מבוסס ה-<span class="en">earn-in</span> של טומיקס?</h3><span class="state">לא הוחלט</span></div>
+      <div class="opts">
+        <div class="opt" data-v="משולב: לקוחות + ARR + דאטה + אינטגרציה (M1–M4)"><span class="rec">מומלץ</span><span class="pick-dot"></span><div class="k">משולב · 4 אבני דרך</div><div class="t">לקוחות, <span class="en">ARR</span>, דאטה חיה, אינטגרציה. כל אחת מודדת תרומה אחרת שלהם.</div></div>
+        <div class="opt" data-v="לקוחות משלמים בלבד"><span class="pick-dot"></span><div class="k">לקוחות בלבד</div><div class="t">פשוט למדידה. מתעלם מאיכות הדאטה ומההכנסות.</div></div>
+        <div class="opt" data-v="ARR בלבד"><span class="pick-dot"></span><div class="k"><span class="en">ARR</span> בלבד</div><div class="t">הכי "אמיתי" — אבל תלוי בתמחור שלנו, לא רק בהפצה שלהם.</div></div>
+      </div>
+    </div>
+
+    <div class="dblock rise d3 multi" data-did="D6" data-multi="1">
+      <div class="dh"><span class="did">D6</span><h3>הקווים האדומים שלנו — סמנו את כל מה שעליו קמים מהשולחן</h3><span class="state">לא הוחלט</span></div>
+      <div class="opts four">
+        <div class="opt" data-v="בלעדיות על אינטגרציות"><span class="pick-dot"></span><div class="k">בלעדיות על אינטגרציות</div><div class="t">נוגע בדאטה שהמוצר קולט.</div></div>
+        <div class="opt" data-v="וטו על גיוסים / ROFR בגלובלית"><span class="pick-dot"></span><div class="k">וטו על גיוסים בגלובלית</div><div class="t">או <span class="en">ROFR</span> על סבבים.</div></div>
+        <div class="opt" data-v="יותר מ-20% בגלובלית"><span class="pick-dot"></span><div class="k">>20% בגלובלית</div><div class="t">מעבר לזה — ל-<span class="en">JV</span>.</div></div>
+        <div class="opt" data-v="הגבלות מחוץ לישראל"><span class="pick-dot"></span><div class="k">הגבלות מחוץ לישראל</div><div class="t">בלעדיות/<span class="en">ROFR</span> על טריטוריות.</div></div>
+        <div class="opt" data-v="משכורות כשיקול דעת חודשי"><span class="pick-dot"></span><div class="k">תקציב לא מחויב</div><div class="t">משכורות "לפי הצורך".</div></div>
+        <div class="opt" data-v="רשימה שחורה כתובה ללא דעת עו&quot;ד"><span class="pick-dot"></span><div class="k">רשימה שחורה בלי עו"ד</div><div class="t">חשיפה להסדר כובל.</div></div>
+        <div class="opt" data-v="בלי non-compete מטומיקס"><span class="pick-dot"></span><div class="k">בלי <span class="en">non-compete</span> מהם</div><div class="t">הם יכולים לבנות/לקנות מתחרה.</div></div>
+        <div class="opt" data-v="בלי הגנת change of control"><span class="pick-dot"></span><div class="k">בלי <span class="en">change of control</span></div><div class="t">הם נרכשים — אנחנו תקועים.</div></div>
+      </div>
+    </div>
+
+    <div class="two-col" style="margin-top:4px">
+      <div class="dblock rise d4" data-did="D7">
+        <div class="dh"><span class="did">D7</span><h3>מי מנסח את ה-<span class="en">term sheet</span>?</h3><span class="state">לא הוחלט</span></div>
+        <div class="opts">
+          <div class="opt" data-v="אנחנו (דרך GGS)"><span class="rec">מומלץ</span><span class="pick-dot"></span><div class="k">אנחנו</div><div class="t">שולטים בנייר ובמסגרת.</div></div>
+          <div class="opt" data-v="הם"><span class="pick-dot"></span><div class="k">הם</div><div class="t">חוסך כסף — עולה במסגרת.</div></div>
+          <div class="opt" data-v="במשותף — סשן אחד על הלבן"><span class="pick-dot"></span><div class="k">במשותף</div><div class="t">סשן אחד על הלבן, ואז אנחנו כותבים.</div></div>
+        </div>
+      </div>
+      <div class="dblock rise d5" data-did="D8">
+        <div class="dh"><span class="did">D8</span><h3>מתי חוזרים לטומיקס עם עמדה?</h3><span class="state">לא הוחלט</span></div>
+        <div class="opts">
+          <div class="opt" data-v="תוך שבוע — עם מבנה מוצע, בלי מספרים סופיים"><span class="rec">מומלץ</span><span class="pick-dot"></span><div class="k">תוך שבוע</div><div class="t">מבנה מוצע + שאלות. בלי מספרים סופיים.</div></div>
+          <div class="opt" data-v="תוך שבועיים — עם term sheet פנימי מוכן"><span class="pick-dot"></span><div class="k">תוך שבועיים</div><div class="t">עם <span class="en">term sheet</span> פנימי מוכן.</div></div>
+          <div class="opt" data-v="רק אחרי שהם נוקבים מספר מזומן"><span class="pick-dot"></span><div class="k">אחרי המספר שלהם</div><div class="t">קודם שהם ינקבו מזומן ל-30%.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 20 · SUMMARY -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-gr">סיכום ההחלטות</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:8px">מה החלטנו — ומה עושים עכשיו</h2>
+    <div class="sum rise d2">
+      <div class="card">
+        <h3 class="h-md" style="margin-bottom:6px">ההחלטות שלנו</h3>
+        <div id="sumRows"></div>
+        <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn sm" onclick="copySummary()">העתק סיכום לוואטסאפ</button>
+          <button class="btn sm ghost" onclick="resetDecisions()">אפס החלטות</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3 class="h-md" style="margin-bottom:10px">לפני הפגישה מחר</h3>
+        <div class="check" id="checks">
+          <button class="chk" data-c="c1"><span class="box">✓</span><span class="lbl">אלעד + אביב סגרו D1–D4 (לפחות)</span></button>
+          <button class="chk" data-c="c2"><span class="box">✓</span><span class="lbl">שאלנו את טומיקס: כמה מזומן על 30%?</span></button>
+          <button class="chk" data-c="c3"><span class="box">✓</span><span class="lbl">טיוטת <span class="en">roadmap</span> + תקציב 18–24 חודשים</span></button>
+          <button class="chk" data-c="c4"><span class="box">✓</span><span class="lbl">4 אבני הדרך — בניסוח שלנו</span></button>
+          <button class="chk" data-c="c5"><span class="box">✓</span><span class="lbl">מכתב <span class="en">GGS</span> חתום + בקשת בדיקת ניגוד עניינים</span></button>
+          <button class="chk" data-c="c6"><span class="box">✓</span><span class="lbl">סטטוס חתימת <span class="en">NDA</span> בצד של טומיקס</span></button>
+        </div>
+        <h3 class="h-md" style="margin:16px 0 8px">אחרי הפגישה</h3>
+        <ul class="list" style="font-size:13px">
+          <li>לעדכן את המצגת ואת המסמך בוואלט לפי עמדת עו"ד</li>
+          <li>להכין טיוטת <span class="en">term sheet</span> (שלנו) תוך 7–10 ימים</li>
+          <li>לחזור לטומיקס לפי D8 — מבנה לפני מספרים</li>
+        </ul>
+      </div>
+    </div>
+    <p class="foot-note rise d3">שורה תחתונה: הפוטנציאל אמיתי. הסכנה אינה ב-30% — אלא <b>איפה</b> ה-30% יושבים. טומיקס בבית הישראלי, הגלובלית נקייה, שתי הדלתות פתוחות.</p>
+  </div>
+</section>
+
+</div>
+
+<!-- CALCULATOR MODAL -->
+<div class="modal" id="calcModal" onclick="if(event.target===this)closeCalc()">
+  <div class="mbox">
+    <button class="close" onclick="closeCalc()">✕</button>
+    <div class="chip chip-go">מחשבון העסקה</div>
+    <h2 style="font-size:22px;margin-top:8px">שווי · נתחים · תקציב — <span style="color:var(--ink-soft);font-weight:500;font-size:16px">כל שדה ניתן לעריכה, הטבלאות מתעדכנות מיד</span></h2>
+    <div class="mtabs" id="calcTabs"></div>
+    <div class="mgrid">
+      <div class="inputs" id="calcInputs"></div>
+      <div class="out" id="calcOut"></div>
+    </div>
+  </div>
+</div>
+
+<div class="nav" id="dots"></div>
+<div class="arrows">
+  <button class="arrow-btn" id="prev">→ הקודם</button>
+  <button class="arrow-btn" id="next">הבא ←</button>
+</div>
+<div class="slide-num" id="snum">01 / 20</div>
+
+<script>
+/* ---------- gate (obfuscation only, not security) ---------- */
+const GATE_KEY='tmx-gate-ok';
+function gateTry(){
+  const v=document.getElementById('gateIn').value.trim().toLowerCase();
+  if(v==='2houses'||v==='two houses'||v==='twohouses'){sessionStorage.setItem(GATE_KEY,'1');document.getElementById('gate').style.display='none';}
+  else document.getElementById('gateErr').textContent='קוד לא נכון';
+}
+document.getElementById('gateIn').addEventListener('keydown',e=>{if(e.key==='Enter')gateTry();});
+document.getElementById('gate').style.display='none'; /* hub-level login (middleware) now protects this page; client gate retired */
+
+/* ---------- slide engine (RTL: left = next) ---------- */
+const slides=[...document.querySelectorAll('.slide')];
+const dotsWrap=document.getElementById('dots');
+slides.forEach((_,i)=>{const d=document.createElement('button');d.className='dot'+(i===0?' on':'');d.onclick=()=>go(i);dotsWrap.appendChild(d);});
+const dots=[...dotsWrap.children];
+let cur=0;
+function go(i){
+  cur=Math.max(0,Math.min(slides.length-1,i));
+  slides.forEach((s,k)=>s.classList.toggle('active',k===cur));
+  dots.forEach((d,k)=>d.classList.toggle('on',k===cur));
+  document.querySelector('.progress').style.width=((cur+1)/slides.length*100)+'%';
+  document.getElementById('snum').textContent=String(cur+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
+  if(cur===slides.length-1)renderSummary();
+  location.hash='s'+(cur+1);
+}
+document.getElementById('next').onclick=()=>go(cur+1);
+document.getElementById('prev').onclick=()=>go(cur-1);
+addEventListener('keydown',e=>{
+  if(document.getElementById('calcModal').classList.contains('open')){if(e.key==='Escape')closeCalc();return;}
+  if(document.activeElement&&document.activeElement.tagName==='INPUT')return;
+  if(['ArrowLeft',' ','PageDown'].includes(e.key)){e.preventDefault();go(cur+1);}
+  if(['ArrowRight','PageUp'].includes(e.key)){e.preventDefault();go(cur-1);}
+});
+let tx=null;
+addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;tx=null;if(Math.abs(dx)>60&&matchMedia('(min-width:901px)').matches){go(cur+(dx>0?1:-1));}},{passive:true});
+const h=parseInt((location.hash||'').replace('#s',''));
+go(isNaN(h)?0:h-1);
+
+/* ---------- scenarios model ---------- */
+const SC_DEFAULTS={
+  s1:{name:'תרחיש 1 · Two Houses',short:'Two Houses',rec:true,
+      desc:'גלובלית: טומיקס משקיעה מזומן לפי שווי, מוגבלת ל-10–15%, אופציה ל-20%. JV ישראלי: טומיקס מרוויחה 40% ב-4 אבני דרך, מממנת תקציב 24 חודשים.',
+      mode:'two',
+      preMoney:2500000,cash:300000,optMax:20,poolForm:8,seedAmt:1500000,seedPost:8000000,poolTop:10,
+      jvTarget:40,tr1:10,tr2:10,tr3:10,tr4:10,m1:0,m2:6,m3:12,m4:18,
+      budget:150000,months:24,cashBack:250000,fx:3.7},
+  s2:{name:'תרחיש 2 · חברה אחת, Earn-in',short:'Earn-in',rec:false,
+      desc:'חברה אחת. טומיקס 10% בסגירה תמורת מזומן, +5% על כל אבן דרך עד 30%. תקציב ממומן 24 חודשים. Seed רגיל אחר כך.',
+      mode:'one',
+      preMoney:2250000,cash:250000,optMax:30,poolForm:8,seedAmt:1500000,seedPost:8000000,poolTop:10,
+      jvTarget:30,tr1:5,tr2:5,tr3:5,tr4:5,m1:6,m2:12,m3:18,m4:24,
+      budget:120000,months:24,cashBack:150000,fx:3.7},
+  s3:{name:'תרחיש 3 · כמו שביקשו',short:'כמו שביקשו',rec:false,
+      desc:'חברה אחת. 33% בסגירה תמורת מזומן + דאטה + הפצה. מודל שירות, תקציב ממומן. המספרים מראים למה זה מסוכן.',
+      mode:'one',
+      preMoney:609000,cash:300000,optMax:33,poolForm:8,seedAmt:1500000,seedPost:8000000,poolTop:10,
+      jvTarget:33,tr1:0,tr2:0,tr3:0,tr4:0,m1:0,m2:0,m3:0,m4:0,
+      budget:150000,months:24,cashBack:300000,fx:3.7}
+};
+const SC_KEY='tmx-calc-v1';
+let SC=JSON.parse(JSON.stringify(SC_DEFAULTS));
+try{const saved=JSON.parse(localStorage.getItem(SC_KEY)||'null');if(saved){for(const k in saved){if(SC[k])Object.assign(SC[k],saved[k]);}}}catch(e){}
+function saveSC(){localStorage.setItem(SC_KEY,JSON.stringify(SC));}
+
+const FIELDS=[
+  ['h','חברה גלובלית / החברה'],
+  ['preMoney','שווי לפני הכסף (pre-money, $)'],
+  ['cash','מזומן שטומיקס משקיעה ($)'],
+  ['optMax','תקרת טומיקס — אחוז מקסימלי (%)'],
+  ['poolForm','מאגר אופציות בהתאגדות (%)'],
+  ['h','Seed עתידי'],
+  ['seedAmt','סכום ה-Seed ($)'],
+  ['seedPost','שווי post-money ב-Seed ($)'],
+  ['poolTop','מאגר אחרי Seed (% מה-post)'],
+  ['h','Earn-in של טומיקס'],
+  ['jvTarget','יעד נתח טומיקס — JV / earn-in (%)'],
+  ['tr1','אבן דרך 1 — נתח (%)'],['m1','אבן דרך 1 — חודש'],
+  ['tr2','אבן דרך 2 — נתח (%)'],['m2','אבן דרך 2 — חודש'],
+  ['tr3','אבן דרך 3 — נתח (%)'],['m3','אבן דרך 3 — חודש'],
+  ['tr4','אבן דרך 4 — נתח (%)'],['m4','אבן דרך 4 — חודש'],
+  ['h','תקציב ממומן'],
+  ['budget','תקציב חודשי (₪)'],
+  ['months','חודשים'],
+  ['cashBack','"כסף אחורה" בסגירה (₪)'],
+  ['fx','שער ₪ ל-$']
+];
+const fmt$=n=>'$'+Math.round(n).toLocaleString('en-US');
+const fmtILS=n=>'₪'+Math.round(n).toLocaleString('en-US');
+const pct=n=>(Math.round(n*10)/10).toFixed(1)+'%';
+
+function calc(s){
+  const r={};
+  const pool0=s.poolForm/100;
+  // closing
+  const tmClose=s.cash/(s.preMoney+s.cash);
+  const f0=(1-pool0);
+  let founders=f0*(1-tmClose), pool=pool0*(1-tmClose), tm=tmClose;
+  r.closing={founders,pool,tm,post:s.preMoney+s.cash};
+  // earn-in (single-entity mode): toMix reaches jvTarget cumulative via new issuance
+  const trSum=(s.tr1+s.tr2+s.tr3+s.tr4);
+  let target=s.mode==='one'?Math.min(s.optMax,Math.max(tmClose*100,tmClose*100+trSum))/100:Math.min(s.optMax,tmClose*100)/100;
+  if(s.mode==='one'&&trSum>0){ // issue new shares so toMix = target of FD
+    const others=founders+pool; const scale=(1-target)/others;
+    founders*=scale;pool*=scale;tm=target;
+  }
+  r.afterEarn={founders,pool,tm};
+  // seed
+  const seedPct=s.seedAmt/s.seedPost; const poolT=s.poolTop/100;
+  const rest=1-seedPct-poolT;
+  const base=founders+tm; // old pool folds into new pool
+  r.afterSeed={founders:rest*founders/base,tm:rest*tm/base,pool:poolT,seed:seedPct};
+  // option to max (two-houses: global option)
+  if(s.mode==='two'){
+    const tmMax=s.optMax/100; const sc2=(1-tmMax)/(r.closing.founders+r.closing.pool);
+    r.ifOption={founders:r.closing.founders*sc2,pool:r.closing.pool*sc2,tm:tmMax};
+    r.ifOptionSeed={founders:rest*r.ifOption.founders/(r.ifOption.founders+tmMax),tm:rest*tmMax/(r.ifOption.founders+tmMax)};
+  }
+  // JV
+  const trs=[[s.tr1,s.m1],[s.tr2,s.m2],[s.tr3,s.m3],[s.tr4,s.m4]];
+  let cum=0; r.jv=trs.map((t,i)=>{cum+=t[0];return {i:i+1,pct:t[0],cum:Math.min(cum,s.jvTarget),month:t[1]};});
+  // money
+  r.budgetTotal=s.budget*s.months; r.fundTotalILS=r.budgetTotal+s.cashBack; r.fundTotal$=r.fundTotalILS/s.fx;
+  r.consideration$=s.cash+r.fundTotal$;
+  r.tmTotalPct=s.mode==='two'?r.afterEarn.tm:r.afterEarn.tm;
+  r.impliedPre=(s.cash/Math.max(r.closing.tm,0.0001))-s.cash;
+  r.pricePerPoint=r.consideration$/Math.max((s.mode==='two'?s.optMax:r.afterEarn.tm*100),1);
+  return r;
+}
+
+/* scenario cards on slide 12 */
+function renderCards(){
+  const wrap=document.getElementById('scenCards');wrap.innerHTML='';
+  ['s1','s2','s3'].forEach(k=>{
+    const s=SC[k],r=calc(s);
+    const fSeed=r.afterSeed.founders*100;
+    const cls=fSeed>=58?'good':(fSeed>=50?'':'warn');
+    wrap.innerHTML+=`<div class="sc ${s.rec?'rec':''}">${s.rec?'<span class="badge">מומלץ</span>':''}
+      <h3>${s.name}</h3><div class="sub">${s.desc}</div>
+      <div class="stat"><span>מזומן בכניסה</span><b>${fmt$(s.cash)}</b></div>
+      <div class="stat"><span>שווי pre-money</span><b>${fmt$(s.preMoney)}</b></div>
+      <div class="stat"><span>טומיקס בגלובלית / בחברה</span><b>${pct(r.closing.tm*100)} → ${pct((s.mode==='two'?s.optMax/100:r.afterEarn.tm)*100)}</b></div>
+      ${s.mode==='two'?`<div class="stat"><span>טומיקס ב-JV (יעד)</span><b>${pct(s.jvTarget)}</b></div>`:`<div class="stat"><span>earn-in</span><b>${s.tr1+s.tr2+s.tr3+s.tr4>0?'4 אבני דרך':'—'}</b></div>`}
+      <div class="stat"><span>תקציב ממומן + כסף אחורה</span><b>${fmtILS(r.fundTotalILS)}</b></div>
+      <div class="stat"><span><b style="font-size:12.5px;color:var(--ink-soft)">מייסדים אחרי Seed</b></span><b class="${cls}">${pct(fSeed)}</b></div>
+      <div style="margin-top:8px"><button class="btn sm ghost" onclick="openCalc('${k}')">פתח במחשבון</button></div>
+    </div>`;
+  });
+}
+renderCards();
+
+/* modal */
+let curSc='s1';
+function openCalc(k){curSc=k;document.getElementById('calcModal').classList.add('open');renderCalc();}
+function closeCalc(){document.getElementById('calcModal').classList.remove('open');renderCards();renderRoadmap();}
+function renderCalc(){
+  const tabs=document.getElementById('calcTabs');tabs.innerHTML='';
+  ['s1','s2','s3'].forEach(k=>{const b=document.createElement('button');b.className='mtab'+(k===curSc?' on':'');b.textContent=SC[k].name;b.onclick=()=>{curSc=k;renderCalc();};tabs.appendChild(b);});
+  const rb=document.createElement('button');rb.className='mtab';rb.style.marginRight='auto';rb.textContent='איפוס לברירת מחדל';rb.onclick=()=>{SC[curSc]=JSON.parse(JSON.stringify(SC_DEFAULTS[curSc]));saveSC();renderCalc();};tabs.appendChild(rb);
+  const s=SC[curSc];
+  const inp=document.getElementById('calcInputs');inp.innerHTML='';
+  FIELDS.forEach(([k,l])=>{
+    if(k==='h'){inp.innerHTML+=`<h4>${l}</h4>`;return;}
+    inp.innerHTML+=`<div class="inp"><label>${l}</label><input type="number" step="any" data-k="${k}" value="${s[k]}"></div>`;
+  });
+  inp.querySelectorAll('input').forEach(el=>el.oninput=()=>{const v=parseFloat(el.value);if(!isNaN(v)){s[el.dataset.k]=v;saveSC();renderOut();}});
+  renderOut();
+}
+function renderOut(){
+  const s=SC[curSc],r=calc(s);
+  const o=document.getElementById('calcOut');
+  const fSeed=r.afterSeed.founders*100;
+  let html=`<div class="kpis">
+    <div class="kpi"><div class="l">שווי post-money בסגירה</div><div class="v">${fmt$(r.closing.post)}</div></div>
+    <div class="kpi"><div class="l">טומיקס בסגירה</div><div class="v">${pct(r.closing.tm*100)}</div></div>
+    <div class="kpi"><div class="l">סך תמורה של טומיקס (מזומן + תקציב + כסף אחורה)</div><div class="v">${fmt$(r.consideration$)}</div></div>
+    <div class="kpi"><div class="l">מייסדים אחרי Seed</div><div class="v ${fSeed>=58?'good':(fSeed<50?'bad':'')}">${pct(fSeed)}</div></div>
+  </div>`;
+  html+=`<div><h4>${s.mode==='two'?'בית 1 · החברה הגלובלית':'החברה'} — טבלת בעלויות</h4><table class="calc"><thead><tr><th>שלב</th><th>מייסדים</th><th>טומיקס</th><th>מאגר</th><th>Seed</th></tr></thead><tbody>
+    <tr><td>התאגדות</td><td>${pct(100-s.poolForm)}</td><td>0%</td><td>${pct(s.poolForm)}</td><td>—</td></tr>
+    <tr><td>סגירה (מזומן ${fmt$(s.cash)} על ${fmt$(s.preMoney)} pre)</td><td>${pct(r.closing.founders*100)}</td><td>${pct(r.closing.tm*100)}</td><td>${pct(r.closing.pool*100)}</td><td>—</td></tr>`;
+  if(s.mode==='one')html+=`<tr><td>אחרי כל אבני הדרך (earn-in)</td><td>${pct(r.afterEarn.founders*100)}</td><td>${pct(r.afterEarn.tm*100)}</td><td>${pct(r.afterEarn.pool*100)}</td><td>—</td></tr>`;
+  else html+=`<tr><td>אם האופציה ממומשת עד ${pct(s.optMax)}</td><td>${pct(r.ifOption.founders*100)}</td><td>${pct(r.ifOption.tm*100)}</td><td>${pct(r.ifOption.pool*100)}</td><td>—</td></tr>`;
+  html+=`<tr class="hl"><td>אחרי Seed (${fmt$(s.seedAmt)} על ${fmt$(s.seedPost)} post, מאגר ${pct(s.poolTop)})</td><td>${pct(fSeed)}</td><td>${pct(r.afterSeed.tm*100)}</td><td>${pct(r.afterSeed.pool*100)}</td><td>${pct(r.afterSeed.seed*100)}</td></tr>`;
+  if(s.mode==='two')html+=`<tr><td>אחרי Seed — אם האופציה מומשה</td><td>${pct(r.ifOptionSeed.founders*100)}</td><td>${pct(r.ifOptionSeed.tm*100)}</td><td>${pct(s.poolTop)}</td><td>${pct(r.afterSeed.seed*100)}</td></tr>`;
+  html+=`</tbody></table></div>`;
+  if(s.mode==='two'){
+    html+=`<div><h4>בית 2 · JV ישראלי — earn-in של טומיקס (יעד ${pct(s.jvTarget)})</h4><table class="calc"><thead><tr><th>אבן דרך</th><th>חודש</th><th>נתח משוחרר</th><th>טומיקס מצטבר</th><th>Flowz Global</th></tr></thead><tbody>`;
+    r.jv.forEach(j=>{html+=`<tr><td>M${j.i}</td><td>${j.month}</td><td>${pct(j.pct)}</td><td>${pct(j.cum)}</td><td>${pct(100-j.cum)}</td></tr>`;});
+    html+=`</tbody></table></div>`;
+  } else if(s.tr1+s.tr2+s.tr3+s.tr4>0){
+    html+=`<div><h4>לוח ה-earn-in (מצטבר, מתוך החברה)</h4><table class="calc"><thead><tr><th>אבן דרך</th><th>חודש</th><th>נתח משוחרר</th><th>טומיקס מצטבר</th></tr></thead><tbody>`;
+    let c=r.closing.tm*100;r.jv.forEach(j=>{c=Math.min(s.optMax,c+j.pct);html+=`<tr><td>M${j.i}</td><td>${j.month}</td><td>${pct(j.pct)}</td><td>${pct(c)}</td></tr>`;});
+    html+=`</tbody></table></div>`;
+  }
+  html+=`<div><h4>כסף</h4><table class="calc"><tbody>
+    <tr><td>תקציב ממומן (${fmtILS(s.budget)} × ${s.months} חודשים)</td><td>${fmtILS(r.budgetTotal)}</td></tr>
+    <tr><td>"כסף אחורה" בסגירה</td><td>${fmtILS(s.cashBack)}</td></tr>
+    <tr><td>סך מימון תפעולי</td><td>${fmtILS(r.fundTotalILS)} ≈ ${fmt$(r.fundTotal$)}</td></tr>
+    <tr><td>שווי pre-money משתמע מהמזומן בלבד</td><td>${fmt$(r.impliedPre)}</td></tr>
+    <tr class="hl"><td>מחיר לכל נקודת אחוז של טומיקס (סך תמורה ÷ נתח מקסימלי)</td><td>${fmt$(r.pricePerPoint)}</td></tr>
+  </tbody></table></div>`;
+  html+=`<div class="mnote">איך לקרוא את זה: השורה המודגשת בטבלה הראשונה היא המספר שמשקיע Seed יראה. מתחת ל-50% למייסדים — רוב הקרנות יעצרו. "מחיר לנקודת אחוז" הוא הדרך להשוות בין תרחישים שבהם התמורה מעורבת (מזומן + תקציב + דאטה): ככל שהוא גבוה יותר, טומיקס משלמת יותר על כל אחוז.${s.mode==='two'?' ב-Two Houses — הנתח הגדול של טומיקס יושב ב-JV ולא נוגע בטבלה הגלובלית.':''}</div>`;
+  o.innerHTML=html;
+}
+
+/* roadmap slide */
+const RM={
+  s1:{pts:[['חתימת term sheet','חודש 0','s'],['סגירה + מזומן + כסף אחורה','חודש 1','s'],['M1 · דאטה חיה + Genesis + 10 לקוחות','חודש 6','m'],['M2 · 25 לקוחות / ARR ₪1M','חודש 12','m'],['M3 · אינטגרציה + 40 לקוחות','חודש 18','m'],['M4 · ARR ₪2.5M · 60 לקוחות','חודש 24','m'],['Seed גלובלי','חודש 18–24','s']]},
+  s2:{pts:[['חתימת term sheet','חודש 0','s'],['סגירה · טומיקס 10%','חודש 1','s'],['M1 · +5% · דאטה + Genesis','חודש 6','m'],['M2 · +5% · 25 לקוחות','חודש 12','m'],['M3 · +5% · אינטגרציה + 40','חודש 18','m'],['M4 · +5% · ARR ₪2.5M','חודש 24','m'],['Seed','חודש 18–24','s']]},
+  s3:{pts:[['חתימת term sheet','חודש 0','s'],['סגירה · טומיקס 33%','חודש 1','s'],['פריסה מלאה בטומיקס','חודש 3','m'],['לקוחות דרך ההפצה','חודש 6–12','m'],['הרחבת צוות שירות','חודש 12','m'],['Seed (קשה במבנה הזה)','חודש 18+','s'],['הערכה מחדש','חודש 24','s']]}
+};
+let curRm='s1';
+function renderRoadmap(){
+  const tabs=document.getElementById('rmTabs');tabs.innerHTML='';
+  ['s1','s2','s3'].forEach(k=>{const b=document.createElement('button');b.className='mtab'+(k===curRm?' on':'');b.textContent=SC[k].name;b.onclick=()=>{curRm=k;renderRoadmap();};tabs.appendChild(b);});
+  const s=SC[curRm],r=calc(s);
+  const tl=document.getElementById('rmTl');
+  tl.innerHTML='<div class="line"></div><div class="fill" style="width:100%"></div><div class="pts">'+RM[curRm].pts.map(p=>`<div class="pt ${p[2]}"><b>${p[0]}</b><span class="when">${p[1]}</span></div>`).join('')+'</div>';
+  const tot=r.fundTotalILS;
+  document.getElementById('rmBudget').innerHTML=`
+    <div class="card"><div class="l">תקציב חודשי ממומן</div><div class="v">${fmtILS(s.budget)}</div></div>
+    <div class="card"><div class="l">סך 24 חודשים + כסף אחורה</div><div class="v">${fmtILS(tot)}</div></div>
+    <div class="card"><div class="l">מזומן לפי שווי (גלובלית/חברה)</div><div class="v">${fmt$(s.cash)}</div></div>
+    <div class="card"><div class="l">מייסדים אחרי Seed</div><div class="v" style="color:${r.afterSeed.founders>=.58?'var(--green)':(r.afterSeed.founders<.5?'var(--red)':'var(--ink)')}">${pct(r.afterSeed.founders*100)}</div></div>`;
+}
+renderRoadmap();
+
+/* ---------- decisions ---------- */
+const DEC_KEY='tmx-decisions-v1';
+let DEC={};try{DEC=JSON.parse(localStorage.getItem(DEC_KEY)||'{}');}catch(e){DEC={};}
+const DTITLES={D1:'איזו חברה אנחנו',D2:'תקרת טומיקס בגלובלית',D3:'בלעדיות בישראל',D4:'מודל המימון',D5:'בסיס ה-earn-in',D6:'קווים אדומים',D7:'מי מנסח term sheet',D8:'מתי חוזרים לטומיקס'};
+document.querySelectorAll('.dblock').forEach(blk=>{
+  const id=blk.dataset.did, multi=blk.dataset.multi==='1';
+  const opts=[...blk.querySelectorAll('.opt')];
+  const state=blk.querySelector('.state');
+  function paint(){
+    const v=DEC[id];
+    opts.forEach(o=>o.classList.toggle('sel',multi?(Array.isArray(v)&&v.includes(o.dataset.v)):v===o.dataset.v));
+    const has=multi?(Array.isArray(v)&&v.length>0):!!v;
+    state.textContent=has?(multi?`${v.length} נבחרו ✓`:'הוחלט ✓'):'לא הוחלט';state.classList.toggle('done',has);
+  }
+  opts.forEach(o=>o.onclick=()=>{
+    if(multi){let arr=Array.isArray(DEC[id])?DEC[id]:[];arr=arr.includes(o.dataset.v)?arr.filter(x=>x!==o.dataset.v):[...arr,o.dataset.v];DEC[id]=arr;}
+    else DEC[id]=(DEC[id]===o.dataset.v?null:o.dataset.v);
+    localStorage.setItem(DEC_KEY,JSON.stringify(DEC));paint();
+  });
+  paint();
+});
+function renderSummary(){
+  const w=document.getElementById('sumRows');w.innerHTML='';
+  Object.keys(DTITLES).forEach(id=>{
+    const v=DEC[id];const has=Array.isArray(v)?v.length>0:!!v;
+    w.innerHTML+=`<div class="row"><span class="did">${id}</span><span><span style="color:var(--ink-soft)">${DTITLES[id]}: </span><span class="val ${has?'':'none'}">${has?(Array.isArray(v)?v.join(' · '):v):'טרם הוחלט'}</span></span></div>`;
+  });
+}
+function resetDecisions(){if(confirm('לאפס את כל ההחלטות?')){DEC={};localStorage.removeItem(DEC_KEY);document.querySelectorAll('.dblock .opt').forEach(o=>o.classList.remove('sel'));document.querySelectorAll('.dblock .state').forEach(s=>{s.textContent='לא הוחלט';s.classList.remove('done');});renderSummary();}}
+function copySummary(){
+  let t='עסקת toMix — סיכום החלטות ('+new Date().toLocaleDateString('he-IL')+')\n';
+  Object.keys(DTITLES).forEach(id=>{const v=DEC[id];const has=Array.isArray(v)?v.length>0:!!v;t+=`${id} ${DTITLES[id]}: ${has?(Array.isArray(v)?v.join(' · '):v):'טרם הוחלט'}\n`;});
+  const r1=calc(SC.s1),r2=calc(SC.s2),r3=calc(SC.s3);
+  t+=`\nמייסדים אחרי Seed — תרחיש 1: ${pct(r1.afterSeed.founders*100)} · תרחיש 2: ${pct(r2.afterSeed.founders*100)} · תרחיש 3: ${pct(r3.afterSeed.founders*100)}\n`;
+  navigator.clipboard.writeText(t).then(()=>alert('הועתק'));
+}
+/* checklist */
+const CHK_KEY='tmx-checks-v1';let CHK={};try{CHK=JSON.parse(localStorage.getItem(CHK_KEY)||'{}');}catch(e){}
+document.querySelectorAll('.chk').forEach(b=>{const k=b.dataset.c;b.classList.toggle('done',!!CHK[k]);b.onclick=()=>{CHK[k]=!CHK[k];localStorage.setItem(CHK_KEY,JSON.stringify(CHK));b.classList.toggle('done',!!CHK[k]);};});
+renderSummary();
+</script>
+</body>
+</html>

@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#FAF6EF">
+  <title>Flowz × ToMix · תמונת העסקה ושיחת רועי</title>
+  <meta name="description" content="מצגת עבודה פנימית: תמונת העסקה המעודכנת והכנה אסטרטגית לשיחה עם רועי גולדפרב.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --cream:#FAF6EF; --cream-deep:#F3EDE2; --card:#FFFDF9;
+      --ink:#2B2620; --ink-soft:#6E6659; --line:#E4DACB;
+      --orange:#F0641E; --orange-soft:#FDE8DC;
+      --blue:#3B82F6; --blue-soft:#DBEAFE;
+      --green:#3E8914; --green-soft:#DCF3C8;
+      --purple:#8B5CF6; --purple-soft:#EFE3FA;
+      --teal:#0D9488; --teal-soft:#CCF3EC;
+      --gold:#E8A93D; --gold-soft:#FCF0D8; --gold-ink:#A8720F;
+      --red:#D14343; --red-soft:#FBE3E3;
+      --radius:22px; --shadow:0 10px 34px rgba(90,70,40,.10);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{font-family:'Rubik',system-ui,sans-serif;background:var(--cream);color:var(--ink);overflow:hidden;direction:rtl}
+    h1,h2,h3{font-family:'Rubik',sans-serif}
+    b,strong{font-weight:700}
+    a{color:inherit}
+    button,input{font:inherit}
+    button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid rgba(240,100,30,.35);outline-offset:3px}
+    .en{font-family:'Sora',sans-serif;direction:ltr;unicode-bidi:isolate;display:inline-block}
+    .num{direction:ltr;unicode-bidi:isolate;font-variant-numeric:tabular-nums;display:inline-block}
+
+    /* deck chrome — mirrors the Flowz Hub deal deck */
+    .deck{position:relative;width:100vw;height:100vh}
+    .slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:44px 64px 84px;opacity:0;visibility:hidden;transform:translateY(24px);transition:opacity .5s ease,transform .5s ease,visibility 0s .5s}
+    .slide.active{opacity:1;visibility:visible;transform:translateY(0);transition:opacity .5s ease,transform .5s ease}
+    .slide-inner{width:100%;max-width:1180px;max-height:calc(100vh - 120px);overflow:auto;padding:4px 2px 14px}
+    .slide-inner::-webkit-scrollbar{width:6px}.slide-inner::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px}
+    .progress{position:fixed;right:0;top:0;height:4px;background:var(--orange);width:0;transition:width .4s ease;z-index:60;border-radius:4px 0 0 4px}
+    .nav{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:60;flex-wrap:wrap;justify-content:center;max-width:60vw;direction:ltr}
+    .dot{width:9px;height:9px;border-radius:50%;background:#D9CFBE;cursor:pointer;transition:.25s;border:none;padding:0}
+    .dot.on{background:var(--orange);transform:scale(1.35)}
+    .arrows{position:fixed;bottom:14px;left:22px;display:flex;gap:8px;z-index:60;direction:rtl}
+    .arrow-btn{height:42px;padding:0 16px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);font-size:14px;font-weight:700;color:var(--ink);cursor:pointer;transition:.2s;box-shadow:0 3px 10px rgba(90,70,40,.07)}
+    .arrow-btn:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+    .slide-num{position:fixed;bottom:24px;right:26px;font-size:12px;letter-spacing:.14em;color:#B4A890;z-index:60;font-weight:600;direction:ltr}
+    .conf{position:fixed;top:16px;right:22px;z-index:60;font-size:11.5px;font-weight:800;letter-spacing:.08em;color:var(--red);background:var(--red-soft);border-radius:999px;padding:7px 14px}
+    .brand{position:fixed;top:16px;left:22px;z-index:60;font-family:'Sora';font-size:12px;font-weight:800;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:999px;padding:7px 14px;letter-spacing:.04em}
+    .brand em{font-style:normal;color:var(--orange)}
+
+    /* shared */
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;letter-spacing:.08em;color:var(--orange);margin-bottom:14px}
+    .eyebrow .dotmark{width:8px;height:8px;border-radius:50%;background:var(--orange);animation:pulse 2.4s infinite}
+    @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.5}}
+    .h-xl{font-size:54px;line-height:1.1;font-weight:800;letter-spacing:-.01em}
+    .h-lg{font-size:34px;line-height:1.18;font-weight:800}
+    .h-md{font-size:19px;font-weight:700}
+    .lede{font-size:17px;line-height:1.7;color:var(--ink-soft);max-width:900px}
+    .orange{color:var(--orange)} .green{color:var(--green)} .red{color:var(--red)} .blue{color:var(--blue)}
+    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 24px;border:1px solid rgba(120,95,60,.06)}
+    .rise{opacity:0;transform:translateY(18px)}
+    .active .rise{animation:riseIn .7s cubic-bezier(.2,.7,.2,1) forwards}
+    .active .rise.d1{animation-delay:.1s}.active .rise.d2{animation-delay:.22s}.active .rise.d3{animation-delay:.34s}.active .rise.d4{animation-delay:.46s}.active .rise.d5{animation-delay:.58s}
+    @keyframes riseIn{to{opacity:1;transform:translateY(0)}}
+    .chip{font-size:11.5px;font-weight:700;letter-spacing:.04em;padding:6px 14px;border-radius:999px;display:inline-flex;align-items:center;gap:7px}
+    .chip-or{background:var(--orange);color:#fff}.chip-gr{background:var(--green-soft);color:var(--green)}.chip-bl{background:var(--blue-soft);color:#1D5FCC}.chip-rd{background:var(--red-soft);color:var(--red)}.chip-go{background:var(--gold-soft);color:var(--gold-ink)}.chip-pu{background:var(--purple-soft);color:#6D3FC4}.chip-te{background:var(--teal-soft);color:var(--teal)}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .four-col{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .foot-note{margin-top:14px;font-size:12.5px;color:#9F927E;font-weight:600;line-height:1.5}
+    p.body{font-size:14.5px;line-height:1.75;color:var(--ink-soft)}
+    ul.list{list-style:none;display:flex;flex-direction:column;gap:8px}
+    ul.list li{font-size:14px;line-height:1.58;padding-right:22px;position:relative;color:var(--ink)}
+    ul.list li::before{content:"";position:absolute;right:2px;top:9px;width:8px;height:8px;border-radius:50%;background:var(--orange)}
+    ul.list.ok li::before{background:var(--green)} ul.list.bad li::before{background:var(--red)} ul.list.blue-bullets li::before{background:var(--blue)}
+    .quote{background:var(--ink);color:#fff;border-radius:var(--radius);padding:20px 26px;font-size:18px;line-height:1.65;font-weight:600;box-shadow:var(--shadow)}
+    .quote .accent{color:#FFB38A}
+    .callout{border-right:5px solid var(--orange);background:var(--orange-soft);border-radius:16px;padding:16px 20px;font-size:15px;line-height:1.65}
+    .callout.green-line{border-color:var(--green);background:var(--green-soft)}
+    .callout.red-line{border-color:var(--red);background:var(--red-soft)}
+    .metric{background:var(--card);border-radius:18px;padding:18px;box-shadow:var(--shadow);text-align:center}
+    .metric .big{font-family:'Sora';font-size:30px;font-weight:800;direction:ltr;display:block;color:var(--orange)}
+    .metric .lbl{font-size:12px;color:var(--ink-soft);font-weight:700;margin-top:5px;line-height:1.45}
+
+    table.t{width:100%;border-collapse:collapse;font-size:13px;background:var(--card);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+    table.t th{background:var(--cream-deep);font-weight:800;text-align:right;padding:10px 12px;font-size:12px;letter-spacing:.03em}
+    table.t td{padding:9px 12px;border-top:1px solid #F0E9DC;vertical-align:top;line-height:1.48}
+    .st-ok{color:var(--green);font-weight:800}.st-warn{color:var(--gold-ink);font-weight:800}.st-bad{color:var(--red);font-weight:800}.st-prop{color:#6D3FC4;font-weight:800}
+
+    /* slide-specific patterns */
+    .hero{min-height:560px;display:flex;flex-direction:column;justify-content:center}
+    .hero .lede{font-size:19px;max-width:910px;margin-top:20px}
+    .hero-stats{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}
+    .hero-stats .chip{font-size:12px;padding:8px 16px}
+    .understandings{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
+    .understanding{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;background:var(--card);border-radius:18px;padding:17px 18px;box-shadow:var(--shadow)}
+    .understanding:last-child{grid-column:1/-1}
+    .understanding .n{width:44px;height:44px;border-radius:14px;background:var(--orange-soft);color:var(--orange);display:grid;place-items:center;font-family:'Sora';font-weight:800;font-size:15px}
+    .understanding h3{font-size:16px;margin-bottom:4px}.understanding p{font-size:13.5px;color:var(--ink-soft);line-height:1.55}
+    .side-card{height:100%;border-top:6px solid var(--blue)}
+    .side-card.orange-top{border-top-color:var(--orange)} .side-card.green-top{border-top-color:var(--green)} .side-card.red-top{border-top-color:var(--red)}
+    .side-card h3{font-size:19px;margin:10px 0 12px}
+    .status-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}
+    .status{background:var(--card);border-radius:18px;padding:16px;box-shadow:var(--shadow);border-top:5px solid var(--green)}
+    .status.proposed{border-color:var(--purple)}.status.unknown{border-color:var(--gold)}.status.not-agreed{border-color:var(--red)}
+    .status h3{font-size:15px;margin:8px 0}.status p{font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
+    .exchange{display:grid;grid-template-columns:1fr 72px 1fr;gap:14px;align-items:stretch;margin-top:17px}
+    .exchange .bridge{display:flex;align-items:center;justify-content:center;font-size:34px;color:var(--orange);font-weight:800}
+    .stack{display:flex;flex-direction:column;gap:10px}
+    .value-row{background:#FCF9F3;border:1px solid #EFE7D8;border-radius:13px;padding:11px 13px;font-size:13px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+    .value-row b{font-size:13.5px}.value-row span{color:var(--ink-soft);font-size:12px;text-align:left}
+    .risk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+    .risk{background:var(--card);border-radius:18px;padding:17px;box-shadow:var(--shadow);border-bottom:4px solid var(--red)}
+    .risk .icon{font-size:23px}.risk h3{font-size:15px;margin:7px 0}.risk p{font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
+    .verdict{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;margin-top:18px}
+    .law-card{background:var(--card);border-radius:20px;padding:20px 22px;box-shadow:var(--shadow)}
+    .law-card .ruling{font-size:30px;font-weight:800;line-height:1.1;margin:5px 0 12px}
+    .architecture{display:grid;grid-template-columns:1fr 82px 1fr;gap:12px;align-items:stretch;margin-top:18px}
+    .house{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;border-top:6px solid var(--blue)}
+    .house.contract{border-top-color:var(--orange)}
+    .house h3{font-size:19px;margin-bottom:4px}.house .sub{font-family:'Sora';font-size:11px;color:var(--ink-soft);direction:ltr;text-align:right;margin-bottom:12px}
+    .bridge-stack{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--ink-soft);font-size:11px;font-weight:700;text-align:center}
+    .bridge-stack .arr{font-size:28px;color:var(--orange)}
+    .market-split{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+    .market-card{background:var(--card);border-radius:20px;padding:20px 22px;box-shadow:var(--shadow)}
+    .market-card.yes{border-top:6px solid var(--green)}.market-card.no{border-top:6px solid var(--red)}
+    .market-card h3{font-size:19px;margin:9px 0 12px}
+    .examples{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+    .example{background:var(--card);border:1.5px solid #EFE7D8;border-radius:16px;padding:15px}
+    .example .amount{font-family:'Sora';font-size:21px;font-weight:800;color:var(--orange);direction:ltr}.example h3{font-size:14px;margin:6px 0}.example p{font-size:11.8px;line-height:1.48;color:var(--ink-soft)}
+    .positioning{display:grid;grid-template-columns:1fr 80px 1fr;gap:14px;margin-top:20px;align-items:center}
+    .position-card{background:var(--card);border-radius:20px;padding:24px;box-shadow:var(--shadow);text-align:center}
+    .position-card.bad{border:2px solid var(--red-soft)}.position-card.good{border:2px solid var(--green-soft)}
+    .position-card .label{font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--ink-soft)}
+    .position-card .title{font-size:26px;font-weight:800;margin:10px 0}.position-card p{font-size:13px;line-height:1.55;color:var(--ink-soft)}
+    .positioning .arrow{font-size:35px;color:var(--orange);text-align:center}
+    .calc{display:grid;grid-template-columns:.9fr 1.1fr;gap:18px;margin-top:17px}
+    .calc-panel{background:var(--card);border-radius:20px;padding:22px;box-shadow:var(--shadow)}
+    .range-wrap{margin:18px 0}.range-wrap label{display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:9px}.range-wrap input{width:100%;accent-color:var(--orange)}
+    .calc-result{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:15px}
+    .calc-result .metric .big{font-size:26px}
+    .formula{background:var(--cream-deep);border-radius:14px;padding:12px 14px;font-family:'Sora';font-size:13px;direction:ltr;text-align:center;color:var(--ink-soft);margin-top:14px}
+    .ledger{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
+    .ledger-card{background:var(--card);border-radius:17px;padding:16px;box-shadow:var(--shadow);border-top:5px solid var(--blue)}
+    .ledger-card:nth-child(2){border-color:var(--orange)}.ledger-card:nth-child(3){border-color:var(--teal)}.ledger-card:nth-child(4){border-color:var(--purple)}
+    .ledger-card h3{font-size:14.5px;margin:7px 0}.ledger-card p{font-size:12px;line-height:1.5;color:var(--ink-soft)}
+    .flow{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:18px;direction:rtl}
+    .flow-step{position:relative;background:var(--card);border-radius:16px;padding:14px 12px;box-shadow:var(--shadow);min-height:128px}
+    .flow-step .n{font-family:'Sora';font-size:12px;color:var(--orange);font-weight:800}.flow-step h3{font-size:13.5px;margin:7px 0}.flow-step p{font-size:11.5px;line-height:1.45;color:var(--ink-soft)}
+    .script-box{background:var(--ink);color:#fff;border-radius:24px;padding:25px 30px;box-shadow:var(--shadow);font-size:17px;line-height:1.85;margin-top:16px}
+    .script-box strong{color:#FFB38A}.script-box .pause{color:#AFA79C;font-size:12px;font-weight:700}
+    .qa{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+    .qa-card{background:var(--card);border-radius:17px;padding:16px 18px;box-shadow:var(--shadow)}
+    .qa-card .q{font-weight:800;font-size:14px;color:var(--red);margin-bottom:6px}.qa-card .a{font-size:12.8px;line-height:1.55;color:var(--ink-soft)}
+    .ladder{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+    .option{background:var(--card);border-radius:20px;padding:20px;box-shadow:var(--shadow);border-top:6px solid var(--green);position:relative}
+    .option:nth-child(2){border-color:var(--gold)}.option:nth-child(3){border-color:var(--red)}
+    .option .level{font-family:'Sora';font-size:11px;font-weight:800;color:var(--ink-soft)}.option h3{font-size:17px;margin:8px 0}.option p{font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
+    .source-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+    .source-links a{font-family:'Sora';font-size:10.5px;font-weight:700;text-decoration:none;color:#1D5FCC;background:var(--blue-soft);border-radius:999px;padding:6px 10px;direction:ltr}
+
+    @media(max-width:900px){
+      .slide{padding:54px 22px 84px;justify-content:flex-start}.slide-inner{max-height:calc(100vh - 128px)}
+      .h-xl{font-size:38px}.h-lg{font-size:28px}.lede{font-size:15px}
+      .two-col,.three-col,.four-col,.understandings,.status-grid,.risk-grid,.examples,.market-split,.calc,.qa,.ladder{grid-template-columns:1fr}
+      .understanding:last-child{grid-column:auto}.exchange,.architecture,.positioning{grid-template-columns:1fr}.exchange .bridge,.bridge-stack,.positioning .arrow{transform:rotate(90deg);min-height:42px}
+      .ledger{grid-template-columns:1fr 1fr}.flow{grid-template-columns:1fr 1fr}.nav{display:none}.conf{max-width:56vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .arrows{left:12px}.slide-num{right:16px}
+    }
+    @media(max-width:560px){.ledger,.flow,.calc-result{grid-template-columns:1fr}.hero{min-height:auto}.script-box{font-size:15px;padding:20px}.brand{display:none}}
+    @media print{
+      body{overflow:visible;background:#fff}.deck{height:auto}.slide{position:relative;opacity:1;visibility:visible;transform:none;height:100vh;page-break-after:always;padding:42px}.slide-inner{max-height:none;overflow:visible}.progress,.nav,.arrows,.slide-num,.brand{display:none}.conf{position:absolute}.rise{opacity:1;transform:none}.card,.metric,.status,.risk,.market-card,.example,.calc-panel,.ledger-card,.flow-step,.qa-card,.option{box-shadow:none;border:1px solid #E4DACB}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress"></div>
+  <div class="conf">סודי · אלעד + אביב בלבד · לא להעברה ל־ToMix</div>
+  <div class="brand">FLOW<em>Z</em> · DEAL ROOM</div>
+
+  <main class="deck" id="deck" aria-live="polite">
+    <section class="slide active">
+      <div class="slide-inner hero">
+        <div class="eyebrow rise"><span class="dotmark"></span>מצגת עבודה · גרסה מעודכנת · 24.08.2026</div>
+        <h1 class="h-xl rise d1">Flowz × <span class="en orange">ToMix</span><br>בית אחד. עסקה אחת. שיחה אחת שצריך לנהל נכון.</h1>
+        <p class="lede rise d2">סיכום הידע שהצטבר מהצעת ToMix, מסמכי העבודה, שיחת GGS והדיון האסטרטגי: מה אנחנו יודעים, מה עדיין רק הצעה, היכן נמצא הסיכון—ואיך לנהל שיחה פתוחה אך לא נאיבית עם רועי גולדפרב.</p>
+        <div class="hero-stats rise d3">
+          <span class="chip chip-rd">דרישת פתיחה: <span class="num">30%+</span></span>
+          <span class="chip chip-or">ישראל: כרטוס ToMix בלבד</span>
+          <span class="chip chip-pu">הצעת Flowz: <span class="num">~0.3%</span> RevShare</span>
+          <span class="chip chip-gr">המלצת עו״ד: One House + Contracts</span>
+        </div>
+        <p class="foot-note rise d4">מטרת הדק: הכנה פנימית. לא Term Sheet, לא הצעה מחייבת, ולא תחליף לייעוץ משפטי.</p>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="eyebrow rise"><span class="dotmark"></span>תקציר מנהלים</div>
+        <h2 class="h-lg rise d1">חמש ההבנות שצריכות להחזיק את כל השיחה</h2>
+        <div class="understandings">
+          <div class="understanding rise d1"><div class="n">01</div><div><h3>בית אחד הוא ברירת המחדל</h3><p>GGS התנגדו באופן נחרץ ל־JV של 70/30 בשלב הזה. ההמלצה: חברה גלובלית אחת, וכל זכויות ישראל בחוזים.</p></div></div>
+          <div class="understanding rise d2"><div class="n">02</div><div><h3>ישראל אינה מערכת־אגנוסטית</h3><p>במסגרת העסקה, Flowz תעבוד בישראל רק עם מערכת הכרטוס של ToMix. שינוי העיקרון הזה צפוי להפיל את העסקה.</p></div></div>
+          <div class="understanding rise d3"><div class="n">03</div><div><h3>המוצר בישראל משולב עמוק</h3><p>Flowz צפויה להיות שכבה בתוך שירות ToMix למותגיה וללקוחות חיצוניים—מודל white-label-like, גם אם יוצג Powered by Flowz.</p></div></div>
+          <div class="understanding rise d4"><div class="n">04</div><div><h3>ה־30% הם דרישה, לא מודל מתומחר</h3><p>ToMix מנמקת אותם בדאטה, טראפיק וקשרים בארץ ובעולם. עדיין אין פירוט כתוב שמתרגם כל רכיב לערך, יעד או לוח זמנים.</p></div></div>
+          <div class="understanding rise d5"><div class="n">05</div><div><h3>ה־0.3% הם הצעה שלנו</h3><p>RevShare על מחזור הכרטיסים הוא מנוע ההכנסה ש־Flowz מבקשת לבנות. הוא עלה אצלנו ובשיחת העו״ד, אך לא הוצג או הוסכם מפורשות מול ToMix.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="eyebrow rise"><span class="dotmark"></span>הצד שמנגד</div>
+        <h2 class="h-lg rise d1">ToMix אינה עוד מפיץ. היא בונה אקוסיסטם.</h2>
+        <p class="lede rise d2">הנחת העבודה שלנו: ToMix עתידה להפוך לאחת מחברות החוויות והבידור החזקות בישראל, עם מערכת כרטוס משלה ויכולת להכניס את Flowz כחלק מהשירות.</p>
+        <div class="three-col" style="margin-top:18px">
+          <div class="card side-card orange-top rise d2"><span class="chip chip-or">תשתית</span><h3>מערכת כרטוס חדשה</h3><ul class="list"><li>מוצר מרכזי למותגי ToMix</li><li>שירות לחברות שמוכרות חוויות</li><li>שליטה בנקודת העסקה והדאטה</li></ul></div>
+          <div class="card side-card green-top rise d3"><span class="chip chip-gr">סקייל</span><h3>טראפיק, מותגים ודאטה</h3><ul class="list ok"><li>יותר מ־1.5M כרטיסים בשנה לפי החומרים</li><li>גישה למספר סגמנטים במקביל</li><li>Customer Acquisition כמעט מיידי</li></ul></div>
+          <div class="card side-card rise d4"><span class="chip chip-bl">מינוף</span><h3>קשרים בארץ ובעולם</h3><ul class="list blue-bullets"><li>יכולת לפתוח לקוחות בישראל</li><li>מערכת יחסים עם שחקני בידור</li><li>פוטנציאל לסיוע בחדירה בינלאומית</li></ul></div>
+        </div>
+        <div class="callout rise d5" style="margin-top:16px"><b>המשמעות:</b> הערך של ToMix אמיתי ויכול לקצר שנים. דווקא לכן צריך לתרגם אותו להתחייבויות מדידות—לא להתייחס אליו כהבטחה כללית שמצדיקה בעלות קבועה.</div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="eyebrow rise"><span class="dotmark"></span>מפת העסקה</div>
+        <h2 class="h-lg rise d1">מה הונח על השולחן—ומה אנחנו מוסיפים עכשיו</h2>
+        <div class="two-col" style="margin-top:18px">
+          <div class="card side-card red-top rise d2">
+            <span class="chip chip-rd">עמדת ToMix · בעל־פה</span>
+            <h3><span class="num">30%+</span> ושותפות אסטרטגית</h3>
+            <ul class="list bad"><li>נתח משמעותי בחברה, אפשר מדורג/מותנה</li><li>הפצה ושימוש בלעדיים בישראל</li><li>איחוד עמוק עם מערכת הכרטוס</li><li>גישה לדאטה ו־Design Partner</li><li>מימון משכורות ופיתוח</li><li>טראפיק וקשרים עסקיים בישראל ובעולם</li></ul>
+          </div>
+          <div class="card side-card green-top rise d3">
+            <span class="chip chip-pu">כיוון Flowz · טרם הוצג</span>
+            <h3>בית אחד + כלכלת טרנזקציות</h3>
+            <ul class="list ok"><li>חברה גלובלית אחת שמחזיקה את כל ה־IP</li><li>כרטוס ToMix הוא היחיד שעובד בישראל</li><li>מוצר משולב למותגים וללקוחות ToMix</li><li>מימון פיתוח מחייב לתקופה מוגדרת</li><li><span class="num">~0.3%</span> ממחזור הכרטיסים כהכנסה ל־Flowz</li><li>אקוויטי מדורג לפי ערך שנמסר בפועל</li></ul>
+          </div>
+        </div>
+        <p class="foot-note rise d4">אין עדיין הצעה כלכלית אחת שסוכמה בין הצדדים. יש דרישת בעלות מצד ToMix וכיוון נגדי שצריך למסגר ולמכור.</p>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="eyebrow rise"><span class="dotmark"></span>דיוק סטטוס</div>
+        <h2 class="h-lg rise d1">לא מערבבים בין עובדה, הצעה והנחת עבודה</h2>
+        <div class="status-grid">
+          <div class="status rise d1"><span class="chip chip-gr">ידוע</span><h3>ToMix רוצה <span class="num">30%+</span></h3><p>הדרישה חזרה מהבורד שלהם אחרי שיחה מוקדמת על 3%–4%/SAFE.</p></div>
+          <div class="status rise d2"><span class="chip chip-gr">גבול קשיח</span><h3>כרטוס ToMix בלבד בישראל</h3><p>אין במסלול העסקה אינטגרציה למערכות כרטוס מתחרות בישראל.</p></div>
+          <div class="status proposed rise d3"><span class="chip chip-pu">הצעת Flowz</span><h3><span class="num">~0.3%</span> RevShare</h3><p>הצעה על סליקת מערכת הכרטוס המשולבת; לא הוצגה כמספר מפורש מול ToMix.</p></div>
+          <div class="status unknown rise d4"><span class="chip chip-go">פתוח</span><h3>מה בדיוק קונה <span class="num">30%</span>?</h3><p>אין עדיין מחיר, רשימת Deliverables, milestones, מינימום טראפיק או מסמך כתוב.</p></div>
+        </div>
+        <div class="callout red-line rise d5" style="margin-top:18px"><b>משפט עבודה פנימי:</b> אסור להציג את ה־0.3% כאילו ToMix כבר קיבלה אותו, ואסור להציג את ה־30% כאילו כבר הוסכם עקרונית.</div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="eyebrow rise"><span class="dotmark"></span>חילופי הערך</div>
+        <h2 class="h-lg rise d1">העסקה מייצרת ערך לשני הכיוונים</h2>
+        <div class="exchange">
+          <div class="card side-card orange-top rise d2">
+            <span class="chip chip-or">ToMix מביאה</span>
+            <div class="stack" style="margin-top:13px">
+              <div class="value-row"><b>דאטה</b><span>היסטורי + שוטף</span></div>
+              <div class="value-row"><b>טראפיק</b><span>מותגים ולקוחות חיצוניים</span></div>
+              <div class="value-row"><b>הפצה</b><span>גישה מהירה לשוק</span></div>
+              <div class="value-row"><b>מימון</b><span>צוות ופיתוח</span></div>
+              <div class="value-row"><b>קשרים</b><span>ישראל + בינלאומי</span></div>
+            </div>
+          </div>
+          <div class="bridge">⇄</div>
+          <div class="card side-card green-top rise d3">
+            <span class="chip chip-gr">Flowz מביאה</span>
+            <div class="stack" style="margin-top:13px">
+              <div class="value-row"><b>מוצר מבדל</b><span>למערכת הכרטוס החדשה</span></div>
+              <div class="value-row"><b>הצעת ערך</b><span>למותגים ולמפיקים</span></div>
+              <div class="value-row"><b>Lock-in מסחרי</b><span>שכבה שקשה להחליף</span></div>
+              <div class="value-row"><b>Decision Intelligence</b><span>מדאטה לפעולה</span></div>
+              <div class="value-row"><b>אפסייד גלובלי</b><span>אם החברה נשארת ניתנת להשקעה</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="quote rise d4" style="margin-top:16px">ToMix אינה “נותנת לנו את השוק” בחינם. היא מקבלת <span class="accent">מנוע שמחזק את הכרטוס, את המכירה ואת הקשר עם הלקוח</span>. לכן שווי תרומתה אינו שווה אוטומטית ל־30% מהחברה הגלובלית.</div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="eyebrow rise"><span class="dotmark"></span>להבין את רועי</div>
+        <h2 class="h-lg rise d1">הדרישה האגרסיבית אינה בהכרח שרירותית</h2>
+        <p class="lede rise d2">רועי מכיר היטב את שוק הכרטוס ואת כוחו של שחקן שמחזיק הפצה. מבחינתו, ToMix אינה קונה תוכנה—היא מבקשת מעמד של שותף מייסד.</p>
+        <div class="four-col" style="margin-top:18px">
+          <div class="card rise d1"><span class="chip chip-rd">01</span><h3 class="h-md" style="margin:10px 0 7px">הגנת השקעה</h3><p class="body">אם ToMix מטמיעה, משווקת ומממנת—היא לא רוצה להישאר לקוח שניתן להחליף.</p></div>
+          <div class="card rise d2"><span class="chip chip-rd">02</span><h3 class="h-md" style="margin:10px 0 7px">אפסייד</h3><p class="body">הם אינם רוצים לבנות את Flowz בישראל ולראות אקזיט גלובלי שאינם שותפים בו.</p></div>
+          <div class="card rise d3"><span class="chip chip-rd">03</span><h3 class="h-md" style="margin:10px 0 7px">שליטה נרטיבית</h3><p class="body">30% הוא מספר שהבורד שלהם יכול לזהות כ“שותפות אמיתית”, לא הסכם ספק.</p></div>
+          <div class="card rise d4"><span class="chip chip-rd">04</span><h3 class="h-md" style="margin:10px 0 7px">עוגן מו״מ</h3><p class="body">דרישה גבוהה מכריחה אותנו להתמקח בתוך המסגרת שלהם—אלא אם נשנה את שאלת הדיון.</p></div>
+        </div>
+        <div class="callout rise d5" style="margin-top:16px"><b>המסקנה:</b> לא אומרים “30% זה לא הוגן”. שואלים: <b>איזו בעיה ה־30% אמורים לפתור—בעלות, שליטה, החזר כלכלי או הגנה על ההשקעה?</b></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="eyebrow rise"><span class="dotmark"></span>הסיכון שלנו</div>
+        <h2 class="h-lg rise d1">למה <span class="num">30%</span> מיידיים בחברה אחת הם עסקה אלימה</h2>
+        <div class="risk-grid">
+          <div class="risk rise d1"><div class="icon">🧲</div><h3>חברה שבויה</h3><p>משקיעים, לקוחות ומערכות כרטוס בעולם עלולים לראות Flowz כזרוע של ToMix ולא כפלטפורמה ניטרלית.</p></div>
+          <div class="risk rise d2"><div class="icon">📉</div><h3>Cap table מוקדם מדי</h3><p>30% לפני ESOP וסבבי הון מצמצמים במהירות את החזקת המייסדים ואת הגמישות לגייס.</p></div>
+          <div class="risk rise d3"><div class="icon">⚖️</div><h3>קבוע מול הפיך</h3><p>המניות נשארות לנצח; טראפיק, קשרים, תשומת לב ומימון עלולים להצטמצם או להיעצר.</p></div>
+          <div class="risk rise d2"><div class="icon">🧱</div><h3>לחץ תפעולי</h3><p>ToMix תהיה משקיע, מפיץ, לקוח עוגן, ספק דאטה ואינטגרציה—נקודת כשל אחת.</p></div>
+          <div class="risk rise d3"><div class="icon">🌍</div><h3>אופק גלובלי</h3><p>שותף אסטרטגי ישראלי גדול עלול להרתיע שותפים בינלאומיים מתחרים או רוכשים עתידיים.</p></div>
+          <div class="risk rise d4"><div class="icon">🔒</div><h3>שליטה בלי רוב</h3><p>גם ללא 51%, זכויות וטו, דירקטוריון, מידע ובלעדיות עלולות לייצר שליטה אפקטיבית.</p></div>
+        </div>
+        <p class="foot-note rise d5">אין מנגנון משפטי שהופך 30% כלכליים ל“לא באמת 30%” בעיני משקיע עתידי. Warrants עד 30% עדיין ייספרו כדילול פוטנציאלי.</p>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="eyebrow rise"><span class="dotmark"></span>פסיקת GGS</div>
+        <h2 class="h-lg rise d1">עורכי הדין היו מאוד נגד מבנה ה־70/30</h2>
+        <div class="verdict">
+          <div class="law-card rise d2">
+            <span class="chip chip-rd">נדחה כעמדת פתיחה</span>
+            <div class="ruling">Two Houses<br><span class="red">70/30 JV</span></div>
+            <ul class="list bad"><li>חריג לחברת טכנולוגיה בתחילת הדרך</li><li>חיכוך בגיוס, M&A והנפקה</li><li>מורכבות IP, מס, ממשל תאגידי וקיפול עתידי</li><li>“It will come to bite you”</li></ul>
+          </div>
+          <div class="law-card rise d3">
+            <span class="chip chip-gr">המלצה</span>
+            <div class="ruling">One House<br><span class="green">+ Contracts</span></div>
+            <ul class="list ok"><li>כל ה־IP בחברה אחת</li><li>זכויות ישראל בהסכמי הפצה ורישיון</li><li>בלעדיות עם תנאי פקיעה וביצועים</li><li>RevShare מסחרי</li><li>Warrants בספרה בודדת, נצברים לפי ערך</li></ul>
+          </div>
+        </div>
+        <div class="quote rise d4" style="margin-top:16px">המלצת “בית אחד” <span class="accent">אינה</span> המלצה להכניס את ToMix ב־30% לבית היחיד. היא המלצה להחליף בעלות כבדה בישראל בזכויות מסחריות חזקות ובאקוויטי מוגבל למעלה.</div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="eyebrow rise"><span class="dotmark"></span>הארכיטקטורה המועדפת</div>
+        <h2 class="h-lg rise d1">חברה אחת; חבילת ישראל חוזית וחזקה</h2>
+        <div class="architecture">
+          <div class="house rise d2">
+            <span class="chip chip-bl">FLOWZ GLOBAL</span>
+            <h3>החברה היחידה</h3><div class="sub">IP · PRODUCT · BRAND · GLOBAL UPSIDE</div>
+            <ul class="list blue-bullets"><li>כל הקוד, המודלים והמותג</li><li>המייסדים + ESOP + משקיעים עתידיים</li><li>יכולת לפעול גלובלית עם שותפים שונים</li><li>אקוויטי ל־ToMix רק לפי מבנה מוסכם</li></ul>
+          </div>
+          <div class="bridge-stack rise d3"><div class="arr">⇄</div><div>רישיון<br>הפצה<br>דאטה<br>RevShare</div></div>
+          <div class="house contract rise d4">
+            <span class="chip chip-or">ISRAEL PACKAGE</span>
+            <h3>הסכם אסטרטגי עם ToMix</h3><div class="sub">EXCLUSIVE TICKETING · EMBEDDED PRODUCT</div>
+            <ul class="list"><li>מערכת הכרטוס היחידה בישראל</li><li>Flowz כחלק מחבילת ToMix</li><li>שימוש למותגים וללקוחות חיצוניים</li><li>מימון פיתוח + גישה לדאטה</li><li>RevShare ל־Flowz על בסיס מוגדר</li></ul>
+          </div>
+        </div>
+        <div class="callout green-line rise d5" style="margin-top:16px"><b>היתרון לטומיקס:</b> יתרון מסחרי ישראלי עמוק ואמיתי. <b>היתרון ל־Flowz:</b> החברה עצמה אינה הופכת לחברת־בת או לספק שבוי.</div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="eyebrow rise"><span class="dotmark"></span>טענת השוק של רועי</div>
+        <h2 class="h-lg rise d1">“חברות כרטוס כמעט לא מגייסות”—נכון חלקית</h2>
+        <div class="market-split">
+          <div class="market-card yes rise d2"><span class="chip chip-gr">רועי צודק כאשר…</span><h3>מדובר בכרטוס טהור ומקומי</h3><ul class="list ok"><li>שוק מרוכז עם שחקנים חזקים</li><li>חסמי כניסה של סקייל, מלאי והפצה</li><li>תחרות על מחיר ועמלה</li><li>משקיעים דורשים traction משמעותי</li><li>ב־MENA מסלול VC טהור נדיר יותר</li></ul></div>
+          <div class="market-card no rise d3"><span class="chip chip-rd">הטענה נשברת כאשר…</span><h3>החברה מחזיקה שכבה רחבה יותר</h3><ul class="list bad"><li>Marketplace וגילוי ביקוש</li><li>CRM ודאטה על הקהל</li><li>תשלומים וכלכלת טרנזקציות</li><li>Operating System למפיק/מקום</li><li>Decision Intelligence ואוטומציה</li></ul></div>
+        </div>
+        <div class="quote rise d4" style="margin-top:16px">לא צריך להוכיח לרועי שהוא טועה. צריך להסכים עם הנחתו הצרה: <span class="accent">דווקא משום שכרטוס טהור אינו סיפור VC טוב, אסור להפוך את Flowz לעוד חברת כרטוס.</span></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="eyebrow rise"><span class="dotmark"></span>המחקר הבינלאומי</div>
+        <h2 class="h-lg rise d1">כסף משמעותי קיים—אבל מגיע אחרי סקייל ולשכבה רחבה</h2>
+        <div class="examples">
+          <div class="example rise d1"><div class="amount">$238M</div><h3>SeatGeek · Series E</h3><p>Marketplace + טכנולוגיה לקבוצות, אולמות והפצת ביקוש. שווי $1B לפני הכסף.</p></div>
+          <div class="example rise d2"><div class="amount">$250M</div><h3>TickPick · Growth</h3><p>השקעה ב־2024 אחרי כמעט $1B מכירות כרטיסים ו־14M הורדות.</p></div>
+          <div class="example rise d3"><div class="amount">$65M</div><h3>DICE · 2023</h3><p>גילוי מוזיקה, קהל וכרטוס; לאחר סבב של עד $122M ב־2021.</p></div>
+          <div class="example rise d2"><div class="amount">$227M</div><h3>Fever · Growth</h3><p>פלטפורמת גילוי, דאטה ויצירה/הרחבה של חוויות—לא קופה בלבד.</p></div>
+          <div class="example rise d3"><div class="amount">$4.6B</div><h3>Cvent · Acquisition</h3><p>מערכת B2B לניהול אירועים וטכנולוגיית Hospitality, נרכשה בידי Blackstone.</p></div>
+          <div class="example rise d4"><div class="amount">$11M</div><h3>Eat App · MENA</h3><p>דובאי: CRM, הזמנות ואופטימיזציית אורחים. דוגמה לכסף על שכבת תפעול ודאטה.</p></div>
+        </div>
+        <div class="source-links rise d5">
+          <a href="https://seatgeek.com/press/seatgeek-raises-238-million-in-new-funding" target="_blank" rel="noreferrer">SeatGeek</a>
+          <a href="https://www.businesswire.com/news/home/20240822457355/en/TickPick-Announces-%24250-Million-Growth-Investment-from-Brighton-Park-Capital" target="_blank" rel="noreferrer">TickPick</a>
+          <a href="https://dice.fm/blog/dice-launches-in-toronto?lng=en" target="_blank" rel="noreferrer">DICE</a>
+          <a href="https://newsroom.feverup.com/en-GB/208389-goldman-sachs-asset-management-leads-227m-investment-in-live-entertainment-tech-startup-fever/" target="_blank" rel="noreferrer">Fever</a>
+          <a href="https://www.blackstone.com/news/press/blackstone-completes-acquisition-of-cvent/" target="_blank" rel="noreferrer">Cvent</a>
+          <a href="https://restaurant.eatapp.co/blog/eat-app-concludes-11-million-series-b-fundraising-to-continue-global-expansion" target="_blank" rel="noreferrer">Eat App</a>
+          <a href="https://platinumlist.net/for-organisers/investors/" target="_blank" rel="noreferrer">Platinumlist · MENA</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="eyebrow rise"><span class="dotmark"></span>המסגור הנכון</div>
+        <h2 class="h-lg rise d1">Flowz אינה חברת הכרטוס של ToMix</h2>
+        <div class="positioning">
+          <div class="position-card bad rise d2"><div class="label">המסגור המסוכן</div><div class="title red">שירות משלים לכרטוס</div><p>ספק ישראלי, תלוי ב־ToMix, ללא הכנסה עצמאית וללא סיבה ברורה למשקיע גלובלי.</p></div>
+          <div class="arrow rise d3">←</div>
+          <div class="position-card good rise d4"><div class="label">המסגור הרצוי</div><div class="title green">Decision Layer לחוויות</div><p>בישראל—משולבת בלעדית עם כרטוס ToMix. בעולם—שכבת דאטה, תובנות ופעולות עצמאית.</p></div>
+        </div>
+        <div class="quote rise d5" style="margin-top:18px">הכרטוס הוא <span class="accent">מסילת הדאטה וההפצה בישראל</span>. Flowz היא המוח שמעליה. אם מאחדים גם את הזהות התאגידית—היתרון האסטרטגי הופך לכלוב.</div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="eyebrow rise"><span class="dotmark"></span>מנוע ההכנסה המוצע</div>
+        <h2 class="h-lg rise d1"><span class="num">0.3%</span> ממחזור הכרטיסים—הצעת Flowz, לא הסכמה</h2>
+        <div class="calc">
+          <div class="calc-panel rise d2">
+            <span class="chip chip-pu">מחשבון עבודה</span>
+            <div class="range-wrap"><label for="gmv"><span>מחזור כרטיסים שנתי</span><span id="gmvLabel" class="num">₪250M</span></label><input id="gmv" type="range" min="100" max="1000" step="50" value="250"></div>
+            <div class="range-wrap"><label><span>שיעור מוצע</span><span class="num">0.30%</span></label><input type="range" min="0.3" max="0.3" value="0.3" disabled></div>
+            <div class="formula">Flowz Revenue = Ticketing GMV × 0.003</div>
+          </div>
+          <div class="calc-panel rise d3">
+            <span class="chip chip-or">תוצאה שנתית</span>
+            <div class="calc-result">
+              <div class="metric"><span class="big" id="annualResult">₪750K</span><div class="lbl">הכנסה שנתית ל־Flowz</div></div>
+              <div class="metric"><span class="big" id="monthlyResult">₪62.5K</span><div class="lbl">ממוצע חודשי</div></div>
+            </div>
+            <ul class="list" style="margin-top:16px"><li>₪250M ⇒ ₪750K</li><li>₪500M ⇒ ₪1.5M</li><li>₪600M ⇒ ₪1.8M</li></ul>
+          </div>
+        </div>
+        <p class="foot-note rise d4">חישוב אריתמטי לפני הגדרות חוזיות, מסים, ביטולים והחזרים. המודל אינו מוסכם מול ToMix ויש להציגו כחלק מהצעת הנגד.</p>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="eyebrow rise"><span class="dotmark"></span>המספר לבדו לא מספיק</div>
+        <h2 class="h-lg rise d1">שבע הגדרות שיקבעו אם <span class="num">0.3%</span> שווה משהו</h2>
+        <table class="t rise d2" style="margin-top:18px">
+          <thead><tr><th>נושא</th><th>מה חייב להיסגר</th><th>הסיכון אם נשאר עמום</th></tr></thead>
+          <tbody>
+            <tr><td><b>בסיס החישוב</b></td><td>ערך כרטיס ברוטו? לפני/אחרי מע״מ, הנחות והחזרים?</td><td class="st-bad">בסיס קטן מהצפוי</td></tr>
+            <tr><td><b>תחולה</b></td><td>כל כרטיס במערכת, רק לקוחות Flowz, כולל מותגי ToMix?</td><td class="st-bad">Flowz מופעלת אך אין RevShare</td></tr>
+            <tr><td><b>מועד התחלה</b></td><td>מהשקה, אחרי 6 חודשים, או מאבן דרך אחרת?</td><td class="st-warn">תקופה ארוכה ללא הכנסה</td></tr>
+            <tr><td><b>חבילות</b></td><td>כרטיס + מזון/לינה/אטרקציה—איזה רכיב נספר?</td><td class="st-warn">העברת ערך מחוץ לבסיס</td></tr>
+            <tr><td><b>מינימום</b></td><td>רצפת GMV או תשלום שנתי מינימלי</td><td class="st-bad">בלעדיות בלי פעילות</td></tr>
+            <tr><td><b>דיווח וביקורת</b></td><td>Dashboard, דוחות, תדירות וזכות audit</td><td class="st-warn">אין יכולת לבדוק את החישוב</td></tr>
+            <tr><td><b>קיזוזים</b></td><td>מימון הפיתוח נפרד ואינו מתקזז אוטומטית</td><td class="st-bad">הכנסה תיאורטית בלבד</td></tr>
+          </tbody>
+        </table>
+        <div class="callout rise d4" style="margin-top:16px"><b>עיקרון:</b> בלעדיות הכרטוס יכולה להיות מוחלטת כל עוד ההסכם בתוקף—אבל עליה להיות מחוברת להפעלה, למחזור ולתשלום בפועל.</div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="eyebrow rise"><span class="dotmark"></span>30% תמורת מה?</div>
+        <h2 class="h-lg rise d1">מתרגמים הבטחות לנכסים חוזיים ומדידים</h2>
+        <div class="ledger">
+          <div class="ledger-card rise d1"><span class="chip chip-bl">DATA</span><h3>דאטה שנמסר כחוק</h3><p>מאגר, שדות, עומק היסטורי, קצב עדכון, זכויות שימוש ותובנות נגזרות.</p></div>
+          <div class="ledger-card rise d2"><span class="chip chip-or">TRAFFIC</span><h3>מחזור בפועל</h3><p>GMV, מספר כרטיסים, מותגים פעילים ולקוחות חיצוניים—עם תאריך ורצפה.</p></div>
+          <div class="ledger-card rise d3"><span class="chip chip-te">RELATIONSHIPS</span><h3>תוצאה, לא היכרות</h3><p>לקוחות שהושקו, חוזים בינלאומיים או pipeline שהומר לפעילות.</p></div>
+          <div class="ledger-card rise d4"><span class="chip chip-pu">FUNDING</span><h3>כסף ומשאבים</h3><p>תקציב מחייב, שעות צוות, פיתוח, הטמעה ושיווק—בעלות מוסכמת.</p></div>
+        </div>
+        <div class="quote rise d5" style="margin-top:18px">מניות הן קבועות. הערך של ToMix עתידי ותלוי ביצוע. לכן <span class="accent">האקוויטי צריך להיצבר לפי ערך שנמסר</span>—לא להימסר מראש כנגד קטגוריות כלליות.</div>
+        <p class="foot-note rise d5">זהו “מדף הערך” שהוצע בשיחת GGS: כל תרומה מקבלת שווי כסף ונצברת לבעלות/וורנטים לפי נוסחה. מול ToMix אפשר לדבר בשפת “שותפות שנבנית”, בלי לפתוח במונח SAFE.</p>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="eyebrow rise"><span class="dotmark"></span>אסטרטגיית השיחה</div>
+        <h2 class="h-lg rise d1">לא מתווכחים על אחוז. מבררים איזו עסקה הם באמת רוצים.</h2>
+        <div class="flow">
+          <div class="flow-step rise d1"><div class="n">01</div><h3>מכירים בערך</h3><p>ToMix היא שותף שיכול לשנות את קצב החברה, לא עוד לקוח.</p></div>
+          <div class="flow-step rise d2"><div class="n">02</div><h3>מקבעים חזון</h3><p>מוצר משולב עם הכרטוס בישראל וחברה שיכולה לגדול בעולם.</p></div>
+          <div class="flow-step rise d3"><div class="n">03</div><h3>שואלים על ה־30</h3><p>מה הוא אמור לפתור: שליטה, הגנה, אפסייד או דרישת בורד?</p></div>
+          <div class="flow-step rise d3"><div class="n">04</div><h3>מפרידים שכבות</h3><p>ישראל המסחרית; מימון; דאטה; אקוויטי; ממשל תאגידי.</p></div>
+          <div class="flow-step rise d4"><div class="n">05</div><h3>מציעים עיקרון</h3><p>כל ערך נספר. ערך עתידי מייצר בעלות כשהוא נמסר.</p></div>
+          <div class="flow-step rise d5"><div class="n">06</div><h3>מסיימים במסמך</h3><p>Term Sheet קצר: מספרים, milestones, RevShare ותחולת הבלעדיות.</p></div>
+        </div>
+        <div class="callout green-line rise d5" style="margin-top:18px"><b>טון:</b> בטוח, עסקי וסקרן. לא מאיימים במתחרים בפתיחה; לא מתנצלים על הרצון להישאר ניתנים להשקעה.</div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="eyebrow rise"><span class="dotmark"></span>נוסח פתיחה אפשרי</div>
+        <h2 class="h-lg rise d1">השיחה עם רועי—בדקה וחצי</h2>
+        <div class="script-box rise d2">
+          “רועי, אנחנו מבינים ש־ToMix לא רואה את עצמה כלקוח או כמפיץ רגיל. אתם מביאים דאטה, טראפיק, מותגים, מימון וקשרים שיכולים לקצר לנו שנים—ואנחנו רוצים לבנות את ישראל יחד אתכם, בתוך מערכת הכרטוס שלכם ובבלעדיות.”
+          <br><span class="pause">— עצירה —</span><br>
+          “באותה נשימה, ה־30% הם בעלות קבועה בחברה העולמית בתמורה לערך שחלקו יימסר לאורך זמן. אחרי שיחה משפטית רצינית, הבנו שמבנה מורכב או 30% מיידיים עלולים להפוך את Flowz לחברה שבויה ולפגוע בדיוק באפסייד שגם אתם רוצים.”
+          <br><span class="pause">— עצירה —</span><br>
+          “אנחנו מציעים לבנות <strong>בית אחד</strong>: ToMix מקבלת את כל היתרון האסטרטגי בישראל; Flowz מקבלת מימון, דאטה וכלכלת טרנזקציות; וכל ערך שאתם מספקים נרשם ומתרגם לבעלות אמיתית לפי ביצוע. לפני שנזרוק מספר נגדי—אנחנו רוצים להבין: <strong>מה ה־30% אמורים לתת לכם שאי אפשר להשיג בחבילה הזאת?</strong>”
+        </div>
+        <p class="foot-note rise d3">המטרה אינה “למכור וורנטים”. המטרה היא לגרום לרועי להסביר את הצורך שמאחורי העוגן.</p>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="eyebrow rise"><span class="dotmark"></span>שאלות אבחון</div>
+        <h2 class="h-lg rise d1">השאלות שצריכות לצאת מהחדר עם תשובה</h2>
+        <div class="two-col" style="margin-top:18px">
+          <div class="card rise d2"><span class="chip chip-or">על הצורך</span><ul class="list"><li>מה חשוב יותר: בעלות, שליטה, אפסייד כספי או זכויות ישראל?</li><li>למה המספר הוא 30% ולא 10%, 15% או מודל מדורג?</li><li>אם ToMix מקבלת בלעדיות מלאה בכרטוס בישראל—מה עדיין חסר?</li><li>אילו זכויות בורד הם מצפים לקבל לצד האחוזים?</li></ul></div>
+          <div class="card rise d3"><span class="chip chip-bl">על התמורה</span><ul class="list blue-bullets"><li>איזה דאטה בדיוק, לאיזו תקופה ובאיזו תדירות?</li><li>איזה GMV ומספר לקוחות הם מתחייבים להפעיל?</li><li>כמה כסף ומשאבי צוות מוקצים, ולכמה זמן?</li><li>מה משמעות “קשרים בעולם”: introductions או עסקאות?</li></ul></div>
+        </div>
+        <div class="quote rise d4" style="margin-top:18px">שיחה מוצלחת אינה שיחה שבה רועי אומר “כן” למספר. היא שיחה שבה הדרישה העמומה ל־30% הופכת ל<span class="accent">רשימת צרכים, נכסים והתחייבויות שאפשר לתמחר.</span></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="eyebrow rise"><span class="dotmark"></span>התנגדויות צפויות</div>
+        <h2 class="h-lg rise d1">לא להתגונן; להחזיר כל טענה למבנה העסקה</h2>
+        <div class="qa">
+          <div class="qa-card rise d1"><div class="q">“בלי 30% אין עסקה.”</div><div class="a">“אז חשוב להבין אם אתם מבקשים שותפות כלכלית או שליטה. אם זו שליטה—אנחנו כבר מדברים על מכירה חלקית, וצריך לתמחר אותה בהתאם.”</div></div>
+          <div class="qa-card rise d2"><div class="q">“אנחנו נותנים לכם את כל השוק.”</div><div class="a">“נכון, ולכן אתם מקבלים בלעדיות מוצרית עמוקה בישראל. אבל השוק נמסר לאורך זמן; גם הבעלות צריכה להיבנות לאורך זמן.”</div></div>
+          <div class="qa-card rise d2"><div class="q">“חברות כרטוס לא מגייסות.”</div><div class="a">“אנחנו מסכימים לגבי כרטוס טהור. לכן Flowz צריכה להישאר שכבת Decision Intelligence גלובלית—זה מגדיל גם את שווי החלק שלכם.”</div></div>
+          <div class="qa-card rise d3"><div class="q">“אנחנו לא חברת הייטק ולא רוצים SAFE.”</div><div class="a">“לא צריך לקרוא לזה SAFE. כל שירות, דאטה ולקוח מקבלים ערך כספי; הערך המצטבר הופך לבעלות לפי נוסחה פשוטה.”</div></div>
+          <div class="qa-card rise d3"><div class="q">“אנחנו מסכנים מותג ודאטה.”</div><div class="a">“זו סיבה לבנות יעדים, רישיון, אבטחה ובלעדיות חזקים—לא להעביר בעלות קבועה לפני שההטמעה מתרחשת.”</div></div>
+          <div class="qa-card rise d4"><div class="q">“אנחנו יכולים לבנות את זה לבד.”</div><div class="a">“יכול להיות. השאלה היא זמן, פוקוס ואיכות. העסקה צריכה לשקף את הערך ששני הצדדים חוסכים ומייצרים—לא איום הדדי.”</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="eyebrow rise"><span class="dotmark"></span>סולם המו״מ</div>
+        <h2 class="h-lg rise d1">שלוש תוצאות אפשריות—ורק אחת היא עמדת הפתיחה</h2>
+        <div class="ladder">
+          <div class="option rise d1"><div class="level">OPENING · RECOMMENDED</div><h3>בית אחד + חוזים</h3><p>בלעדיות כרטוס בישראל, מוצר משולב, מימון, דאטה ו־0.3% מוצע; אקוויטי בספרה בודדת שנצבר לפי ערך.</p><div class="chip chip-gr" style="margin-top:12px">שומר על מסלול גלובלי</div></div>
+          <div class="option rise d2"><div class="level">CONTROLLED CONCESSION</div><h3>יותר אפסייד, תמורת יותר ודאות</h3><p>תקרת Warrants גבוהה יותר או זכות לרכוש אקוויטי נוסף בכסף אמיתי—מול milestones, מינימום GMV ותוקף.</p><div class="chip chip-go" style="margin-top:12px">דורש מודל cap table</div></div>
+          <div class="option rise d3"><div class="level">RECLASSIFY THE DEAL</div><h3><span class="num">30%</span> = מכירה חלקית</h3><p>אם 30% מיידיים אינם ניתנים למו״מ, זו אינה רק שותפות מסחרית. צריך מחיר מזומן, התחייבויות קשיחות והכרעה מודעת על מסלול חברה שבויה.</p><div class="chip chip-rd" style="margin-top:12px">לא “פתרון יצירתי”</div></div>
+        </div>
+        <div class="callout red-line rise d4" style="margin-top:18px"><b>Two Houses אינו Plan A.</b> אחרי פסיקת GGS הוא לכל היותר קלף נסיגה חריג, ורק אם ToMix מסרבת לכל מבנה אחר והיועצים מאשרים את המנגנונים.</div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-inner">
+        <div class="eyebrow rise"><span class="dotmark"></span>החלטה ותוצאה רצויה</div>
+        <h2 class="h-lg rise d1">מה אנחנו רוצים שיקרה אחרי השיחה עם רועי</h2>
+        <div class="two-col" style="margin-top:18px">
+          <div class="card side-card green-top rise d2"><span class="chip chip-gr">יוצאים עם</span><h3>מסגרת שניתנת לכתיבה</h3><ul class="list ok"><li>מה ה־30% אמורים לפתור מבחינת ToMix</li><li>נכונות עקרונית לחברה אחת</li><li>תגובה ראשונה למודל 0.3% RevShare</li><li>בסיס ה־GMV שעליו יחושב</li><li>תקציב ותקופת מימון</li><li>רשימת deliverables של דאטה, טראפיק וקשרים</li><li>טווח אקוויטי ומנגנון צבירה</li></ul></div>
+          <div class="card side-card red-top rise d3"><span class="chip chip-rd">לא עושים בחדר</span><h3>לא סוגרים מתוך לחץ</h3><ul class="list bad"><li>לא מסכימים בעל־פה ל־30%</li><li>לא מציגים 0.3% כאילו כבר הוסכם</li><li>לא מבטיחים זכויות וטו/דירקטוריון</li><li>לא חותמים No-shop לפני כלכלה בסיסית</li><li>לא מאיימים במתחרים בלי BATNA אמיתית</li><li>לא מנסים לפתור משפטית פער עסקי שלא הובן</li></ul></div>
+        </div>
+        <div class="quote rise d4" style="margin-top:17px">היעד לפגישה אינו Term Sheet חתום. היעד הוא לעבור מ<span class="accent">“30% תמורת כל מה שאנחנו מביאים”</span> ל־עסקה עם יחידות ערך, מספרים, תאריכים והיגיון ששני הבורדים יכולים להסביר.</div>
+        <p class="foot-note rise d5">מקורות פנימיים: מסמכי העבודה 23–24.08.2026 · תמליל שיחת GGS · סיכום השיחה המשפטית · הדיון האסטרטגי המעודכן. כל המספרים כפופים לאימות ולניסוח משפטי.</p>
+      </div>
+    </section>
+  </main>
+
+  <nav class="nav" id="nav" aria-label="ניווט שקופיות"></nav>
+  <div class="arrows">
+    <button class="arrow-btn" id="prev" type="button" aria-label="השקופית הקודמת">→ הקודם</button>
+    <button class="arrow-btn" id="next" type="button" aria-label="השקופית הבאה">הבא ←</button>
+  </div>
+  <div class="slide-num" id="slideNum">01 / 22</div>
+
+  <script>
+    (function(){
+      const slides = Array.from(document.querySelectorAll('.slide'));
+      const nav = document.getElementById('nav');
+      const progress = document.getElementById('progress');
+      const slideNum = document.getElementById('slideNum');
+      let current = Math.max(0, Math.min(slides.length - 1, Number(location.hash.replace('#','')) - 1 || 0));
+
+      slides.forEach((slide, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'dot';
+        dot.type = 'button';
+        dot.setAttribute('aria-label', 'מעבר לשקופית ' + (i + 1));
+        dot.addEventListener('click', () => show(i));
+        nav.appendChild(dot);
+      });
+
+      function show(index, updateHash){
+        current = (index + slides.length) % slides.length;
+        slides.forEach((slide, i) => slide.classList.toggle('active', i === current));
+        Array.from(nav.children).forEach((dot, i) => dot.classList.toggle('on', i === current));
+        progress.style.width = ((current + 1) / slides.length * 100) + '%';
+        slideNum.textContent = String(current + 1).padStart(2,'0') + ' / ' + String(slides.length).padStart(2,'0');
+        document.title = 'Flowz × ToMix · ' + String(current + 1).padStart(2,'0') + '/' + slides.length;
+        if(updateHash !== false) history.replaceState(null, '', '#' + (current + 1));
+        const inner = slides[current].querySelector('.slide-inner');
+        if(inner) inner.scrollTop = 0;
+      }
+
+      document.getElementById('prev').addEventListener('click', () => show(current - 1));
+      document.getElementById('next').addEventListener('click', () => show(current + 1));
+      document.addEventListener('keydown', (event) => {
+        if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) return;
+        if(['ArrowLeft','PageDown',' '].includes(event.key)){ event.preventDefault(); show(current + 1); }
+        if(['ArrowRight','PageUp'].includes(event.key)){ event.preventDefault(); show(current - 1); }
+        if(event.key === 'Home') show(0);
+        if(event.key === 'End') show(slides.length - 1);
+        if(event.key.toLowerCase() === 'p') window.print();
+      });
+
+      let touchX = null;
+      document.addEventListener('touchstart', e => { touchX = e.changedTouches[0].screenX; }, {passive:true});
+      document.addEventListener('touchend', e => {
+        if(touchX === null) return;
+        const delta = e.changedTouches[0].screenX - touchX;
+        if(Math.abs(delta) > 55) show(current + (delta < 0 ? 1 : -1));
+        touchX = null;
+      }, {passive:true});
+
+      const gmv = document.getElementById('gmv');
+      const gmvLabel = document.getElementById('gmvLabel');
+      const annualResult = document.getElementById('annualResult');
+      const monthlyResult = document.getElementById('monthlyResult');
+      function compactIls(value){
+        if(value >= 1000000) return '₪' + (value / 1000000).toFixed(value % 1000000 === 0 ? 0 : 1) + 'M';
+        return '₪' + (value / 1000).toFixed(value % 1000 === 0 ? 0 : 1) + 'K';
+      }
+      function updateCalc(){
+        const millions = Number(gmv.value);
+        const annual = millions * 1000000 * 0.003;
+        gmvLabel.textContent = '₪' + millions + 'M';
+        annualResult.textContent = compactIls(annual);
+        monthlyResult.textContent = compactIls(annual / 12);
+      }
+      gmv.addEventListener('input', updateCalc);
+      updateCalc();
+      show(current, false);
+    })();
+  </script>
+</body>
+</html>

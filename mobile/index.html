@@ -1,0 +1,2027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23e8633f'/><text x='50' y='72' font-size='58' font-family='Arial' text-anchor='middle'>&#128241;</text></svg>">
+<title>Flowz Mobile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<style>
+/* ══════════════════════════════════════════════════════════════════════════
+   FLOWZ MOBILE · warm-cream v2 carried to the phone.
+   Single-theme by decision: the cream field IS the product's world.
+   Tokens are a verbatim carry of productv2.css `.pv2-root`, radii tightened
+   one notch for the smaller canvas. Screen hues stay wayfinding-only.
+   ══════════════════════════════════════════════════════════════════════════ */
+:root {
+  --text: #241c16;
+  --text-soft: #6d6359;
+  --text-faint: #a99d8f;
+
+  --accent: #e8633f;          /* coral · CONTROL's hue and the system accent */
+  --ink: #201913;             /* warm black · primary buttons, logo */
+  --ink-soft: #3a3027;
+
+  /* nav hues (wayfinding only, never a screen theme) */
+  --h-control: #e8633f;
+  --h-ltv: #8b5cf6;
+  --h-sales: #10b981;
+  --h-reach: #3b82f6;
+
+  /* widget accents */
+  --c-sales: #e8633f;
+  --c-today: #f59e0b;
+  --c-market: #3b82f6;
+  --c-perf: #8b5cf6;
+
+  /* insight tones */
+  --green: rgba(190,242,100,.55);  --green-ink: #3f6212;
+  --orange: rgba(253,186,116,.62); --orange-ink: #9a3412;
+  --pink: rgba(240,171,252,.5);    --pink-ink: #86198f;
+
+  /* flow types */
+  --quick: #f59e0b; --progressive: #3b82f6; --process: #8b5cf6; --routine: #14b8a6;
+
+  /* semantic */
+  --good: #15803d; --bad: #b91c1c;
+
+  --glass-bg: rgba(255,252,247,.58);
+  --glass-bg-2: rgba(255,252,247,.4);
+  --glass-brd: rgba(255,255,255,.62);
+  --glass-shadow: 0 8px 30px rgba(70,45,25,.10);
+  --glass-inset: inset 0 1px 0 rgba(255,255,255,.8);
+
+  --r-xl: 24px; --r-lg: 19px; --r-md: 14px; --r-sm: 10px;
+  --ease: cubic-bezier(.2,.8,.25,1);
+
+  --field:
+    radial-gradient(1100px 620px at 8% -8%, #f8e7d6 0%, transparent 52%),
+    radial-gradient(900px 520px at 102% 2%, #f9dccb 0%, transparent 46%),
+    radial-gradient(820px 760px at 50% 118%, #fdf1e6 0%, transparent 52%),
+    linear-gradient(165deg, #f5eee5 0%, #ece2d5 100%);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text);
+  background: var(--field) fixed;
+  -webkit-font-smoothing: antialiased;
+  font-variant-numeric: tabular-nums;
+}
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; padding: 0; text-align: left; }
+svg { display: block; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
+
+/* ── shared surfaces & type ──────────────────────────────────────────────── */
+.glass {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid var(--glass-brd);
+  box-shadow: var(--glass-shadow), var(--glass-inset);
+}
+.sec-label { font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-faint); font-weight: 700; }
+.soft  { color: var(--text-soft); }
+.faint { color: var(--text-faint); }
+.up   { color: var(--good); }
+.down { color: var(--bad); }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   GALLERY (desktop review) · phone frames on the field, grouped by tier.
+   Below 700px the gallery collapses to ONE live full-screen app.
+   ══════════════════════════════════════════════════════════════════════════ */
+.gal { max-width: 1560px; margin: 0 auto; padding: 44px 40px 90px; }
+.gal-head { max-width: 660px; margin-bottom: 8px; }
+.gal-head .logo-row { display: flex; align-items: center; gap: 11px; margin-bottom: 18px; }
+.gal-head .logo { width: 34px; height: 34px; border-radius: 11px; background: var(--ink); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 17px; }
+.gal-head .wordmark { font-weight: 800; font-size: 19px; letter-spacing: -.01em; }
+.gal-head .wordmark span { color: var(--text-faint); font-weight: 600; }
+.gal-head h1 { font-size: 34px; font-weight: 800; letter-spacing: -.025em; line-height: 1.12; text-wrap: balance; margin-bottom: 12px; }
+.gal-head p { font-size: 14.5px; line-height: 1.6; color: var(--text-soft); max-width: 58ch; }
+.decisions { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 8px; max-width: 860px; }
+.decision { border-radius: 999px; padding: 7px 13px; font-size: 12px; font-weight: 600; color: var(--text-soft); }
+.decision b { color: var(--text); font-weight: 700; }
+.gal-sec { margin-top: 46px; }
+.gal-sec > .sec-label { display: block; margin-bottom: 6px; }
+.gal-sec > .sec-note { font-size: 13px; color: var(--text-soft); margin-bottom: 22px; max-width: 72ch; }
+.frames { display: flex; flex-wrap: wrap; gap: 34px 26px; }
+.slot { display: flex; flex-direction: column; gap: 12px; }
+.slot-cap { padding-left: 6px; }
+.slot-cap .t { font-size: 13px; font-weight: 700; }
+.slot-cap .s { font-size: 11.5px; color: var(--text-faint); margin-top: 1px; max-width: 340px; }
+
+/* ── phone frame ─────────────────────────────────────────────────────────── */
+.phone {
+  width: 372px; height: 806px; flex: none;
+  border-radius: 54px; padding: 10px;
+  background: linear-gradient(160deg, #2c2622, #17130f 60%);
+  box-shadow: 0 24px 60px rgba(70,45,25,.28), inset 0 1px 0 rgba(255,255,255,.14);
+  position: relative;
+}
+.phone .screen {
+  position: relative; width: 100%; height: 100%; overflow: hidden;
+  border-radius: 44px; background: var(--field);
+  display: flex; flex-direction: column;
+}
+.phone .notch {
+  position: absolute; top: 21px; left: 50%; transform: translateX(-50%);
+  width: 108px; height: 26px; border-radius: 999px; background: #17130f; z-index: 40;
+}
+.statusbar {
+  flex: none; height: 52px; padding: 20px 26px 0;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 13px; font-weight: 700; position: relative; z-index: 30;
+}
+.statusbar .sb-icons { display: flex; gap: 5px; align-items: center; color: var(--text); }
+.homebar {
+  position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%);
+  width: 128px; height: 5px; border-radius: 999px; background: rgba(32,25,19,.28); z-index: 40;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   APP CHROME · ribbon (top) + dock (bottom). Both float over the feed.
+   ══════════════════════════════════════════════════════════════════════════ */
+.app { position: relative; flex: 1; min-height: 0; display: flex; flex-direction: column; }
+
+/* ribbon · the desktop status ribbon, kept. Panel name is one word. */
+.ribbon {
+  position: absolute; top: 6px; left: 12px; right: 12px; z-index: 20;
+  height: 40px; border-radius: 999px;
+  display: flex; align-items: center; gap: 8px; padding: 0 6px 0 13px;
+}
+.ribbon .panel { font-size: 12px; font-weight: 800; letter-spacing: -.01em; white-space: nowrap; }
+.ribbon .rb-mid { display: flex; align-items: baseline; gap: 6px; margin-left: auto; min-width: 0; }
+.ribbon .clock { font-size: 12px; font-weight: 700; }
+.ribbon .date { font-size: 10px; color: var(--text-faint); font-weight: 600; white-space: nowrap; }
+.ribbon .ev-chip {
+  display: flex; align-items: center; gap: 5px; height: 30px; padding: 0 10px; flex: none;
+  border-radius: 999px; background: rgba(255,255,255,.55); font-size: 11px; font-weight: 700; white-space: nowrap;
+}
+.ribbon .ev-chip .dotset { display: flex; }
+.ribbon .ev-chip .dotset i { width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid #fff; margin-left: -3px; }
+.ribbon .org {
+  width: 30px; height: 30px; border-radius: 50%; flex: none;
+  background: var(--ink); color: #fff; display: grid; place-items: center;
+  font-size: 10px; font-weight: 800; letter-spacing: .02em;
+}
+
+/* dock · thumb-first primary nav. Active = solid fill of the screen's hue. */
+.dock {
+  position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); z-index: 20;
+  display: flex; gap: 4px; padding: 6px; border-radius: 999px;
+}
+.dock button {
+  width: 52px; height: 48px; border-radius: 999px; display: grid; place-items: center;
+  color: var(--text-faint); transition: background .22s var(--ease), color .22s var(--ease);
+  position: relative;
+}
+.dock button svg { width: 21px; height: 21px; }
+.dock button.on { color: #fff; background: var(--hue, var(--accent)); box-shadow: 0 6px 16px color-mix(in srgb, var(--hue, var(--accent)) 42%, transparent); }
+.dock button .dk-label {
+  position: absolute; top: -21px; left: 50%; transform: translateX(-50%);
+  font-size: 9px; font-weight: 700; letter-spacing: .1em; color: var(--text-faint);
+  opacity: 0; transition: opacity .2s; pointer-events: none; white-space: nowrap;
+}
+.dock button.on .dk-label { opacity: 1; color: var(--hue, var(--accent)); }
+
+/* ── feed (the scrolling page) ───────────────────────────────────────────── */
+.feed {
+  flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain;
+  padding: 56px 12px 92px; display: flex; flex-direction: column; gap: 10px;
+  scrollbar-width: none;
+}
+.feed::-webkit-scrollbar { display: none; }
+.feed .sec-label { margin: 8px 4px 0; }
+.feed-hd { display: flex; align-items: baseline; justify-content: space-between; margin: 8px 4px 0; }
+.feed-hd .sec-label { margin: 0; }
+.feed-hd .more { font-size: 11px; font-weight: 700; color: var(--accent); }
+
+/* ── cards & shared components ───────────────────────────────────────────── */
+.card { border-radius: var(--r-xl); padding: 15px 16px; }
+.card.tight { padding: 12px 14px; }
+.kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.metric-big { font-size: 30px; font-weight: 800; letter-spacing: -.03em; line-height: 1; }
+.metric-mid { font-size: 21px; font-weight: 800; letter-spacing: -.02em; line-height: 1.05; }
+.metric-sub { font-size: 11px; color: var(--text-soft); font-weight: 600; margin-top: 4px; }
+.delta { font-size: 11px; font-weight: 700; }
+.rowline { display: flex; align-items: center; gap: 10px; }
+.spread { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+
+/* swipe widget · horizontal scroll-snap pages + dots (native on touch) */
+.swipe { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; gap: 10px; margin: 0 -12px; padding: 0 12px; }
+.swipe::-webkit-scrollbar { display: none; }
+.swipe > * { flex: 0 0 100%; scroll-snap-align: center; }
+.swipe.peek > * { flex: 0 0 84%; scroll-snap-align: start; }
+.dots { display: flex; gap: 5px; justify-content: center; padding-top: 8px; }
+.dots i { width: 5px; height: 5px; border-radius: 50%; background: rgba(32,25,19,.18); transition: all .25s var(--ease); }
+.dots i.on { background: var(--text-soft); width: 14px; border-radius: 999px; }
+
+/* progress bar with BEP → SO markers */
+.bar { position: relative; height: 8px; border-radius: 999px; background: rgba(32,25,19,.09); overflow: visible; }
+.bar .fill { position: absolute; inset: 0 auto 0 0; border-radius: 999px; background: var(--bar-c, var(--accent)); }
+.bar .mark { position: absolute; top: -2.5px; width: 2px; height: 13px; border-radius: 2px; background: rgba(32,25,19,.34); }
+.bar .mark.so { background: rgba(32,25,19,.6); }
+.bar-legend { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-faint); font-weight: 600; margin-top: 5px; }
+
+/* chips / tags / pills */
+.chip { display: inline-flex; align-items: center; gap: 5px; height: 24px; padding: 0 10px; border-radius: 999px; background: rgba(255,255,255,.6); font-size: 10.5px; font-weight: 700; color: var(--text-soft); }
+.chip.hue { color: #fff; background: var(--hue); }
+.tag-dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+.btn-ink { display: inline-flex; align-items: center; justify-content: center; gap: 7px; height: 42px; padding: 0 20px; border-radius: 999px; background: var(--ink); color: #fff; font-size: 13px; font-weight: 700; }
+.btn-ghost { display: inline-flex; align-items: center; justify-content: center; height: 42px; padding: 0 18px; border-radius: 999px; background: rgba(255,255,255,.6); font-size: 13px; font-weight: 700; color: var(--text); }
+
+/* list rows (orders, tickets, tasks, support …) */
+.lrow { display: flex; align-items: center; gap: 11px; padding: 11px 4px; border-bottom: 1px solid rgba(32,25,19,.06); }
+.lrow:last-child { border-bottom: none; }
+.lrow .lr-main { flex: 1; min-width: 0; }
+.lrow .lr-t { font-size: 13px; font-weight: 700; letter-spacing: -.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lrow .lr-s { font-size: 11px; color: var(--text-faint); font-weight: 600; margin-top: 1px; }
+.lrow .lr-end { text-align: right; flex: none; }
+.lrow .lr-v { font-size: 13px; font-weight: 800; }
+.avatar { width: 34px; height: 34px; border-radius: 50%; flex: none; display: grid; place-items: center; font-size: 11px; font-weight: 800; color: #fff; background: var(--av, var(--ink-soft)); }
+
+/* task checkbox rows */
+[data-task] { cursor: pointer; }
+.ck { width: 22px; height: 22px; border-radius: 8px; border: 2px solid rgba(32,25,19,.22); flex: none; display: grid; place-items: center; color: #fff; transition: all .2s var(--ease); }
+.ck svg { opacity: 0; transition: opacity .2s; }
+.lrow.done .ck { background: var(--good); border-color: var(--good); }
+.lrow.done .ck svg { opacity: 1; }
+.lrow.done .lr-t { text-decoration: line-through; color: var(--text-faint); }
+
+/* status pills · semantic, separate from the accent */
+.st { display: inline-flex; align-items: center; height: 21px; padding: 0 9px; border-radius: 999px; font-size: 10px; font-weight: 700; }
+.st.g { background: var(--green); color: var(--green-ink); }
+.st.o { background: var(--orange); color: var(--orange-ink); }
+.st.p { background: var(--pink); color: var(--pink-ink); }
+.st.n { background: rgba(32,25,19,.08); color: var(--text-soft); }
+
+/* insight cards · tap to expand (hover accordion → tap) */
+.insight { border-radius: var(--r-lg); padding: 13px 14px; cursor: pointer; }
+.insight .in-top { display: flex; align-items: center; gap: 8px; }
+.insight .in-tag { display: inline-flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.insight .in-tag i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.insight .in-trend { margin-left: auto; font-size: 12px; font-weight: 800; }
+.insight .in-text { font-size: 14px; font-weight: 700; letter-spacing: -.015em; line-height: 1.3; margin-top: 6px; }
+.insight .in-body { max-height: 0; overflow: hidden; transition: max-height .3s var(--ease); }
+.insight.open .in-body { max-height: 220px; }
+.insight .in-detail { font-size: 12px; line-height: 1.5; color: var(--text-soft); padding-top: 8px; }
+.insight .in-act { margin-top: 10px; }
+.insight.t-green { background: var(--green); }  .insight.t-green .in-tag { color: var(--green-ink); }
+.insight.t-orange { background: var(--orange); } .insight.t-orange .in-tag { color: var(--orange-ink); }
+.insight.t-pink { background: var(--pink); }   .insight.t-pink .in-tag { color: var(--pink-ink); }
+
+/* flow cards */
+.flow { border-radius: var(--r-lg); padding: 13px 14px; cursor: pointer; position: relative; }
+.flow::before { content: ""; position: absolute; left: 0; top: 14px; bottom: 14px; width: 3px; border-radius: 3px; background: var(--fc); }
+.flow .fl-top { display: flex; align-items: center; gap: 7px; }
+.flow .fl-type { font-size: 9.5px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; color: var(--fc); }
+.flow .fl-mod { margin-left: auto; display: flex; gap: 4px; }
+.flow .fl-mod .chip { height: 20px; padding: 0 8px; font-size: 9.5px; }
+.flow .fl-t { font-size: 14.5px; font-weight: 800; letter-spacing: -.015em; margin-top: 5px; }
+.flow .fl-d { font-size: 12px; color: var(--text-soft); line-height: 1.45; margin-top: 3px; }
+.flow .fl-body { max-height: 0; overflow: hidden; transition: max-height .32s var(--ease); }
+.flow.open .fl-body { max-height: 320px; }
+.flow .fl-impact { font-size: 11px; font-weight: 700; color: var(--text-soft); margin-top: 9px; }
+.flow .fl-run { display: flex; gap: 8px; margin-top: 10px; }
+.wchain { display: flex; flex-direction: column; gap: 0; padding-top: 10px; }
+.wchain .wstep { display: flex; gap: 9px; align-items: flex-start; }
+.wchain .wnode { flex: none; width: 14px; display: flex; flex-direction: column; align-items: center; }
+.wchain .wnode i { width: 8px; height: 8px; border-radius: 50%; background: var(--fc, var(--accent)); margin-top: 3px; }
+.wchain .wnode b { width: 2px; flex: 1; min-height: 12px; background: rgba(32,25,19,.12); }
+.wchain .wstep:last-child .wnode b { display: none; }
+.wchain .wtxt { font-size: 12px; font-weight: 600; color: var(--text-soft); padding-bottom: 9px; }
+.wchain .wstep.gate .wtxt { color: var(--process); font-weight: 700; }
+.wchain .wstep.gate .wnode i { background: #fff; border: 2px solid var(--process); width: 9px; height: 9px; }
+
+/* sheets · mobile's modal. Rises from the dock edge. */
+.sheet-veil { position: absolute; inset: 0; z-index: 28; background: rgba(32,25,19,.24); opacity: 0; pointer-events: none; transition: opacity .28s; }
+.sheet { position: absolute; left: 6px; right: 6px; bottom: 6px; z-index: 30; border-radius: 34px 34px 40px 40px; padding: 10px 16px 18px; transform: translateY(calc(100% + 20px)); transition: transform .34s var(--ease); max-height: 88%; display: flex; flex-direction: column; }
+.sheet .grab { width: 40px; height: 4px; border-radius: 999px; background: rgba(32,25,19,.18); margin: 2px auto 10px; flex: none; }
+.sheet .sh-scroll { overflow-y: auto; min-height: 0; scrollbar-width: none; }
+.sheet .sh-scroll::-webkit-scrollbar { display: none; }
+.app.sheet-open .sheet-veil { opacity: 1; pointer-events: auto; }
+.app.sheet-open .sheet.open { transform: translateY(0); }
+
+/* menu sheet internals */
+.menu-orgs { display: flex; gap: 8px; }
+.morg { display: flex; align-items: center; gap: 9px; flex: 1; border-radius: var(--r-md); padding: 9px 10px; background: rgba(255,255,255,.5); }
+.morg.on { background: var(--ink); color: #fff; }
+.morg .mo-i { width: 28px; height: 28px; border-radius: 50%; background: rgba(32,25,19,.85); color: #fff; display: grid; place-items: center; font-size: 9.5px; font-weight: 800; flex: none; }
+.morg.on .mo-i { background: rgba(255,255,255,.2); }
+.morg .mo-n { font-size: 11px; font-weight: 700; line-height: 1.15; }
+.msearch { display: flex; align-items: center; gap: 9px; height: 44px; border-radius: 999px; background: rgba(255,255,255,.6); padding: 0 15px; margin-top: 10px; color: var(--text-faint); font-size: 13px; font-weight: 600; }
+.mgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+.mcell { border-radius: var(--r-md); background: rgba(255,255,255,.5); padding: 12px 6px 10px; display: flex; flex-direction: column; align-items: center; gap: 7px; font-size: 11px; font-weight: 700; color: var(--text-soft); }
+.mcell svg { width: 20px; height: 20px; color: var(--text); }
+.mcell .mc-badge { position: absolute; } /* reserved */
+.mtools { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+.mtools .chip { height: 28px; }
+.muser { display: flex; align-items: center; gap: 11px; margin-top: 14px; border-top: 1px solid rgba(32,25,19,.08); padding-top: 13px; }
+.muser .mu-n { font-size: 13.5px; font-weight: 800; }
+.muser .mu-r { font-size: 11px; color: var(--text-faint); font-weight: 600; }
+.muser .mu-actions { margin-left: auto; display: flex; gap: 6px; }
+
+/* events popover (ribbon tap) */
+.pop { position: absolute; top: 52px; left: 12px; right: 12px; z-index: 26; border-radius: var(--r-lg); padding: 8px; opacity: 0; transform: translateY(-6px); pointer-events: none; transition: all .24s var(--ease); }
+.app.pop-open .pop { opacity: 1; transform: none; pointer-events: auto; }
+
+/* charts */
+.chart-wrap { position: relative; }
+.chart-legend { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+.chart-legend span { display: inline-flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 700; color: var(--text-soft); }
+
+/* donut ring */
+.ring-wrap { display: grid; place-items: center; position: relative; }
+.ring-center { position: absolute; text-align: center; }
+
+/* event rail card (Sales) */
+.evcard { border-radius: var(--r-lg); padding: 13px 14px; }
+.evcard .ev-top { display: flex; align-items: center; gap: 8px; }
+.evcard .ev-n { font-size: 13.5px; font-weight: 800; letter-spacing: -.01em; }
+.evcard .ev-d { margin-left: auto; font-size: 10.5px; font-weight: 700; color: var(--text-faint); }
+
+/* segment rows (LTV) */
+.seg { display: flex; align-items: center; gap: 10px; padding: 9px 4px; border-bottom: 1px solid rgba(32,25,19,.06); }
+.seg:last-child { border-bottom: none; }
+.seg .sg-bar { flex: 1; }
+
+/* back row for drill-in screens */
+.backrow { display: flex; align-items: center; gap: 8px; margin: 2px 2px 0; }
+.backrow button { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--text-soft); height: 40px; padding: 0 10px; border-radius: 999px; background: rgba(255,255,255,.5); }
+
+/* persona cards */
+.persona { border-radius: var(--r-lg); padding: 14px 15px; }
+.persona .pe-ico { font-size: 22px; }
+.persona .pe-n { font-size: 14px; font-weight: 800; margin-top: 6px; }
+.persona .pe-bio { font-size: 11.5px; line-height: 1.5; color: var(--text-soft); margin-top: 4px; }
+.persona .pe-kpis { display: flex; gap: 14px; margin-top: 10px; }
+
+/* price ladder */
+.tier { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
+.tier .ti-n { width: 76px; font-size: 11.5px; font-weight: 700; flex: none; }
+.tier .ti-bar { flex: 1; }
+.tier .ti-p { width: 44px; text-align: right; font-size: 11.5px; font-weight: 800; flex: none; }
+
+/* sentiment banner (event detail) */
+.senti { border-radius: var(--r-lg); padding: 13px 15px; font-size: 13px; font-weight: 600; line-height: 1.45; }
+.senti b { font-weight: 800; }
+.senti.locked { background: var(--green); color: var(--green-ink); }
+.senti.risk { background: var(--pink); color: var(--pink-ink); }
+.senti.bep { background: var(--orange); color: var(--orange-ink); }
+
+/* ── phone-native mode: gallery hides, one live app instance ─────────────── */
+#live-app { display: none; }
+@media (max-width: 699px) {
+  .gal { display: none; }
+  #live-app { display: block; position: fixed; inset: 0; }
+  #live-app .screen { border-radius: 0; height: 100%; display: flex; flex-direction: column; background: var(--field) fixed; }
+  #live-app .statusbar { display: none; }
+  #live-app .feed { padding-top: calc(env(safe-area-inset-top, 0px) + 54px); padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 92px); }
+  #live-app .ribbon { top: calc(env(safe-area-inset-top, 0px) + 6px); }
+  #live-app .dock { bottom: calc(env(safe-area-inset-bottom, 0px) + 10px); }
+  #live-app .sheet { bottom: calc(env(safe-area-inset-bottom, 0px) + 6px); }
+  #live-app .pop { top: calc(env(safe-area-inset-top, 0px) + 52px); }
+}
+</style>
+</head>
+<body>
+
+
+<!-- ════════════════════════════════════════════════════════════════════════
+     SCREEN TEMPLATES · one <template> per screen. JS clones them into phone
+     frames (gallery) or the live app (phone). data-panel = ribbon's one word.
+     ════════════════════════════════════════════════════════════════════════ -->
+
+<!-- ── CONTROLROOM ──────────────────────────────────────────────────────── -->
+<template data-screen="control" data-panel="ControlRoom" data-hue="#e8633f">
+  <div class="sec-label">Glance</div>
+  <div data-swipe>
+    <div class="swipe">
+      <!-- page 1 · Sales tracker -->
+      <div class="card glass" style="--bar-c:#4f7cff">
+        <div class="spread"><span class="sec-label" style="color:var(--c-sales)">Sales tracker</span><span class="chip">4 of 6 events</span></div>
+        <div style="display:flex;flex-direction:column;gap:11px;margin-top:11px">
+          <div>
+            <div class="spread"><span style="font-size:12px;font-weight:800">DB Oct</span><span class="delta soft">1,850 / 2,800 · 22d</span></div>
+            <div class="bar" style="margin-top:5px;--bar-c:#4f7cff"><div class="fill" style="width:66%"></div><i class="mark" style="left:45%"></i><i class="mark so" style="left:99%"></i></div>
+          </div>
+          <div>
+            <div class="spread"><span style="font-size:12px;font-weight:800">FC PU</span><span class="delta soft">1,850 / 2,800 · 35d</span></div>
+            <div class="bar" style="margin-top:5px;--bar-c:#a78bfa"><div class="fill" style="width:66%"></div><i class="mark" style="left:45%"></i><i class="mark so" style="left:99%"></i></div>
+          </div>
+          <div>
+            <div class="spread"><span style="font-size:12px;font-weight:800">Terra NYE</span><span class="delta soft">980 / 2,200 · 53d</span></div>
+            <div class="bar" style="margin-top:5px;--bar-c:#f5b53d"><div class="fill" style="width:45%"></div><i class="mark" style="left:45%"></i><i class="mark so" style="left:99%"></i></div>
+          </div>
+          <div>
+            <div class="spread"><span style="font-size:12px;font-weight:800">Korha Yoga</span><span class="delta soft">410 / 900 · 10d</span></div>
+            <div class="bar" style="margin-top:5px;--bar-c:#22c55e"><div class="fill" style="width:46%"></div><i class="mark" style="left:67%"></i><i class="mark so" style="left:99%"></i></div>
+          </div>
+        </div>
+      </div>
+      <!-- page 2 · Today -->
+      <div class="card glass">
+        <div class="spread"><span class="sec-label" style="color:var(--c-today)">Today</span><span class="delta up">+12% vs yesterday</span></div>
+        <div class="rowline" style="gap:18px;margin-top:12px">
+          <div>
+            <div class="metric-big">142<span style="font-size:15px;color:var(--text-faint);font-weight:700"> / 200</span></div>
+            <div class="metric-sub">tickets sold vs target</div>
+          </div>
+          <div style="margin-left:auto;text-align:right">
+            <div class="metric-mid">₪48.2k</div>
+            <div class="metric-sub">revenue today</div>
+          </div>
+        </div>
+        <div class="bar" style="margin-top:13px;--bar-c:var(--c-today)"><div class="fill" style="width:71%"></div></div>
+        <div style="display:flex;gap:6px;margin-top:12px">
+          <span class="chip"><i class="tag-dot" style="background:#4f7cff"></i>DB Oct · 86</span>
+          <span class="chip"><i class="tag-dot" style="background:#06b6d4"></i>Pulse · 38</span>
+          <span class="chip"><i class="tag-dot" style="background:#a78bfa"></i>FC PU · 18</span>
+        </div>
+        <div class="metric-sub" style="margin-top:10px">Peak hour 20:00 to 21:00</div>
+      </div>
+      <!-- page 3 · Marketing -->
+      <div class="card glass">
+        <div class="spread"><span class="sec-label" style="color:var(--c-market)">Marketing</span><span class="chip">DB Oct · Lookalike 2%</span></div>
+        <div class="kpis" style="margin-top:12px">
+          <div><div class="metric-mid">4.1×</div><div class="metric-sub">paid ROAS · ₪3.2k spend</div></div>
+          <div><div class="metric-mid">41.2k</div><div class="metric-sub">organic reach <span class="delta up">+8%</span></div></div>
+          <div><div class="metric-mid">6.4%</div><div class="metric-sub">engagement <span class="delta up">+1.2</span></div></div>
+          <div><div class="metric-mid">312</div><div class="metric-sub">new followers</div></div>
+        </div>
+      </div>
+      <!-- page 4 · Performance -->
+      <div class="card glass">
+        <div class="spread"><span class="sec-label" style="color:var(--c-perf)">Performance</span><span class="st p">4 critical</span></div>
+        <div class="kpis" style="margin-top:12px">
+          <div><div class="metric-mid">23</div><div class="metric-sub">open tasks</div></div>
+          <div><div class="metric-mid">68%</div><div class="metric-sub">completion</div></div>
+          <div><div class="metric-mid">7</div><div class="metric-sub">flows ready</div></div>
+          <div><div class="metric-mid">23</div><div class="metric-sub">CS tickets</div></div>
+        </div>
+        <div class="metric-sub" style="margin-top:10px">Approve DB Oct ad budget · Refund queue at 9</div>
+      </div>
+    </div>
+    <div class="dots"></div>
+  </div>
+
+  <div class="rowline" style="gap:10px">
+    <div class="card glass" style="flex:1">
+      <span class="sec-label">Growth rate</span>
+      <div class="rowline" style="gap:12px;margin-top:9px">
+        <div class="ring-wrap" data-ring="36" data-ring-c="#e8633f" data-ring-size="64"></div>
+        <div><div class="metric-mid">36%</div><div class="metric-sub"><span class="delta up">+4</span> vs last cycle</div></div>
+      </div>
+    </div>
+    <div class="card glass" style="flex:1">
+      <span class="sec-label">Revenue · top 4 events</span>
+      <div class="metric-mid" style="margin-top:9px">₪1.52M</div>
+      <div class="metric-sub">DB Oct leads with ₪463k</div>
+      <div style="display:flex;gap:3px;margin-top:9px;height:6px">
+        <i style="flex:463;background:#e8633f;border-radius:99px"></i><i style="flex:444;background:#ef8868;border-radius:99px"></i><i style="flex:335;background:#f4ab94;border-radius:99px"></i><i style="flex:274;background:#f9ccbc;border-radius:99px"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="card glass">
+    <div class="spread"><span class="sec-label">Tickets / day · last 7</span><span class="chip">3 events</span></div>
+    <div class="chart-wrap" data-chart="lines7" style="margin-top:10px"></div>
+    <div class="chart-legend">
+      <span><i class="tag-dot" style="background:#4f7cff"></i>DB Oct</span>
+      <span><i class="tag-dot" style="background:#06b6d4"></i>Pulse</span>
+      <span><i class="tag-dot" style="background:#a78bfa"></i>FC PU</span>
+    </div>
+  </div>
+
+  <div class="feed-hd"><span class="sec-label">Insights</span><span class="more">The data talking</span></div>
+  <div class="insight t-green" data-expand>
+    <div class="in-top"><span class="in-tag" style="color:#2563eb"><i></i>Acquisition</span><span class="in-trend up">↑</span></div>
+    <div class="in-text">87% of current buyers are new</div>
+    <div class="in-body"><div class="in-detail">PPC lookalike audiences are converting · acquisition cost down 18% vs last event. Consider scaling the winning ad set.</div><div class="in-act"><span class="btn-ghost" style="height:40px;font-size:12px">Scale winning campaign</span></div></div>
+  </div>
+  <div class="insight t-orange" data-expand>
+    <div class="in-top"><span class="in-tag" style="color:#7c3aed"><i></i>Community</span><span class="in-trend down">↓</span></div>
+    <div class="in-text">38% of members filled the form</div>
+    <div class="in-body"><div class="in-detail">Engagement is lagging behind last cycle (was 51%). A push to dormant members could recover ~600 responses.</div><div class="in-act"><span class="btn-ghost" style="height:40px;font-size:12px">Push member engagement</span></div></div>
+  </div>
+  <div class="insight t-green" data-expand>
+    <div class="in-top"><span class="in-tag" style="color:#15803d"><i></i>Finance</span><span class="in-trend up">↑</span></div>
+    <div class="in-text">ROI +30% on Terra Purim</div>
+    <div class="in-body"><div class="in-detail">Finance closed the event 30% above projection. Full breakdown ready for the investor report.</div><div class="in-act"><span class="btn-ghost" data-goto="finance" style="height:40px;font-size:12px">Open full finance report</span></div></div>
+  </div>
+  <div class="insight t-pink" data-expand>
+    <div class="in-top"><span class="in-tag" style="color:#db2777"><i></i>LTV</span><span class="in-trend down">↓</span></div>
+    <div class="in-text">Repeat buyers down 9% vs last event</div>
+    <div class="in-body"><div class="in-detail">Returning-customer share slipped. A win-back sequence could recover ~120 lapsed members before DB Oct.</div><div class="in-act"><span class="btn-ghost" data-goto="ltv" style="height:40px;font-size:12px">Launch win-back flow</span></div></div>
+  </div>
+
+  <div class="feed-hd"><span class="sec-label">Flows</span><span class="more">Suggested actions</span></div>
+  <div class="flow glass" style="--fc:var(--quick)" data-expand>
+    <div class="fl-top"><span class="fl-type">⚡ Quick</span><span class="fl-mod"><span class="chip">CRM</span><span class="chip">Marketing</span></span></div>
+    <div class="fl-t">Abandoned WhatsApp cart</div>
+    <div class="fl-d">Re-engage 214 checkouts that stalled in the last 24h.</div>
+    <div class="fl-body">
+      <div class="wchain">
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt">Pull abandoned carts from CRM</span></div>
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt">Create WA campaign for approval</span></div>
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt">Send</span></div>
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt">Track · Repeat</span></div>
+      </div>
+      <div class="fl-impact">Est. +38 tickets · runs instantly</div>
+      <div class="fl-run"><button class="btn-ink" data-open-flowrun style="flex:1">Run flow</button><span class="btn-ghost">Later</span></div>
+    </div>
+  </div>
+  <div class="flow glass" style="--fc:var(--progressive)" data-expand>
+    <div class="fl-top"><span class="fl-type">📈 Progressive</span><span class="fl-mod"><span class="chip">Community</span><span class="chip">LTV</span></span></div>
+    <div class="fl-t">Win-back lapsed members</div>
+    <div class="fl-d">Reach members inactive for 2+ events with a staged sequence.</div>
+    <div class="fl-body">
+      <div class="wchain">
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt">Find lapsed in CRM</span></div>
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt">Build 3-touch sequence</span></div>
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt">Schedule sends · Measure · Iterate</span></div>
+      </div>
+      <div class="fl-impact">Est. +6% retention · unfolds over 3 weeks</div>
+      <div class="fl-run"><button class="btn-ink" data-open-flowrun style="flex:1">Run flow</button><span class="btn-ghost">Later</span></div>
+    </div>
+  </div>
+  <div class="flow glass" style="--fc:var(--process)" data-expand>
+    <div class="fl-top"><span class="fl-type">⚙ Process</span><span class="fl-mod"><span class="chip">Sales</span><span class="chip">Finance</span></span></div>
+    <div class="fl-t">Dynamic price ladder</div>
+    <div class="fl-d">Nudge ticket tiers upward as events approach break-even.</div>
+    <div class="fl-body">
+      <div class="wchain">
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt">Read pace vs BEP</span></div>
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt">Propose tier bump</span></div>
+        <div class="wstep gate"><span class="wnode"><i></i><b></b></span><span class="wtxt">Approval gate · you decide</span></div>
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt">Apply new price · Monitor demand</span></div>
+      </div>
+      <div class="fl-impact">Est. +₪40k margin · needs approval gates</div>
+      <div class="fl-run"><button class="btn-ink" data-open-flowrun style="flex:1">Run flow</button><span class="btn-ghost">Later</span></div>
+    </div>
+  </div>
+  <div class="flow glass" style="--fc:var(--routine)" data-expand>
+    <div class="fl-top"><span class="fl-type">🔁 Routine</span><span class="fl-mod"><span class="chip">Community</span><span class="chip">Marketing</span></span></div>
+    <div class="fl-t">Weekly community digest</div>
+    <div class="fl-d">Keep the community warm with a recurring highlights send.</div>
+    <div class="fl-body">
+      <div class="wchain">
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt">Pull weekly highlights · Compose</span></div>
+        <div class="wstep gate"><span class="wnode"><i></i><b></b></span><span class="wtxt">Approve</span></div>
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt">Send Thu 18:00 · Repeat weekly</span></div>
+      </div>
+      <div class="fl-impact">Keeps DAU warm · repeats every Thursday</div>
+      <div class="fl-run"><button class="btn-ink" data-open-flowrun style="flex:1">Run flow</button><span class="btn-ghost">Later</span></div>
+    </div>
+  </div>
+</template>
+
+<!-- ── LTV DASHBOARD ────────────────────────────────────────────────────── -->
+<template data-screen="ltv" data-panel="LTV" data-hue="#8b5cf6">
+  <div class="kpis">
+    <div class="card glass tight"><div class="metric-mid">₪1,840</div><div class="metric-sub">avg lifetime value</div></div>
+    <div class="card glass tight"><div class="metric-mid">18,420</div><div class="metric-sub">community size</div></div>
+    <div class="card glass tight"><div class="metric-mid">41%</div><div class="metric-sub">repeat rate</div></div>
+    <div class="card glass tight"><div class="metric-mid">19%</div><div class="metric-sub">churn rate</div></div>
+  </div>
+
+  <div class="card glass">
+    <div class="spread"><span class="sec-label">Lifecycle · 18,420 members</span><span class="chip">12 mo</span></div>
+    <div class="rowline" style="gap:16px;margin-top:12px">
+      <div class="ring-wrap" data-donut="4120:#3b82f6,3080:#06b6d4,5260:#22c55e,940:#d4af37,2340:#f59e0b,2680:#94a3b8" data-ring-size="118">
+        <div class="ring-center"><div class="metric-mid">6</div><div class="metric-sub" style="margin-top:0">segments</div></div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:2px">
+        <div class="seg"><i class="tag-dot" style="background:#22c55e"></i><span style="font-size:12px;font-weight:700;flex:1">Core</span><span class="delta soft">5,260</span><span class="delta up">+4%</span></div>
+        <div class="seg"><i class="tag-dot" style="background:#3b82f6"></i><span style="font-size:12px;font-weight:700;flex:1">New</span><span class="delta soft">4,120</span><span class="delta up">+18%</span></div>
+        <div class="seg"><i class="tag-dot" style="background:#06b6d4"></i><span style="font-size:12px;font-weight:700;flex:1">Rising</span><span class="delta soft">3,080</span><span class="delta up">+6%</span></div>
+        <div class="seg"><i class="tag-dot" style="background:#94a3b8"></i><span style="font-size:12px;font-weight:700;flex:1">Lapsed</span><span class="delta soft">2,680</span><span class="delta down">−3%</span></div>
+        <div class="seg"><i class="tag-dot" style="background:#f59e0b"></i><span style="font-size:12px;font-weight:700;flex:1">At-risk</span><span class="delta soft">2,340</span><span class="delta down">+9%</span></div>
+        <div class="seg"><i class="tag-dot" style="background:#d4af37"></i><span style="font-size:12px;font-weight:700;flex:1">VIP</span><span class="delta soft">940</span><span class="delta up">+2%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card glass">
+    <div class="spread"><span class="sec-label">Joined vs churned · 12 mo</span><span class="chip"><i class="tag-dot" style="background:#8b5cf6"></i>net +283/mo</span></div>
+    <div class="chart-wrap" data-chart="churn" style="margin-top:10px"></div>
+    <div class="chart-legend">
+      <span><i class="tag-dot" style="background:#8b5cf6"></i>Joined</span>
+      <span><i class="tag-dot" style="background:#d6ccc0"></i>Churned</span>
+    </div>
+  </div>
+
+  <div class="sec-label">Personas</div>
+  <div data-swipe>
+    <div class="swipe peek">
+      <div class="persona glass">
+        <div class="pe-ico">🎪</div><div class="pe-n">Festival Loyalist</div>
+        <div class="pe-bio">3+ events a year, books early, brings friends. The backbone of every lineup.</div>
+        <div class="pe-kpis"><div><div class="metric-mid" style="font-size:17px">1,920</div><div class="metric-sub">people</div></div><div><div class="metric-mid" style="font-size:17px">₪2,450</div><div class="metric-sub">avg LTV</div></div></div>
+      </div>
+      <div class="persona glass">
+        <div class="pe-ico">🌙</div><div class="pe-n">One-Night Explorer</div>
+        <div class="pe-bio">Came once, impulse buyer. The 30 to 45 day window decides if they ever return.</div>
+        <div class="pe-kpis"><div><div class="metric-mid" style="font-size:17px">7,090</div><div class="metric-sub">people</div></div><div><div class="metric-mid" style="font-size:17px">₪380</div><div class="metric-sub">avg LTV</div></div></div>
+      </div>
+      <div class="persona glass">
+        <div class="pe-ico">👑</div><div class="pe-n">Big Spender</div>
+        <div class="pe-bio">VIP tables, add-ons, zero price sensitivity. Retention here is pure profit.</div>
+        <div class="pe-kpis"><div><div class="metric-mid" style="font-size:17px">940</div><div class="metric-sub">people</div></div><div><div class="metric-mid" style="font-size:17px">₪3,400</div><div class="metric-sub">avg LTV</div></div></div>
+      </div>
+      <div class="persona glass">
+        <div class="pe-ico">🧲</div><div class="pe-n">Social Connector</div>
+        <div class="pe-bio">Buys 4+ tickets at once. Your unpaid referral engine · treat accordingly.</div>
+        <div class="pe-kpis"><div><div class="metric-mid" style="font-size:17px">1,380</div><div class="metric-sub">people</div></div><div><div class="metric-mid" style="font-size:17px">₪1,150</div><div class="metric-sub">avg LTV</div></div></div>
+      </div>
+    </div>
+    <div class="dots"></div>
+  </div>
+
+  <div class="feed-hd"><span class="sec-label">Insights</span></div>
+  <div class="insight t-pink" data-expand>
+    <div class="in-top"><span class="in-tag" style="color:#db2777"><i></i>LTV</span><span class="in-trend down">↓</span></div>
+    <div class="in-text">214 high-value buyers have gone silent</div>
+    <div class="in-body"><div class="in-detail">Lapsed VIPs inactive 2+ events. This segment alone is your fastest recoverable revenue.</div></div>
+  </div>
+  <div class="insight t-green" data-expand>
+    <div class="in-top"><span class="in-tag" style="color:#2563eb"><i></i>Acquisition</span><span class="in-trend up">↑</span></div>
+    <div class="in-text">62% of new buyers came from referral, not paid</div>
+    <div class="in-body"><div class="in-detail">Word-of-mouth is outperforming paid · and it's barely funded.</div></div>
+  </div>
+  <div class="insight t-orange" data-expand>
+    <div class="in-top"><span class="in-tag" style="color:#db2777"><i></i>LTV</span><span class="in-trend down">↓</span></div>
+    <div class="in-text">Repeat-buyer rate down 9% vs last event</div>
+    <div class="in-body"><div class="in-detail">Second-purchase conversion is slipping. The window to win them back is 30 to 45 days.</div></div>
+  </div>
+
+  <div class="feed-hd"><span class="sec-label">Flows</span></div>
+  <div class="flow glass" style="--fc:var(--process)" data-expand>
+    <div class="fl-top"><span class="fl-type">⚙ Process</span><span class="fl-mod"><span class="chip">CRM</span><span class="chip">Tasks</span></span></div>
+    <div class="fl-t">Lapsed VIP win-back</div>
+    <div class="fl-d">Detect lapsed VIPs and bring them back with a personal touch.</div>
+    <div class="fl-body">
+      <div class="wchain">
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt">Detect lapsed VIP segment</span></div>
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt">Build personal offer</span></div>
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt">Task manager: direct call</span></div>
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt">Track response</span></div>
+      </div>
+      <div class="fl-impact">+18% reactivation · guided</div>
+      <div class="fl-run"><button class="btn-ink" data-open-flowrun style="flex:1">Run flow</button><span class="btn-ghost">Later</span></div>
+    </div>
+  </div>
+  <div class="flow glass" style="--fc:var(--routine)" data-expand>
+    <div class="fl-top"><span class="fl-type">🔁 Routine</span><span class="fl-mod"><span class="chip">CRM</span><span class="chip">Marketing</span></span></div>
+    <div class="fl-t">Churn-risk watch</div>
+    <div class="fl-d">Recurring scan for buyers past their typical repurchase window.</div>
+    <div class="fl-body">
+      <div class="wchain">
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt">Scan repurchase windows</span></div>
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt">Auto-enroll in nurture</span></div>
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt">Monitor response · Repeat weekly</span></div>
+      </div>
+      <div class="fl-impact">−12% churn risk · runs weekly</div>
+      <div class="fl-run"><button class="btn-ink" data-open-flowrun style="flex:1">Run flow</button><span class="btn-ghost">Later</span></div>
+    </div>
+  </div>
+  <div class="flow glass" style="--fc:var(--progressive)" data-expand>
+    <div class="fl-top"><span class="fl-type">📈 Progressive</span><span class="fl-mod"><span class="chip">CRM</span><span class="chip">Marketing</span></span></div>
+    <div class="fl-t">Referral amplification</div>
+    <div class="fl-d">Find your top referrers and turn them into ambassadors.</div>
+    <div class="fl-body">
+      <div class="wchain">
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt">Identify top referrers</span></div>
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt">Enroll in ambassador track</span></div>
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt">Escalate rewards as referrals grow</span></div>
+      </div>
+      <div class="fl-impact">+31% referrals · builds over time</div>
+      <div class="fl-run"><button class="btn-ink" data-open-flowrun style="flex:1">Run flow</button><span class="btn-ghost">Later</span></div>
+    </div>
+  </div>
+</template>
+
+<!-- ── SALES DASHBOARD ──────────────────────────────────────────────────── -->
+<template data-screen="sales" data-panel="Sales" data-hue="#10b981">
+  <div class="rowline" style="gap:10px">
+    <div class="card glass tight" style="flex:1.3"><div class="metric-mid">₪1.77M</div><div class="metric-sub">live revenue</div></div>
+    <div class="card glass tight" style="flex:1"><div class="metric-mid">4,235</div><div class="metric-sub">orders</div></div>
+    <div class="card glass tight" style="flex:1"><div class="metric-mid">7,150</div><div class="metric-sub">tickets</div></div>
+  </div>
+
+  <div data-swipe>
+    <div class="swipe">
+      <!-- Glance A · tickets -->
+      <div class="card glass">
+        <div class="spread"><span class="sec-label" style="color:var(--h-sales)">Tickets · all live events</span><span class="delta up">+14% vs daily avg</span></div>
+        <div class="rowline" style="gap:16px;margin-top:12px">
+          <div class="ring-wrap" data-ring="61" data-ring-c="#10b981" data-ring-mark="51" data-ring-size="108">
+            <div class="ring-center"><div class="metric-mid">61%</div><div class="metric-sub" style="margin-top:0">of sell-out</div></div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;gap:9px">
+            <div class="spread"><span class="metric-sub" style="margin:0">Sold</span><b style="font-size:13px">7,150 / 11,700</b></div>
+            <div class="spread"><span class="metric-sub" style="margin:0">Today</span><b style="font-size:13px">142</b></div>
+            <div class="spread"><span class="metric-sub" style="margin:0">Pace 7d</span><b style="font-size:13px">47/day</b></div>
+            <div class="spread"><span class="metric-sub" style="margin:0">Combined BEP</span><b style="font-size:13px">passed ✓</b></div>
+            <div class="spread"><span class="metric-sub" style="margin:0">Projected</span><b style="font-size:13px">10,500</b></div>
+          </div>
+        </div>
+        <div class="metric-sub" style="margin-top:10px">Ring mark = combined break-even at 51% · passed</div>
+      </div>
+      <!-- Glance B · revenue -->
+      <div class="card glass">
+        <div class="spread"><span class="sec-label" style="color:var(--h-sales)">Revenue · all live events</span><span class="delta up">+12% vs daily avg</span></div>
+        <div class="rowline" style="gap:16px;margin-top:12px">
+          <div class="ring-wrap" data-ring="55" data-ring-c="#10b981" data-ring-mark="50" data-ring-size="108">
+            <div class="ring-center"><div class="metric-mid">55%</div><div class="metric-sub" style="margin-top:0">of ₪3.2M</div></div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;gap:9px">
+            <div class="spread"><span class="metric-sub" style="margin:0">Secured</span><b style="font-size:13px">₪1.77M</b></div>
+            <div class="spread"><span class="metric-sub" style="margin:0">Today</span><b style="font-size:13px">₪48.2k</b></div>
+            <div class="spread"><span class="metric-sub" style="margin:0">Pace 7d</span><b style="font-size:13px">₪48.6k/day</b></div>
+            <div class="spread"><span class="metric-sub" style="margin:0">BEP line</span><b style="font-size:13px">₪1.62M ✓</b></div>
+            <div class="spread"><span class="metric-sub" style="margin:0">Projected</span><b style="font-size:13px">₪2.61M</b></div>
+          </div>
+        </div>
+        <div class="metric-sub" style="margin-top:10px">PPC-attributed revenue ₪97.3k</div>
+      </div>
+    </div>
+    <div class="dots"></div>
+  </div>
+
+  <div class="feed-hd"><span class="sec-label">Events · tap to drill in</span><span class="more">6 live</span></div>
+  <div data-swipe>
+    <div class="swipe peek">
+      <div class="evcard glass" data-goto="event-detail">
+        <div class="ev-top"><i class="tag-dot" style="background:#4f7cff"></i><span class="ev-n">DB Oct</span><span class="chip" style="height:20px;font-size:9.5px">Big · Outdoor</span><span class="ev-d">22 days</span></div>
+        <div class="bar" style="margin-top:11px;--bar-c:#4f7cff"><div class="fill" style="width:66%"></div><i class="mark" style="left:45%"></i><i class="mark so" style="left:99%"></i></div>
+        <div class="bar-legend"><span>1,850 / 2,800</span><span>₪462.5k</span></div>
+        <div class="spread" style="margin-top:9px"><span class="st g">BEP passed</span><span class="delta soft">+86 today · proj 2,650</span></div>
+      </div>
+      <div class="evcard glass" data-goto="event-detail">
+        <div class="ev-top"><i class="tag-dot" style="background:#06b6d4"></i><span class="ev-n">Pulse</span><span class="chip" style="height:20px;font-size:9.5px">Mid · Club</span><span class="ev-d">13 days</span></div>
+        <div class="bar" style="margin-top:11px;--bar-c:#06b6d4"><div class="fill" style="width:79%"></div><i class="mark" style="left:59%"></i><i class="mark so" style="left:99%"></i></div>
+        <div class="bar-legend"><span>1,340 / 1,700</span><span>₪335k</span></div>
+        <div class="spread" style="margin-top:9px"><span class="st g">BEP passed</span><span class="delta soft">+38 today · proj 1,650</span></div>
+      </div>
+      <div class="evcard glass" data-goto="event-detail">
+        <div class="ev-top"><i class="tag-dot" style="background:#f5b53d"></i><span class="ev-n">Terra NYE</span><span class="chip" style="height:20px;font-size:9.5px">Big · Outdoor</span><span class="ev-d">53 days</span></div>
+        <div class="bar" style="margin-top:11px;--bar-c:#f5b53d"><div class="fill" style="width:45%"></div><i class="mark" style="left:45%"></i><i class="mark so" style="left:99%"></i></div>
+        <div class="bar-legend"><span>980 / 2,200</span><span>₪274.4k</span></div>
+        <div class="spread" style="margin-top:9px"><span class="st p">22% behind curve</span><span class="delta soft">+9 today</span></div>
+      </div>
+      <div class="evcard glass" data-goto="event-detail">
+        <div class="ev-top"><i class="tag-dot" style="background:#22c55e"></i><span class="ev-n">Korha Yoga</span><span class="chip" style="height:20px;font-size:9.5px">Small · Wellness</span><span class="ev-d">10 days</span></div>
+        <div class="bar" style="margin-top:11px;--bar-c:#22c55e"><div class="fill" style="width:46%"></div><i class="mark" style="left:67%"></i><i class="mark so" style="left:99%"></i></div>
+        <div class="bar-legend"><span>410 / 900</span><span>₪73.8k</span></div>
+        <div class="spread" style="margin-top:9px"><span class="st o">190 to BEP</span><span class="delta soft">+3 today</span></div>
+      </div>
+    </div>
+    <div class="dots"></div>
+  </div>
+
+  <div class="card glass">
+    <div class="spread"><span class="sec-label">Tickets / day · 14 days</span><span class="chip">all events</span></div>
+    <div class="chart-wrap" data-chart="daily14" style="margin-top:10px"></div>
+  </div>
+
+  <div class="card glass">
+    <div class="spread"><span class="sec-label">DB Oct · price ladder</span><span class="st o">Tier 2 stalled</span></div>
+    <div style="margin-top:8px">
+      <div class="tier"><span class="ti-n">Early bird</span><span class="ti-bar bar" style="--bar-c:#10b981"><span class="fill" style="width:100%"></span></span><span class="ti-p">₪250</span></div>
+      <div class="tier"><span class="ti-n">Tier 1</span><span class="ti-bar bar" style="--bar-c:#10b981"><span class="fill" style="width:100%"></span></span><span class="ti-p">₪290</span></div>
+      <div class="tier"><span class="ti-n">Tier 2</span><span class="ti-bar bar" style="--bar-c:#f59e0b"><span class="fill" style="width:60%"></span></span><span class="ti-p">₪340</span></div>
+      <div class="tier"><span class="ti-n">Tier 3</span><span class="ti-bar bar" style="--bar-c:#d6ccc0"><span class="fill" style="width:13%"></span></span><span class="ti-p">₪390</span></div>
+      <div class="tier"><span class="ti-n">Door</span><span class="ti-bar bar" style="--bar-c:#d6ccc0"><span class="fill" style="width:0%"></span></span><span class="ti-p">₪450</span></div>
+    </div>
+  </div>
+
+  <div class="feed-hd"><span class="sec-label">Insights</span><span class="more">Insight ⇆ flow</span></div>
+  <div class="insight t-green" data-expand>
+    <div class="in-top"><span class="in-tag" style="color:#2563eb"><i></i>Sales</span><span class="in-trend up">↑</span></div>
+    <div class="in-text">Thursday is your conversion day</div>
+    <div class="in-body"><div class="in-detail">41% of weekly ticket sales land on Thursdays · your campaigns don't. Shifting sends and drop moments to Wed evening and Thursday compounds every single week.</div><div class="in-act"><span class="btn-ghost" style="height:40px;font-size:12px">Run launch-day playbook</span></div></div>
+  </div>
+  <div class="insight t-orange" data-expand>
+    <div class="in-top"><span class="in-tag" style="color:#15803d"><i></i>Pricing</span><span class="in-trend down">↓</span></div>
+    <div class="in-text">Tier-2 stalls at 60% sold, 12 days out</div>
+    <div class="in-body"><div class="in-detail">Historical pattern across your events: a tier price nudge at this point accelerates sell-through to break-even. DB Oct's ladder is sitting exactly there right now.</div><div class="in-act"><span class="btn-ghost" style="height:40px;font-size:12px" data-open-flowrun>Run dynamic price ladder</span></div></div>
+  </div>
+  <div class="insight t-pink" data-expand>
+    <div class="in-top"><span class="in-tag" style="color:#2563eb"><i></i>Sales</span><span class="in-trend down">↓</span></div>
+    <div class="in-text">Terra NYE is 22% behind its curve</div>
+    <div class="in-body"><div class="in-detail">980 sold vs ~1,250 expected at 53 days out. Catching the pace now costs a boost campaign · catching it later costs a discount.</div><div class="in-act"><span class="btn-ghost" style="height:40px;font-size:12px">Trigger pace alert</span></div></div>
+  </div>
+</template>
+
+<!-- ── REACH DASHBOARD ──────────────────────────────────────────────────── -->
+<template data-screen="reach" data-panel="Reach" data-hue="#3b82f6">
+  <div class="card glass">
+    <div class="spread"><span class="sec-label" style="color:var(--h-reach)">Growth</span><span class="delta up">+4 vs last cycle</span></div>
+    <div class="rowline" style="gap:16px;margin-top:11px">
+      <div class="ring-wrap" data-ring="36" data-ring-c="#3b82f6" data-ring-size="96">
+        <div class="ring-center"><div class="metric-mid">36%</div></div>
+      </div>
+      <div style="flex:1">
+        <div class="chart-wrap" data-chart="reachtrend"></div>
+        <div class="metric-sub" style="margin-top:6px">audience growth · 8 weeks</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="kpis">
+    <div class="card glass tight"><div class="metric-mid">1,240</div><div class="metric-sub">new followers · 30d</div></div>
+    <div class="card glass tight"><div class="metric-mid">6.4%</div><div class="metric-sub">engagement rate</div></div>
+    <div class="card glass tight"><div class="metric-mid">41.2k</div><div class="metric-sub">organic reach <span class="delta up">+8%</span></div></div>
+    <div class="card glass tight"><div class="metric-mid">4.1×</div><div class="metric-sub">paid ROAS</div></div>
+  </div>
+
+  <div class="card glass">
+    <div class="spread"><span class="sec-label">Paid · this week</span><span class="chip">Meta Ads</span></div>
+    <div class="lrow"><div class="lr-main"><div class="lr-t">DB Oct · Lookalike 2%</div><div class="lr-s">₪3.2k spend · CTR 2.7% · CPC ₪1.9</div></div><div class="lr-end"><span class="st g">ROAS 4.1×</span></div></div>
+    <div class="lrow"><div class="lr-main"><div class="lr-t">Terra NYE · Prospecting</div><div class="lr-s">₪1.8k spend · CTR 1.9% · CPC ₪2.4</div></div><div class="lr-end"><span class="st o">ROAS 2.2×</span></div></div>
+    <div class="lrow"><div class="lr-main"><div class="lr-t">Pulse · Retargeting</div><div class="lr-s">₪940 spend · CTR 3.4% · CPC ₪1.2</div></div><div class="lr-end"><span class="st g">ROAS 5.3×</span></div></div>
+  </div>
+
+  <div class="card glass">
+    <div class="spread"><span class="sec-label">Organic · top content</span><span class="delta up">+312 followers</span></div>
+    <div class="lrow"><div class="lr-main"><div class="lr-t">Lineup reveal · Reel</div><div class="lr-s">28.4k reach · 9.1% engagement</div></div><div class="lr-end"><span class="lr-v">1</span></div></div>
+    <div class="lrow"><div class="lr-main"><div class="lr-t">Aftermovie teaser · DB Jun</div><div class="lr-s">11.2k reach · 6.8% engagement</div></div><div class="lr-end"><span class="lr-v">2</span></div></div>
+    <div class="lrow"><div class="lr-main"><div class="lr-t">Artist takeover story</div><div class="lr-s">6.9k reach · 5.2% engagement</div></div><div class="lr-end"><span class="lr-v">3</span></div></div>
+  </div>
+
+  <div class="feed-hd"><span class="sec-label">Insights</span></div>
+  <div class="insight t-green" data-expand>
+    <div class="in-top"><span class="in-tag" style="color:#2563eb"><i></i>Acquisition</span><span class="in-trend up">↑</span></div>
+    <div class="in-text">87% of current buyers are new</div>
+    <div class="in-body"><div class="in-detail">PPC lookalike audiences are converting · acquisition cost down 18% vs last event.</div><div class="in-act"><span class="btn-ghost" style="height:40px;font-size:12px">Scale winning campaign</span></div></div>
+  </div>
+  <div class="insight t-orange" data-expand>
+    <div class="in-top"><span class="in-tag" style="color:#7c3aed"><i></i>Community</span><span class="in-trend down">↓</span></div>
+    <div class="in-text">Reels outperform statics 4:1 on reach</div>
+    <div class="in-body"><div class="in-detail">Video is carrying the account. Shifting two weekly statics to Reels projects +19k monthly organic reach.</div><div class="in-act"><span class="btn-ghost" style="height:40px;font-size:12px">Rebalance content mix</span></div></div>
+  </div>
+
+  <div class="feed-hd"><span class="sec-label">Flows</span></div>
+  <div class="flow glass" style="--fc:var(--quick)" data-expand>
+    <div class="fl-top"><span class="fl-type">⚡ Quick</span><span class="fl-mod"><span class="chip">Marketing</span></span></div>
+    <div class="fl-t">Scale the winning ad set</div>
+    <div class="fl-d">Shift budget to DB Oct Lookalike 2% while ROAS holds above 4×.</div>
+    <div class="fl-body">
+      <div class="wchain">
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt">Read ad-set ROAS daily</span></div>
+        <div class="wstep gate"><span class="wnode"><i></i><b></b></span><span class="wtxt">Approve budget shift</span></div>
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt">Apply +20% · watch frequency cap</span></div>
+      </div>
+      <div class="fl-impact">Est. +₪9k attributed revenue this week</div>
+      <div class="fl-run"><button class="btn-ink" data-open-flowrun style="flex:1">Run flow</button><span class="btn-ghost">Later</span></div>
+    </div>
+  </div>
+</template>
+
+<!-- ── EVENT DETAIL (drill-in from Sales / Events) ──────────────────────── -->
+<template data-screen="event-detail" data-panel="Event" data-hue="#10b981">
+  <div class="backrow"><button data-goto="sales">← Sales</button><span class="chip"><i class="tag-dot" style="background:#4f7cff"></i>Big · Outdoor · 22 days out</span></div>
+
+  <div class="senti locked">Strong spike today · <b>86 tickets vs a 26/day average</b>. BEP is locked in · every sale from here is profit.</div>
+
+  <div class="kpis">
+    <div class="card glass tight"><div class="metric-mid">1,850</div><div class="metric-sub">sold of 2,800 · 66%</div></div>
+    <div class="card glass tight"><div class="metric-mid">₪447k</div><div class="metric-sub">secured net revenue</div></div>
+    <div class="card glass tight"><div class="metric-mid">₪382</div><div class="metric-sub">FTP · future ticket price</div></div>
+    <div class="card glass tight"><div class="metric-mid">44<span style="font-size:13px;color:var(--text-faint)">/day</span></div><div class="metric-sub">needed for sell-out · pace 26</div></div>
+  </div>
+
+  <div class="card glass">
+    <div class="spread"><span class="sec-label">Projection · at current pace</span><span class="chip">7d avg</span></div>
+    <div class="rowline" style="gap:18px;margin-top:11px">
+      <div><div class="metric-mid">2,650</div><div class="metric-sub">projected tickets</div></div>
+      <div><div class="metric-mid">₪871k</div><div class="metric-sub">proj income · incl. bar</div></div>
+      <div><div class="metric-mid up">₪486k</div><div class="metric-sub">projected net</div></div>
+    </div>
+    <div class="bar" style="margin-top:13px;--bar-c:#4f7cff"><div class="fill" style="width:66%"></div><i class="mark" style="left:45%"></i><i class="mark" style="left:95%;background:#4f7cff;opacity:.5"></i><i class="mark so" style="left:99%"></i></div>
+    <div class="bar-legend"><span>BEP ✓ 45%</span><span>proj 95%</span><span>SO 2,800</span></div>
+  </div>
+
+  <div class="card glass">
+    <div class="spread"><span class="sec-label">Price ladder</span><span class="st o">Tier 2 stalled</span></div>
+    <div style="margin-top:8px">
+      <div class="tier"><span class="ti-n">Early bird</span><span class="ti-bar bar" style="--bar-c:#10b981"><span class="fill" style="width:100%"></span></span><span class="ti-p">₪250</span></div>
+      <div class="tier"><span class="ti-n">Tier 1</span><span class="ti-bar bar" style="--bar-c:#10b981"><span class="fill" style="width:100%"></span></span><span class="ti-p">₪290</span></div>
+      <div class="tier"><span class="ti-n">Tier 2</span><span class="ti-bar bar" style="--bar-c:#f59e0b"><span class="fill" style="width:60%"></span></span><span class="ti-p">₪340</span></div>
+      <div class="tier"><span class="ti-n">Tier 3</span><span class="ti-bar bar" style="--bar-c:#d6ccc0"><span class="fill" style="width:13%"></span></span><span class="ti-p">₪390</span></div>
+      <div class="tier"><span class="ti-n">Door</span><span class="ti-bar bar" style="--bar-c:#d6ccc0"><span class="fill" style="width:0%"></span></span><span class="ti-p">₪450</span></div>
+    </div>
+    <div class="metric-sub" style="margin-top:6px">FTP climbs as lower tiers close · remaining inventory averages ₪382</div>
+  </div>
+
+  <div class="card glass">
+    <div class="spread"><span class="sec-label">Sales · last 14 days</span><span class="chip">86 today</span></div>
+    <div class="chart-wrap" data-chart="evdaily" style="margin-top:10px"></div>
+  </div>
+
+  <div class="card glass">
+    <div class="spread"><span class="sec-label">PPC · Meta Ads</span><span class="chip">₪28.4k of ₪40k · 71%</span></div>
+    <div class="kpis" style="margin-top:11px">
+      <div><div class="metric-mid" style="font-size:18px">6</div><div class="metric-sub">conversions today</div></div>
+      <div><div class="metric-mid" style="font-size:18px">₪73</div><div class="metric-sub">CPL today · avg ₪67</div></div>
+      <div><div class="metric-mid" style="font-size:18px">₪440</div><div class="metric-sub">spend today</div></div>
+      <div><div class="metric-mid" style="font-size:18px">₪7.4k</div><div class="metric-sub">spend · 7 days</div></div>
+    </div>
+  </div>
+
+  <div class="card glass">
+    <div class="spread"><span class="sec-label">The money picture</span><span class="chip">net of VAT + 5% fee</span></div>
+    <div class="lrow"><div class="lr-main"><div class="lr-t">Ticket revenue secured</div></div><div class="lr-end"><span class="lr-v">₪447k</span></div></div>
+    <div class="lrow"><div class="lr-main"><div class="lr-t">Additional income · Bar + Merch</div></div><div class="lr-end"><span class="lr-v">₪178k</span></div></div>
+    <div class="lrow"><div class="lr-main"><div class="lr-t">Expenses</div></div><div class="lr-end"><span class="lr-v" style="color:var(--bad)">−₪385k</span></div></div>
+    <div class="lrow"><div class="lr-main"><div class="lr-t" style="font-weight:800">Net today · before remaining sales</div></div><div class="lr-end"><span class="lr-v up">+₪240k</span></div></div>
+  </div>
+</template>
+
+<!-- ════════════════════════════════════════════════════════════════════════
+     MODULE SCREENS are appended below by the build pipeline.
+     ════════════════════════════════════════════════════════════════════════ -->
+<!-- @MODULE-SCREENS -->
+
+<!-- ── EVENTS ─────────────────────────── -->
+<template data-screen="events" data-panel="Events" data-hue="#e8633f">
+  <div class="kpis">
+    <div class="card glass tight"><div class="metric-mid">6<span style="font-size:13px;color:var(--text-faint)"> of 9</span></div><div class="metric-sub">events selling now · 1 planned</div></div>
+    <div class="card glass tight"><div class="metric-mid">7,150</div><div class="metric-sub">tickets sold · live events</div></div>
+    <div class="card glass tight"><div class="metric-mid">₪1.77M</div><div class="metric-sub">revenue · live events</div></div>
+    <div class="card glass tight"><div class="metric-mid">₪2.52M</div><div class="metric-sub">revenue · all events</div></div>
+  </div>
+
+  <div class="feed-hd"><span class="sec-label">On sale · tap to drill in</span><span class="more">6 selling</span></div>
+
+  <div class="evcard glass" data-goto="event-detail">
+    <div class="ev-top"><i class="tag-dot" style="background:#22c55e"></i><span class="ev-n">Korha Yoga Retreat</span><span class="ev-d">10 days</span></div>
+    <div class="metric-sub" style="margin-top:3px">Sep 27 · Hill House · Galilee</div>
+    <div class="bar" style="margin-top:9px;--bar-c:#22c55e"><div class="fill" style="width:46%"></div><i class="mark" style="left:67%"></i><i class="mark so" style="left:99%"></i></div>
+    <div class="bar-legend"><span>410 / 900</span><span>₪73.8k</span></div>
+    <div class="spread" style="margin-top:8px"><span class="st o">190 to BEP</span><span class="delta soft">proj ₪129.6k</span></div>
+  </div>
+
+  <div class="evcard glass" data-goto="event-detail">
+    <div class="ev-top"><i class="tag-dot" style="background:#06b6d4"></i><span class="ev-n">Pulse Night</span><span class="ev-d">13 days</span></div>
+    <div class="metric-sub" style="margin-top:3px">Sep 30 · The Block · Tel Aviv</div>
+    <div class="bar" style="margin-top:9px;--bar-c:#06b6d4"><div class="fill" style="width:79%"></div><i class="mark" style="left:59%"></i><i class="mark so" style="left:99%"></i></div>
+    <div class="bar-legend"><span>1,340 / 1,700</span><span>₪335k</span></div>
+    <div class="spread" style="margin-top:8px"><span class="st g">BEP passed</span><span class="delta soft">proj ₪412.5k</span></div>
+  </div>
+
+  <div class="evcard glass" data-goto="event-detail">
+    <div class="ev-top"><i class="tag-dot" style="background:#4f7cff"></i><span class="ev-n">Desert Bloom · October</span><span class="ev-d">22 days</span></div>
+    <div class="metric-sub" style="margin-top:3px">Oct 9 · Crater Grounds · Mitzpe Ramon</div>
+    <div class="bar" style="margin-top:9px;--bar-c:#4f7cff"><div class="fill" style="width:66%"></div><i class="mark" style="left:45%"></i><i class="mark so" style="left:99%"></i></div>
+    <div class="bar-legend"><span>1,850 / 2,800</span><span>₪462.5k</span></div>
+    <div class="spread" style="margin-top:8px"><span class="st g">BEP passed</span><span class="delta soft">proj ₪662.5k</span></div>
+  </div>
+
+  <div class="evcard glass" data-goto="event-detail">
+    <div class="ev-top"><i class="tag-dot" style="background:#8b5cf6"></i><span class="ev-n">Afterlife</span><span class="ev-d">28 days</span></div>
+    <div class="metric-sub" style="margin-top:3px">Oct 15 · Port Warehouse · Haifa</div>
+    <div class="bar" style="margin-top:9px;--bar-c:#8b5cf6"><div class="fill" style="width:55%"></div><i class="mark" style="left:65%"></i><i class="mark so" style="left:99%"></i></div>
+    <div class="bar-legend"><span>720 / 1,300</span><span>₪180k</span></div>
+    <div class="spread" style="margin-top:8px"><span class="st o">130 to BEP</span><span class="delta soft">proj ₪287.5k</span></div>
+  </div>
+
+  <div class="evcard glass" data-goto="event-detail">
+    <div class="ev-top"><i class="tag-dot" style="background:#a78bfa"></i><span class="ev-n">Full Circle · Purim</span><span class="ev-d">35 days</span></div>
+    <div class="metric-sub" style="margin-top:3px">Oct 22 · Oasis Field · Ein Gedi</div>
+    <div class="bar" style="margin-top:9px;--bar-c:#a78bfa"><div class="fill" style="width:66%"></div><i class="mark" style="left:45%"></i><i class="mark so" style="left:99%"></i></div>
+    <div class="bar-legend"><span>1,850 / 2,800</span><span>₪444k</span></div>
+    <div class="spread" style="margin-top:8px"><span class="st g">BEP passed</span><span class="delta soft">proj ₪595.2k</span></div>
+  </div>
+
+  <div class="evcard glass" data-goto="event-detail">
+    <div class="ev-top"><i class="tag-dot" style="background:#f5b53d"></i><span class="ev-n">Terra · NYE</span><span class="ev-d">53 days</span></div>
+    <div class="metric-sub" style="margin-top:3px">Dec 31 · Dunes Stage · Arava</div>
+    <div class="bar" style="margin-top:9px;--bar-c:#f5b53d"><div class="fill" style="width:45%"></div><i class="mark" style="left:45%"></i><i class="mark so" style="left:99%"></i></div>
+    <div class="bar-legend"><span>980 / 2,200</span><span>₪274.4k</span></div>
+    <div class="spread" style="margin-top:8px"><span class="st p">22% behind curve</span><span class="delta soft">proj ₪518k</span></div>
+  </div>
+
+  <div class="card glass">
+    <div class="spread"><span class="sec-label">Planned · past</span><span class="chip">3 events</span></div>
+    <div class="lrow"><div class="lr-main"><div class="lr-t">Desert Bloom · Winter</div><div class="lr-s">Jan 29 · Crater Grounds · 220 early bird</div></div><div class="lr-end"><span class="st n">Planned</span><div class="lr-s">₪55k</div></div></div>
+    <div class="lrow"><div class="lr-main"><div class="lr-t">Desert Bloom · June</div><div class="lr-s">Jun 5 · Crater Grounds · 2,640 sold</div></div><div class="lr-end"><span class="st n">Past</span><div class="lr-s">₪712.8k</div></div></div>
+    <div class="lrow"><div class="lr-main"><div class="lr-t">Terra · Purim</div><div class="lr-s">Mar 14 · Dunes Stage · 2,050 sold</div></div><div class="lr-end"><span class="st n">Past</span><div class="lr-s">₪553.5k</div></div></div>
+  </div>
+</template>
+
+<!-- ── ORDERS ─────────────────────────── -->
+<template data-screen="orders" data-panel="Orders" data-hue="#e8633f">
+  <div class="kpis">
+    <div class="card glass tight"><div class="metric-mid">214</div><div class="metric-sub">orders today</div></div>
+    <div class="card glass tight"><div class="metric-mid">₪48.2k</div><div class="metric-sub">revenue today</div></div>
+    <div class="card glass tight"><div class="metric-mid">₪255</div><div class="metric-sub">avg order value</div></div>
+    <div class="card glass tight"><div class="metric-mid">142</div><div class="metric-sub">refunded · lifetime</div></div>
+  </div>
+
+  <div class="card glass">
+    <div class="spread"><span class="sec-label" style="color:#e8633f">Order book · lifetime</span><span class="st o">38 in review</span></div>
+    <div class="rowline" style="gap:16px;margin-top:12px">
+      <div class="ring-wrap" data-ring="86" data-ring-c="#22c55e" data-ring-size="96">
+        <div class="ring-center"><div class="metric-mid">86%</div><div class="metric-sub" style="margin-top:0">approved</div></div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:9px">
+        <div class="spread"><span class="metric-sub" style="margin:0">Total orders</span><b style="font-size:13px">9,860</b></div>
+        <div class="spread"><span class="metric-sub" style="margin:0">Lifetime revenue</span><b style="font-size:13px">₪2.52M</b></div>
+        <div class="spread"><span class="metric-sub" style="margin:0">Review pending</span><b style="font-size:13px">38</b></div>
+        <div class="spread"><span class="metric-sub" style="margin:0">Refunded</span><b style="font-size:13px">142</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card glass">
+    <div class="spread"><span class="sec-label">Recent orders</span><span class="chip">today · Sep 17</span></div>
+    <div class="lrow">
+      <span class="avatar" style="--av:#8b5cf6">NL</span>
+      <div class="lr-main"><div class="lr-t">Noa Levi</div><div class="lr-s">DB Oct · 2 tickets · 20:14</div></div>
+      <div class="lr-end"><span class="lr-v">₪640</span><div style="margin-top:3px"><span class="st g">Paid</span></div></div>
+    </div>
+    <div class="lrow">
+      <span class="avatar" style="--av:#3b82f6">DC</span>
+      <div class="lr-main"><div class="lr-t">Daniel Cohen</div><div class="lr-s">Pulse · 1 ticket · 19:52</div></div>
+      <div class="lr-end"><span class="lr-v">₪240</span><div style="margin-top:3px"><span class="st g">Paid</span></div></div>
+    </div>
+    <div class="lrow">
+      <span class="avatar" style="--av:#f59e0b">MF</span>
+      <div class="lr-main"><div class="lr-t">Maya Friedman</div><div class="lr-s">Full Circle · 2 tickets · 19:31</div></div>
+      <div class="lr-end"><span class="lr-v">₪580</span><div style="margin-top:3px"><span class="st o">Pending</span></div></div>
+    </div>
+    <div class="lrow">
+      <span class="avatar" style="--av:#06b6d4">IB</span>
+      <div class="lr-main"><div class="lr-t">Itai Bar</div><div class="lr-s">DB Oct · 1 ticket · 18:48</div></div>
+      <div class="lr-end"><span class="lr-v">₪320</span><div style="margin-top:3px"><span class="st g">Paid</span></div></div>
+    </div>
+    <div class="lrow">
+      <span class="avatar" style="--av:#ec4899">SA</span>
+      <div class="lr-main"><div class="lr-t">Shira Azoulay</div><div class="lr-s">Terra NYE · 1 ticket · 18:20</div></div>
+      <div class="lr-end"><span class="lr-v">₪360</span><div style="margin-top:3px"><span class="st p">Refunded</span></div></div>
+    </div>
+    <div class="lrow">
+      <span class="avatar" style="--av:#22c55e">OK</span>
+      <div class="lr-main"><div class="lr-t">Omer Katz</div><div class="lr-s">Afterlife · 1 ticket · 17:59</div></div>
+      <div class="lr-end"><span class="lr-v">₪250</span><div style="margin-top:3px"><span class="st g">Paid</span></div></div>
+    </div>
+    <div class="lrow">
+      <span class="avatar" style="--av:#e8633f">AR</span>
+      <div class="lr-main"><div class="lr-t">Adi Ravid</div><div class="lr-s">Korha Yoga · 1 ticket · 16:12</div></div>
+      <div class="lr-end"><span class="lr-v">₪180</span><div style="margin-top:3px"><span class="st g">Paid</span></div></div>
+    </div>
+  </div>
+
+  <div class="card glass tight">
+    <div class="spread"><span class="sec-label">Payment mix</span><span class="chip">last 18 orders</span></div>
+    <div style="display:flex;gap:3px;height:6px;margin-top:10px"><i style="flex:9;background:#e8633f;border-radius:99px"></i><i style="flex:4;background:#3b82f6;border-radius:99px"></i><i style="flex:2;background:#8b5cf6;border-radius:99px"></i><i style="flex:2;background:#94a3b8;border-radius:99px"></i></div>
+    <div class="bar-legend"><span>Credit card · 9</span><span>Bit · 4</span><span>Apple Pay · 2</span><span>Bank · 2</span></div>
+  </div>
+</template>
+
+<!-- ── TICKETS ─────────────────────────── -->
+<template data-screen="tickets" data-panel="Tickets" data-hue="#e8633f">
+  <div class="rowline" style="gap:10px">
+    <div class="card glass tight" style="flex:1.3"><div class="metric-mid">14,820</div><div class="metric-sub">tickets sold · ₪2.52M</div></div>
+    <div class="card glass tight" style="flex:1"><div class="metric-mid">38%</div><div class="metric-sub">scanned</div></div>
+    <div class="card glass tight" style="flex:1"><div class="metric-mid">12</div><div class="metric-sub">types on sale</div></div>
+  </div>
+
+  <div class="card glass">
+    <div class="spread"><span class="sec-label" style="color:#e8633f">Gate scans · all events</span><span class="chip">live</span></div>
+    <div class="rowline" style="gap:16px;margin-top:12px">
+      <div class="ring-wrap" data-ring="38" data-ring-c="#e8633f" data-ring-size="96">
+        <div class="ring-center"><div class="metric-mid">38%</div><div class="metric-sub" style="margin-top:0">scanned</div></div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:9px">
+        <div class="spread"><span class="metric-sub" style="margin:0">Scanned in</span><b style="font-size:13px">5,632</b></div>
+        <div class="spread"><span class="metric-sub" style="margin:0">Not yet used</span><b style="font-size:13px">8,924</b></div>
+        <div class="spread"><span class="metric-sub" style="margin:0">Canceled</span><b style="font-size:13px">264</b></div>
+      </div>
+    </div>
+    <div class="metric-sub" style="margin-top:10px">Most events are still ahead · scans climb as gates open</div>
+  </div>
+
+  <div class="feed-hd"><span class="sec-label">Types on sale · by event</span><span class="more">12 types</span></div>
+  <div data-swipe>
+    <div class="swipe peek">
+      <div class="card glass" data-goto="event-detail">
+        <div class="spread"><span class="sec-label" style="color:#4f7cff">Desert Bloom · October</span><span class="chip">4 types</span></div>
+        <div style="margin-top:10px">
+          <div class="spread"><span style="font-size:12.5px;font-weight:700">Full Pass <span class="faint" style="font-weight:600">· ₪320</span></span><span class="st g">On sale</span></div>
+          <div class="bar" style="margin-top:6px;--bar-c:#4f7cff"><div class="fill" style="width:78%"></div></div>
+          <div class="bar-legend"><span>1,240 / 1,600</span><span>78%</span></div>
+        </div>
+        <div style="margin-top:10px">
+          <div class="spread"><span style="font-size:12.5px;font-weight:700">Camping Add-on <span class="faint" style="font-weight:600">· ₪120</span></span><span class="st g">On sale</span></div>
+          <div class="bar" style="margin-top:6px;--bar-c:#4f7cff"><div class="fill" style="width:59%"></div></div>
+          <div class="bar-legend"><span>410 / 700</span><span>59%</span></div>
+        </div>
+        <div style="margin-top:10px">
+          <div class="spread"><span style="font-size:12.5px;font-weight:700">AID Pass <span class="faint" style="font-weight:600">· ₪180</span></span><span class="st g">On sale</span></div>
+          <div class="bar" style="margin-top:6px;--bar-c:#4f7cff"><div class="fill" style="width:65%"></div></div>
+          <div class="bar-legend"><span>130 / 200</span><span>65%</span></div>
+        </div>
+        <div style="margin-top:10px">
+          <div class="spread"><span style="font-size:12.5px;font-weight:700">Vendor Stall <span class="faint" style="font-weight:600">· ₪900</span></span><span class="st o">12 left</span></div>
+          <div class="bar" style="margin-top:6px;--bar-c:#4f7cff"><div class="fill" style="width:70%"></div></div>
+          <div class="bar-legend"><span>28 / 40</span><span>70%</span></div>
+        </div>
+      </div>
+
+      <div class="card glass">
+        <div class="spread"><span class="sec-label" style="color:#a78bfa">Full Circle · Purim</span><span class="chip">3 types</span></div>
+        <div style="margin-top:10px">
+          <div class="spread"><span style="font-size:12.5px;font-weight:700">Weekend Pass <span class="faint" style="font-weight:600">· ₪290</span></span><span class="st g">On sale</span></div>
+          <div class="bar" style="margin-top:6px;--bar-c:#a78bfa"><div class="fill" style="width:78%"></div></div>
+          <div class="bar-legend"><span>1,410 / 1,800</span><span>78%</span></div>
+        </div>
+        <div style="margin-top:10px">
+          <div class="spread"><span style="font-size:12.5px;font-weight:700">Glamping <span class="faint" style="font-weight:600">· ₪350</span></span><span class="st o">60 left</span></div>
+          <div class="bar" style="margin-top:6px;--bar-c:#a78bfa"><div class="fill" style="width:80%"></div></div>
+          <div class="bar-legend"><span>240 / 300</span><span>80%</span></div>
+        </div>
+        <div style="margin-top:10px">
+          <div class="spread"><span style="font-size:12.5px;font-weight:700">FAM Pass <span class="faint" style="font-weight:600">· ₪160</span></span><span class="st g">On sale</span></div>
+          <div class="bar" style="margin-top:6px;--bar-c:#a78bfa"><div class="fill" style="width:63%"></div></div>
+          <div class="bar-legend"><span>95 / 150</span><span>63%</span></div>
+        </div>
+      </div>
+
+      <div class="card glass">
+        <div class="spread"><span class="sec-label" style="color:#06b6d4">Pulse Night</span><span class="chip">2 types</span></div>
+        <div style="margin-top:10px">
+          <div class="spread"><span style="font-size:12.5px;font-weight:700">GA Entry <span class="faint" style="font-weight:600">· ₪240</span></span><span class="st o">220 left</span></div>
+          <div class="bar" style="margin-top:6px;--bar-c:#06b6d4"><div class="fill" style="width:84%"></div></div>
+          <div class="bar-legend"><span>1,180 / 1,400</span><span>84%</span></div>
+        </div>
+        <div style="margin-top:10px">
+          <div class="spread"><span style="font-size:12.5px;font-weight:700">Bar Tab <span class="faint" style="font-weight:600">· ₪100</span></span><span class="st g">On sale</span></div>
+          <div class="bar" style="margin-top:6px;--bar-c:#06b6d4"><div class="fill" style="width:40%"></div></div>
+          <div class="bar-legend"><span>160 / 400</span><span>40%</span></div>
+        </div>
+        <div class="metric-sub" style="margin-top:10px">Bar Tab attach · 14% of GA buyers</div>
+      </div>
+
+      <div class="card glass">
+        <div class="spread"><span class="sec-label">Other events</span><span class="chip">3 types</span></div>
+        <div style="margin-top:10px">
+          <div class="spread"><span style="font-size:12.5px;font-weight:700">NYE Pass <span class="faint" style="font-weight:600">· Terra NYE · ₪360</span></span><span class="st p">Behind curve</span></div>
+          <div class="bar" style="margin-top:6px;--bar-c:#f5b53d"><div class="fill" style="width:46%"></div></div>
+          <div class="bar-legend"><span>820 / 1,800</span><span>46%</span></div>
+        </div>
+        <div style="margin-top:10px">
+          <div class="spread"><span style="font-size:12.5px;font-weight:700">Retreat Pass <span class="faint" style="font-weight:600">· Korha Yoga · ₪180</span></span><span class="st g">On sale</span></div>
+          <div class="bar" style="margin-top:6px;--bar-c:#22c55e"><div class="fill" style="width:60%"></div></div>
+          <div class="bar-legend"><span>360 / 600</span><span>60%</span></div>
+        </div>
+        <div style="margin-top:10px">
+          <div class="spread"><span style="font-size:12.5px;font-weight:700">Merch Tee <span class="faint" style="font-weight:600">· Afterlife · ₪80</span></span><span class="st g">On sale</span></div>
+          <div class="bar" style="margin-top:6px;--bar-c:#8b5cf6"><div class="fill" style="width:24%"></div></div>
+          <div class="bar-legend"><span>120 / 500</span><span>24%</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="dots"></div>
+  </div>
+
+  <div class="card glass">
+    <div class="spread"><span class="sec-label">Recent tickets</span><span class="chip">latest</span></div>
+    <div class="lrow">
+      <span class="avatar" style="--av:#8b5cf6">NL</span>
+      <div class="lr-main"><div class="lr-t">Noa Levi · Full Pass</div><div class="lr-s">DB Oct · VB-104821 · 20:14</div></div>
+      <div class="lr-end"><span class="st n">Issued</span><div class="lr-s">₪320</div></div>
+    </div>
+    <div class="lrow">
+      <span class="avatar" style="--av:#3b82f6">DC</span>
+      <div class="lr-main"><div class="lr-t">Daniel Cohen · GA Entry</div><div class="lr-s">Pulse · VB-104820 · 19:52</div></div>
+      <div class="lr-end"><span class="st n">Issued</span><div class="lr-s">₪240</div></div>
+    </div>
+    <div class="lrow">
+      <span class="avatar" style="--av:#ec4899">SA</span>
+      <div class="lr-main"><div class="lr-t">Shira Azoulay · NYE Pass</div><div class="lr-s">Terra NYE · VB-104817 · 18:20</div></div>
+      <div class="lr-end"><span class="st p">Canceled</span><div class="lr-s">₪360</div></div>
+    </div>
+    <div class="lrow">
+      <span class="avatar" style="--av:#22c55e">BH</span>
+      <div class="lr-main"><div class="lr-t">Ben Harari · Full Pass</div><div class="lr-s">DB Jun · VB-103990 · Jun 7</div></div>
+      <div class="lr-end"><span class="st g">Scanned</span><div class="lr-s">₪300</div></div>
+    </div>
+    <div class="lrow">
+      <span class="avatar" style="--av:#f59e0b">AS</span>
+      <div class="lr-main"><div class="lr-t">Avigail Stern · Camping Add-on</div><div class="lr-s">DB Jun · VB-103880 · Jun 5</div></div>
+      <div class="lr-end"><span class="st g">Scanned</span><div class="lr-s">₪110</div></div>
+    </div>
+  </div>
+
+  <div class="feed-hd"><span class="sec-label">Insights</span></div>
+  <div class="insight t-orange" data-expand>
+    <div class="in-top"><span class="in-tag" style="color:#2563eb"><i></i>Tickets</span><span class="in-trend down">↓</span></div>
+    <div class="in-text">Bar Tab attach at Pulse is only 14%</div>
+    <div class="in-body"><div class="in-detail">160 bar tabs sold against 1,180 GA entries. Preloaded tabs lift onsite spend and cut bar queues · a checkout upsell prompt is the cheapest fix.</div><div class="in-act"><span class="btn-ghost" style="height:40px;font-size:12px">Add checkout upsell</span></div></div>
+  </div>
+</template>
+
+<!-- ── CUSTOMERS ─────────────────────────── -->
+<template data-screen="customers" data-panel="Customers" data-hue="#e8633f">
+  <div class="kpis">
+    <div class="card glass tight"><div class="metric-mid">18,420</div><div class="metric-sub">community size</div></div>
+    <div class="card glass tight"><div class="metric-mid">640</div><div class="metric-sub">new · 30 days</div></div>
+    <div class="card glass tight"><div class="metric-mid">820</div><div class="metric-sub">VIPs · gold + platinum</div></div>
+    <div class="card glass tight"><div class="metric-mid">₪1,840</div><div class="metric-sub">avg lifetime value</div></div>
+  </div>
+
+  <div class="rowline" style="flex-wrap:wrap;gap:6px">
+    <span class="chip hue" style="background:#e8633f">All · 18,420</span>
+    <span class="chip"><i class="tag-dot" style="background:#f59e0b"></i>VIP · 820</span>
+    <span class="chip"><i class="tag-dot" style="background:#22c55e"></i>Helper</span>
+    <span class="chip"><i class="tag-dot" style="background:#8b5cf6"></i>Artist</span>
+    <span class="chip"><i class="tag-dot" style="background:#06b6d4"></i>Tourist</span>
+    <span class="chip"><i class="tag-dot" style="background:#3b82f6"></i>Newsletter</span>
+  </div>
+
+  <div class="card glass">
+    <div class="spread"><span class="sec-label" style="color:#e8633f">Lifecycle · attendance</span><span class="chip">whole community</span></div>
+    <div style="display:flex;gap:3px;height:6px;margin-top:12px">
+      <i style="flex:5180;background:#d6ccc0;border-radius:99px"></i>
+      <i style="flex:7090;background:#3b82f6;border-radius:99px"></i>
+      <i style="flex:4230;background:#8b5cf6;border-radius:99px"></i>
+      <i style="flex:1920;background:#e8633f;border-radius:99px"></i>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
+      <div class="spread"><span class="metric-sub" style="margin:0;display:flex;align-items:center;gap:6px"><i class="tag-dot" style="background:#d6ccc0"></i>No events yet</span><b style="font-size:13px">5,180</b></div>
+      <div class="spread"><span class="metric-sub" style="margin:0;display:flex;align-items:center;gap:6px"><i class="tag-dot" style="background:#3b82f6"></i>Single event</span><b style="font-size:13px">7,090</b></div>
+      <div class="spread"><span class="metric-sub" style="margin:0;display:flex;align-items:center;gap:6px"><i class="tag-dot" style="background:#8b5cf6"></i>Returning</span><b style="font-size:13px">4,230</b></div>
+      <div class="spread"><span class="metric-sub" style="margin:0;display:flex;align-items:center;gap:6px"><i class="tag-dot" style="background:#e8633f"></i>Regular</span><b style="font-size:13px">1,920</b></div>
+    </div>
+    <div class="rowline" style="flex-wrap:wrap;gap:6px;margin-top:13px">
+      <span class="st g">9,120 active</span><span class="st o">3,180 at risk</span><span class="st p">3,640 lapsed</span>
+    </div>
+  </div>
+
+  <div class="feed-hd"><span class="sec-label">People</span><span class="more">All 18,420</span></div>
+  <div class="card glass">
+    <div class="lrow">
+      <span class="avatar" style="--av:#8b5cf6">AS</span>
+      <div class="lr-main"><div class="lr-t">Avigail Stern</div><div class="lr-s" style="display:flex;align-items:center;gap:6px;margin-top:3px"><span class="st g" style="height:17px;font-size:9px;padding:0 7px">Regular</span>Platinum · VIP</div></div>
+      <div class="lr-end"><span class="lr-v">₪11,240</span><div class="lr-s">17 orders</div></div>
+    </div>
+    <div class="lrow">
+      <span class="avatar" style="--av:#e8633f">NL</span>
+      <div class="lr-main"><div class="lr-t">Noa Levi</div><div class="lr-s" style="display:flex;align-items:center;gap:6px;margin-top:3px"><span class="st g" style="height:17px;font-size:9px;padding:0 7px">Regular</span>Platinum · VIP</div></div>
+      <div class="lr-end"><span class="lr-v">₪9,820</span><div class="lr-s">14 orders</div></div>
+    </div>
+    <div class="lrow">
+      <span class="avatar" style="--av:#3b82f6">DC</span>
+      <div class="lr-main"><div class="lr-t">Daniel Cohen</div><div class="lr-s" style="display:flex;align-items:center;gap:6px;margin-top:3px"><span class="st g" style="height:17px;font-size:9px;padding:0 7px">Regular</span>Gold</div></div>
+      <div class="lr-end"><span class="lr-v">₪7,430</span><div class="lr-s">11 orders</div></div>
+    </div>
+    <div class="lrow">
+      <span class="avatar" style="--av:#ec4899">MF</span>
+      <div class="lr-main"><div class="lr-t">Maya Friedman</div><div class="lr-s" style="display:flex;align-items:center;gap:6px;margin-top:3px"><span class="st g" style="height:17px;font-size:9px;padding:0 7px">Returning</span>Gold · Helper</div></div>
+      <div class="lr-end"><span class="lr-v">₪4,120</span><div class="lr-s">6 orders</div></div>
+    </div>
+    <div class="lrow">
+      <span class="avatar" style="--av:#06b6d4">SA</span>
+      <div class="lr-main"><div class="lr-t">Shira Azoulay</div><div class="lr-s" style="display:flex;align-items:center;gap:6px;margin-top:3px"><span class="st o" style="height:17px;font-size:9px;padding:0 7px">Returning</span>Silver · at risk</div></div>
+      <div class="lr-end"><span class="lr-v">₪2,210</span><div class="lr-s">4 orders</div></div>
+    </div>
+    <div class="lrow">
+      <span class="avatar" style="--av:#22c55e">OK</span>
+      <div class="lr-main"><div class="lr-t">Omer Katz</div><div class="lr-s" style="display:flex;align-items:center;gap:6px;margin-top:3px"><span class="st n" style="height:17px;font-size:9px;padding:0 7px">Single event</span>Bronze</div></div>
+      <div class="lr-end"><span class="lr-v">₪740</span><div class="lr-s">2 orders</div></div>
+    </div>
+    <div class="lrow">
+      <span class="avatar" style="--av:#f59e0b">RS</span>
+      <div class="lr-main"><div class="lr-t">Roni Shalev</div><div class="lr-s" style="display:flex;align-items:center;gap:6px;margin-top:3px"><span class="st n" style="height:17px;font-size:9px;padding:0 7px">No events yet</span>Newsletter</div></div>
+      <div class="lr-end"><span class="lr-v">₪0</span><div class="lr-s">0 orders</div></div>
+    </div>
+  </div>
+</template>
+
+<!-- ── MARKETING ─────────────────────────── -->
+<template data-screen="marketing" data-panel="Marketing" data-hue="#e8633f">
+  <div class="kpis">
+    <div class="card glass tight"><div class="metric-mid">₪21.8k</div><div class="metric-sub">paid spend · 30d</div></div>
+    <div class="card glass tight"><div class="metric-mid">4.1×</div><div class="metric-sub">blended ROAS</div></div>
+    <div class="card glass tight"><div class="metric-mid">126.4k</div><div class="metric-sub">people reached · 30d</div></div>
+    <div class="card glass tight"><div class="metric-mid">27,960</div><div class="metric-sub">engagements · 30d</div></div>
+  </div>
+
+  <div class="card glass">
+    <div class="spread"><span class="sec-label" style="color:#e8633f">Campaigns · 30d</span><span class="chip">6 active · 3 scheduled</span></div>
+    <div class="lrow">
+      <div class="lr-main"><div class="lr-t">DB Oct · Lineup reveal</div><div class="lr-s">Email · Loyal buyers · 46% open</div></div>
+      <div class="lr-end"><span class="st g">Sent</span><div class="lr-s">210 conv</div></div>
+    </div>
+    <div class="lrow">
+      <div class="lr-main"><div class="lr-t">Pulse · Last chance</div><div class="lr-s">WhatsApp · At-risk attendees · 84% open</div></div>
+      <div class="lr-end"><span class="st g">Sent</span><div class="lr-s">168 conv</div></div>
+    </div>
+    <div class="lrow">
+      <div class="lr-main"><div class="lr-t">DB Oct · Lookalike 2%</div><div class="lr-s">Paid social · ₪9.6k spend · 84k reached</div></div>
+      <div class="lr-end"><span class="st g">Sent</span><div class="lr-s">142 conv</div></div>
+    </div>
+    <div class="lrow">
+      <div class="lr-main"><div class="lr-t">Win-back · Lapsed Q2</div><div class="lr-s">Email · Lapsed members · Sep 19</div></div>
+      <div class="lr-end"><span class="chip"><i class="tag-dot" style="background:#3b82f6"></i>Scheduled</span><div class="lr-s">3,640 audience</div></div>
+    </div>
+    <div class="lrow">
+      <div class="lr-main"><div class="lr-t">Terra NYE · Early bird</div><div class="lr-s">Email · Single-event buyers · Sep 21</div></div>
+      <div class="lr-end"><span class="chip"><i class="tag-dot" style="background:#3b82f6"></i>Scheduled</span><div class="lr-s">7,090 audience</div></div>
+    </div>
+    <div class="lrow">
+      <div class="lr-main"><div class="lr-t">FC Purim · Teaser</div><div class="lr-s">WhatsApp · Loyal buyers</div></div>
+      <div class="lr-end"><span class="st n">Draft</span><div class="lr-s">1,920 audience</div></div>
+    </div>
+  </div>
+
+  <div class="card glass">
+    <div class="spread"><span class="sec-label">Channels · conversions</span><span class="chip">1,840 attributed</span></div>
+    <div style="display:flex;gap:3px;height:6px;margin-top:12px">
+      <i style="flex:740;background:#e8633f;border-radius:99px"></i>
+      <i style="flex:610;background:#22c55e;border-radius:99px"></i>
+      <i style="flex:420;background:#3b82f6;border-radius:99px"></i>
+      <i style="flex:70;background:#94a3b8;border-radius:99px"></i>
+    </div>
+    <div class="lrow">
+      <div class="lr-main"><div class="lr-t"><i class="tag-dot" style="background:#e8633f;display:inline-block;margin-right:6px"></i>Email</div><div class="lr-s">31,200 sends · 40% open · 9.2% click</div></div>
+      <div class="lr-end"><span class="lr-v">740</span><div class="lr-s">conv <span class="delta up">+6%</span></div></div>
+    </div>
+    <div class="lrow">
+      <div class="lr-main"><div class="lr-t"><i class="tag-dot" style="background:#22c55e;display:inline-block;margin-right:6px"></i>WhatsApp</div><div class="lr-s">9,800 sends · 85% open · 20% click</div></div>
+      <div class="lr-end"><span class="lr-v">610</span><div class="lr-s">conv <span class="delta up">+14%</span></div></div>
+    </div>
+    <div class="lrow">
+      <div class="lr-main"><div class="lr-t"><i class="tag-dot" style="background:#3b82f6;display:inline-block;margin-right:6px"></i>Paid social</div><div class="lr-s">412k impressions · CTR 2.7% · CPC ₪1.9</div></div>
+      <div class="lr-end"><span class="lr-v">420</span><div class="lr-s">conv <span class="delta up">+3%</span></div></div>
+    </div>
+    <div class="lrow">
+      <div class="lr-main"><div class="lr-t"><i class="tag-dot" style="background:#94a3b8;display:inline-block;margin-right:6px"></i>Organic social</div><div class="lr-s">188k impressions · 6.4% engagement · +312 followers</div></div>
+      <div class="lr-end"><span class="lr-v">70</span><div class="lr-s">conv <span class="delta up">+8%</span></div></div>
+    </div>
+  </div>
+
+  <div class="card glass">
+    <div class="spread"><span class="sec-label">Attribution</span><span class="chip">blended · 30d</span></div>
+    <div class="rowline" style="gap:18px;margin-top:11px">
+      <div><div class="metric-mid">₪612k</div><div class="metric-sub">attributed revenue</div></div>
+      <div><div class="metric-mid">₪21.8k</div><div class="metric-sub">paid spend</div></div>
+      <div><div class="metric-mid up">4.1×</div><div class="metric-sub">blended ROAS</div></div>
+    </div>
+    <div class="metric-sub" style="margin-top:10px">Tickets attributed to marketing touches · 1,840 of 48,200 sends</div>
+  </div>
+</template>
+
+<!-- ── FINANCE ─────────────────────────── -->
+<template data-screen="finance" data-panel="Finance" data-hue="#e8633f">
+  <div class="card glass">
+    <div class="spread"><span class="sec-label" style="color:#e8633f">P&amp;L · all live events</span><span class="chip">net of VAT + fees</span></div>
+    <div class="rowline" style="gap:16px;margin-top:12px">
+      <div class="ring-wrap" data-ring="41" data-ring-c="#e8633f" data-ring-size="108">
+        <div class="ring-center"><div class="metric-mid">41%</div><div class="metric-sub" style="margin-top:0">margin</div></div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:9px">
+        <div><div class="metric-big up">₪1.03M</div><div class="metric-sub">net profit · season to date</div></div>
+        <div class="spread"><span class="metric-sub" style="margin:0">Revenue</span><b style="font-size:13px">₪2.516M</b></div>
+        <div class="spread"><span class="metric-sub" style="margin:0">Costs</span><b style="font-size:13px;color:var(--bad)">−₪1.486M</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card glass">
+    <div class="spread"><span class="sec-label">P&amp;L lines</span><span class="chip">costs · est.</span></div>
+    <div class="lrow"><div class="lr-main"><div class="lr-t">Ticket revenue</div><div class="lr-s">in · season to date</div></div><div class="lr-end"><span class="lr-v">₪2,516,000</span></div></div>
+    <div class="lrow"><div class="lr-main"><div class="lr-t">Production &amp; venue</div><div class="lr-s">55% of costs</div></div><div class="lr-end"><span class="lr-v" style="color:var(--bad)">−₪820,000</span></div></div>
+    <div class="lrow"><div class="lr-main"><div class="lr-t">Marketing &amp; paid media</div><div class="lr-s">21% of costs</div></div><div class="lr-end"><span class="lr-v" style="color:var(--bad)">−₪318,000</span></div></div>
+    <div class="lrow"><div class="lr-main"><div class="lr-t">Artists &amp; talent</div><div class="lr-s">16% of costs</div></div><div class="lr-end"><span class="lr-v" style="color:var(--bad)">−₪240,000</span></div></div>
+    <div class="lrow"><div class="lr-main"><div class="lr-t">Operations &amp; staff</div><div class="lr-s">7% of costs</div></div><div class="lr-end"><span class="lr-v" style="color:var(--bad)">−₪108,000</span></div></div>
+    <div class="lrow"><div class="lr-main"><div class="lr-t" style="font-weight:800">Net</div><div class="lr-s">margin 41%</div></div><div class="lr-end"><span class="lr-v up">+₪1,030,000</span></div></div>
+  </div>
+
+  <div class="card glass">
+    <div class="spread"><span class="sec-label">Cost composition</span><span class="chip">₪1.486M total</span></div>
+    <div style="display:flex;gap:3px;height:8px;margin-top:12px">
+      <i style="flex:820;background:#f59e0b;border-radius:99px"></i>
+      <i style="flex:318;background:#3b82f6;border-radius:99px"></i>
+      <i style="flex:240;background:#8b5cf6;border-radius:99px"></i>
+      <i style="flex:108;background:#94a3b8;border-radius:99px"></i>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
+      <div class="rowline" style="gap:8px"><i class="tag-dot" style="background:#f59e0b"></i><span class="metric-sub" style="margin:0;flex:1">Production &amp; venue · 55%</span><b style="font-size:13px">₪820k</b></div>
+      <div class="rowline" style="gap:8px"><i class="tag-dot" style="background:#3b82f6"></i><span class="metric-sub" style="margin:0;flex:1">Marketing &amp; paid media · 21%</span><b style="font-size:13px">₪318k</b></div>
+      <div class="rowline" style="gap:8px"><i class="tag-dot" style="background:#8b5cf6"></i><span class="metric-sub" style="margin:0;flex:1">Artists &amp; talent · 16%</span><b style="font-size:13px">₪240k</b></div>
+      <div class="rowline" style="gap:8px"><i class="tag-dot" style="background:#94a3b8"></i><span class="metric-sub" style="margin:0;flex:1">Operations &amp; staff · 7%</span><b style="font-size:13px">₪108k</b></div>
+    </div>
+  </div>
+
+  <div class="feed-hd"><span class="sec-label">Insights</span></div>
+  <div class="insight t-green" data-expand>
+    <div class="in-top"><span class="in-tag" style="color:#15803d"><i></i>Finance</span><span class="in-trend up">↑</span></div>
+    <div class="in-text">Costs run ₪114k under allocation</div>
+    <div class="in-body"><div class="in-detail">₪1.486M spent against ₪1.6M allocated · all four budget areas are inside their envelope. Margin holds at 41%, leaving headroom to push marketing where Terra NYE trails its curve.</div><div class="in-act"><span class="btn-ghost" style="height:40px;font-size:12px" data-goto="budgets">Review budgets</span></div></div>
+  </div>
+</template>
+
+<!-- ── BUDGETS ─────────────────────────── -->
+<template data-screen="budgets" data-panel="Budgets" data-hue="#e8633f">
+  <div class="kpis">
+    <div class="card glass tight"><div class="metric-mid">₪1.6M</div><div class="metric-sub">total allocated</div></div>
+    <div class="card glass tight"><div class="metric-mid">₪1.486M</div><div class="metric-sub">spent to date</div></div>
+    <div class="card glass tight"><div class="metric-mid">93%</div><div class="metric-sub">utilization · all areas</div></div>
+    <div class="card glass tight"><div class="metric-mid">₪114k</div><div class="metric-sub">headroom left</div></div>
+  </div>
+
+  <div class="card glass">
+    <div class="spread"><span class="sec-label" style="color:#e8633f">Allocated vs spent · by area</span><span class="chip">4 areas</span></div>
+    <div class="spread" style="margin-top:13px"><span style="font-size:13px;font-weight:700">Production &amp; venue</span><b style="font-size:12.5px">₪820k / ₪880k</b></div>
+    <div class="bar" style="margin-top:7px;--bar-c:#22c55e"><div class="fill" style="width:93%"></div></div>
+    <div class="bar-legend"><span>93% used</span><span>₪60k left</span></div>
+    <div class="spread" style="margin-top:14px"><span style="font-size:13px;font-weight:700">Marketing &amp; paid media</span><b style="font-size:12.5px">₪318k / ₪340k</b></div>
+    <div class="bar" style="margin-top:7px;--bar-c:#22c55e"><div class="fill" style="width:94%"></div></div>
+    <div class="bar-legend"><span>94% used · closest to cap</span><span>₪22k left</span></div>
+    <div class="spread" style="margin-top:14px"><span style="font-size:13px;font-weight:700">Artists &amp; talent</span><b style="font-size:12.5px">₪240k / ₪260k</b></div>
+    <div class="bar" style="margin-top:7px;--bar-c:#22c55e"><div class="fill" style="width:92%"></div></div>
+    <div class="bar-legend"><span>92% used</span><span>₪20k left</span></div>
+    <div class="spread" style="margin-top:14px"><span style="font-size:13px;font-weight:700">Operations &amp; staff</span><b style="font-size:12.5px">₪108k / ₪120k</b></div>
+    <div class="bar" style="margin-top:7px;--bar-c:#22c55e"><div class="fill" style="width:90%"></div></div>
+    <div class="bar-legend"><span>90% used</span><span>₪12k left</span></div>
+  </div>
+
+  <div class="feed-hd"><span class="sec-label">Pending approval</span><span class="more">1 critical</span></div>
+  <div class="card glass tight">
+    <div class="lrow" data-task>
+      <span class="ck"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+      <div class="lr-main"><div class="lr-t">Approve DB Oct ad budget</div><div class="lr-s">Marketing &amp; paid media · due today</div></div>
+      <div class="lr-end"><span class="st p">Critical</span></div>
+    </div>
+  </div>
+
+  <div class="feed-hd"><span class="sec-label">Insights</span></div>
+  <div class="insight t-orange" data-expand>
+    <div class="in-top"><span class="in-tag"><i></i>Budgets</span><span class="in-trend down">↓</span></div>
+    <div class="in-text">Marketing headroom is down to ₪22k</div>
+    <div class="in-body"><div class="in-detail">Marketing &amp; paid media is 94% used and the pending DB Oct ad budget approval draws on the same line. Approve against the remaining ₪22k, or reallocate from Production &amp; venue headroom (₪60k) first.</div><div class="in-act"><span class="btn-ghost" style="height:40px;font-size:12px">Review allocation</span></div></div>
+  </div>
+</template>
+
+<!-- ── SUPPORT ─────────────────────────── -->
+<template data-screen="support" data-panel="Support" data-hue="#e8633f">
+  <div class="rowline" style="gap:10px">
+    <div class="card glass tight" style="flex:1"><div class="metric-mid">23</div><div class="metric-sub">open tickets</div></div>
+    <div class="card glass tight" style="flex:1"><div class="metric-mid" style="color:var(--bad)">4</div><div class="metric-sub">critical</div></div>
+    <div class="card glass tight" style="flex:1.15"><div class="metric-mid">3.2h</div><div class="metric-sub">avg response</div></div>
+  </div>
+
+  <div class="card glass">
+    <div class="spread"><span class="sec-label" style="color:#e8633f">SLA · first response</span><span class="st g">On target</span></div>
+    <div class="rowline" style="gap:16px;margin-top:12px">
+      <div class="ring-wrap" data-ring="92" data-ring-c="#22c55e" data-ring-size="104">
+        <div class="ring-center"><div class="metric-mid">92%</div><div class="metric-sub" style="margin-top:0">SLA met</div></div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:9px">
+        <div class="spread"><span class="metric-sub" style="margin:0">Within SLA</span><b style="font-size:13px">21 / 23</b></div>
+        <div class="spread"><span class="metric-sub" style="margin:0">Breaching</span><b style="font-size:13px">2</b></div>
+        <div class="spread"><span class="metric-sub" style="margin:0">Avg response</span><b style="font-size:13px">3.2h</b></div>
+        <div class="spread"><span class="metric-sub" style="margin:0">Critical open</span><b style="font-size:13px">4</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card glass">
+    <div class="spread"><span class="sec-label">Open by type</span><span class="chip">23 open</span></div>
+    <div class="rowline" style="gap:16px;margin-top:12px">
+      <div class="ring-wrap" data-donut="9:#b91c1c,6:#f59e0b,4:#3b82f6,4:#94a3b8" data-ring-size="104">
+        <div class="ring-center"><div class="metric-mid">23</div><div class="metric-sub" style="margin-top:0">tickets</div></div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:9px">
+        <div class="spread"><span class="metric-sub" style="margin:0;display:flex;align-items:center;gap:6px"><i class="tag-dot" style="background:#b91c1c"></i>Refunds</span><b style="font-size:13px">9</b></div>
+        <div class="spread"><span class="metric-sub" style="margin:0;display:flex;align-items:center;gap:6px"><i class="tag-dot" style="background:#f59e0b"></i>Transfers</span><b style="font-size:13px">6</b></div>
+        <div class="spread"><span class="metric-sub" style="margin:0;display:flex;align-items:center;gap:6px"><i class="tag-dot" style="background:#3b82f6"></i>Entry / scanning</span><b style="font-size:13px">4</b></div>
+        <div class="spread"><span class="metric-sub" style="margin:0;display:flex;align-items:center;gap:6px"><i class="tag-dot" style="background:#94a3b8"></i>General</span><b style="font-size:13px">4</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card glass">
+    <div class="spread"><span class="sec-label">Recent tickets</span><span class="chip">5 of 23</span></div>
+    <div class="lrow">
+      <span class="avatar" style="--av:#8b5cf6">TM</span>
+      <div class="lr-main"><div class="lr-t">Refund request · Pulse Night</div><div class="lr-s">Tal Mizrahi</div></div>
+      <div class="lr-end"><span class="st o">High</span><div class="lr-s">2h</div></div>
+    </div>
+    <div class="lrow">
+      <span class="avatar" style="--av:#3b82f6">OK</span>
+      <div class="lr-main"><div class="lr-t">Name change on ticket</div><div class="lr-s">Omer Katz</div></div>
+      <div class="lr-end"><span class="st n">Normal</span><div class="lr-s">5h</div></div>
+    </div>
+    <div class="lrow">
+      <span class="avatar" style="--av:#ec4899">YD</span>
+      <div class="lr-main"><div class="lr-t">Did not receive QR code</div><div class="lr-s">Yael Dahan · pending</div></div>
+      <div class="lr-end"><span class="st o">High</span><div class="lr-s">1d</div></div>
+    </div>
+    <div class="lrow">
+      <span class="avatar" style="--av:#06b6d4">AR</span>
+      <div class="lr-main"><div class="lr-t">Transfer to friend</div><div class="lr-s">Adi Ravid</div></div>
+      <div class="lr-end"><span class="st n">Low</span><div class="lr-s">1d</div></div>
+    </div>
+    <div class="lrow">
+      <span class="avatar" style="--av:#e8633f">EN</span>
+      <div class="lr-main"><div class="lr-t">Double charged</div><div class="lr-s">Eitan Naor</div></div>
+      <div class="lr-end"><span class="st p">Critical</span><div class="lr-s">30m</div></div>
+    </div>
+  </div>
+
+  <div class="feed-hd"><span class="sec-label">Insights</span></div>
+  <div class="insight t-orange" data-expand>
+    <div class="in-top"><span class="in-tag"><i></i>Support</span><span class="in-trend down">↑</span></div>
+    <div class="in-text">Refunds are 39% of the open queue</div>
+    <div class="in-body"><div class="in-detail">9 of 23 open tickets are refunds, led by Pulse Night requests. A refund window customers use on their own clears most of these before they reach an agent.</div><div class="in-act"><span class="btn-ghost" style="height:40px;font-size:12px">Run refund triage flow</span></div></div>
+  </div>
+</template>
+
+<!-- ── TASKS ─────────────────────────── -->
+<template data-screen="tasks" data-panel="Tasks" data-hue="#e8633f">
+  <div class="card glass">
+    <div class="spread"><span class="sec-label" style="color:#e8633f">Tasks · this cycle</span><span class="st p">4 critical</span></div>
+    <div class="rowline" style="gap:16px;margin-top:12px">
+      <div class="ring-wrap" data-ring="68" data-ring-c="#e8633f" data-ring-size="96">
+        <div class="ring-center"><div class="metric-mid">68%</div><div class="metric-sub" style="margin-top:0">completed</div></div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:9px">
+        <div class="spread"><span class="metric-sub" style="margin:0">Open</span><b style="font-size:13px">23</b></div>
+        <div class="spread"><span class="metric-sub" style="margin:0">Critical</span><b style="font-size:13px;color:var(--bad)">4</b></div>
+        <div class="spread"><span class="metric-sub" style="margin:0">Due today</span><b style="font-size:13px">2</b></div>
+        <div class="spread"><span class="metric-sub" style="margin:0">Done this week</span><b style="font-size:13px">2</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="feed-hd"><span class="sec-label">Today</span><span class="more">2 due</span></div>
+  <div class="card glass">
+    <div class="lrow" data-task>
+      <span class="ck"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+      <div class="lr-main"><div class="lr-t">Approve DB Oct ad budget</div><div class="lr-s">Budgets · due today</div></div>
+      <div class="lr-end"><span class="st p">Critical</span></div>
+    </div>
+    <div class="lrow" data-task>
+      <span class="ck"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+      <div class="lr-main"><div class="lr-t">Resolve refund dispute #4821</div><div class="lr-s">Support · due today</div></div>
+      <div class="lr-end"><span class="st p">Critical</span></div>
+    </div>
+  </div>
+
+  <div class="feed-hd"><span class="sec-label">Coming up</span><span class="more">this week</span></div>
+  <div class="card glass">
+    <div class="lrow" data-task>
+      <span class="ck"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+      <div class="lr-main"><div class="lr-t">Confirm Pulse lineup change</div><div class="lr-s">Events · due tomorrow</div></div>
+      <div class="lr-end"><span class="st o">High</span></div>
+    </div>
+    <div class="lrow" data-task>
+      <span class="ck"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+      <div class="lr-main"><div class="lr-t">Send Terra NYE early bird email</div><div class="lr-s">Marketing · due Sep 21</div></div>
+      <div class="lr-end"><span class="st o">High</span></div>
+    </div>
+    <div class="lrow" data-task>
+      <span class="ck"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+      <div class="lr-main"><div class="lr-t">Reconcile June ticket revenue</div><div class="lr-s">Finance · due Sep 23</div></div>
+      <div class="lr-end"><span class="st n">Normal</span></div>
+    </div>
+  </div>
+
+  <div class="feed-hd"><span class="sec-label">Done</span><span class="more">2 this week</span></div>
+  <div class="card glass">
+    <div class="lrow done" data-task>
+      <span class="ck"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+      <div class="lr-main"><div class="lr-t">Tag new VIP cohort</div><div class="lr-s">Customers · this week</div></div>
+      <div class="lr-end"><span class="st n">Normal</span></div>
+    </div>
+    <div class="lrow done" data-task>
+      <span class="ck"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+      <div class="lr-main"><div class="lr-t">Archive DB June assets</div><div class="lr-s">Events · this week</div></div>
+      <div class="lr-end"><span class="st n">Low</span></div>
+    </div>
+  </div>
+</template>
+
+<!-- ── SHEETS (menu · flow run) · cloned per app instance ───────────────── -->
+<template id="tpl-menu-sheet">
+  <div class="sheet glass open" data-sheet="menu">
+    <div class="grab"></div>
+    <div class="sh-scroll">
+      <div class="menu-orgs">
+        <button class="morg on"><span class="mo-i">FC</span><span class="mo-n">Fusion Culture</span></button>
+        <button class="morg"><span class="mo-i">DB</span><span class="mo-n">Desert Bass</span></button>
+        <button class="morg"><span class="mo-i">TM</span><span class="mo-n">toMix</span></button>
+      </div>
+      <div class="msearch"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.2-3.2"/></svg>Search events, people, orders…</div>
+
+      <div class="rowline" style="gap:8px;margin-top:12px">
+        <div class="card glass tight" style="flex:1;padding:11px 12px">
+          <div class="spread"><span class="sec-label">Flows</span><span class="st g">3 active</span></div>
+          <div class="metric-sub" style="margin-top:5px">1 suggested · Weekly digest</div>
+        </div>
+        <div class="card glass tight" style="flex:1;padding:11px 12px">
+          <div class="spread"><span class="sec-label">Tasks</span><span class="st p">4 mine</span></div>
+          <div class="metric-sub" style="margin-top:5px">3 with the team</div>
+        </div>
+      </div>
+
+      <div class="sec-label" style="display:block;margin:14px 2px 0">Modules</div>
+      <div class="mgrid">
+        <button class="mcell" data-goto="events"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Events</button>
+        <button class="mcell" data-goto="orders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.6"/><circle cx="17" cy="20" r="1.6"/><path d="M6 6L5 3H2"/></svg>Orders</button>
+        <button class="mcell" data-goto="tickets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8a2 2 0 002-2h12a2 2 0 002 2v2a2.5 2.5 0 000 5v2a2 2 0 00-2 2H6a2 2 0 00-2-2v-2a2.5 2.5 0 000-5z"/><path d="M13 6v13" stroke-dasharray="2.5 3"/></svg>Tickets</button>
+        <button class="mcell" data-goto="customers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8.5" r="3.5"/><path d="M3.5 20c.6-3.4 2.9-5 5.5-5s4.9 1.6 5.5 5M16 5.5a3 3 0 010 6M18.5 20c-.3-2.4-1.4-4-3-4.7"/></svg>Customers</button>
+        <button class="mcell" data-goto="marketing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 11v3l4 1 9 5V4L8 9l-4 1z"/><path d="M19 9a4 4 0 010 6"/></svg>Marketing</button>
+        <button class="mcell" data-goto="finance"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 15c.5 1 1.4 1.6 2.6 1.6 1.6 0 2.7-.9 2.7-2.2 0-2.9-5.3-1.5-5.3-4.4 0-1.2 1-2 2.5-2 1.1 0 2 .5 2.5 1.4M12 6.5v11"/></svg>Finance</button>
+        <button class="mcell" data-goto="budgets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3a9 9 0 109 9h-9z"/><path d="M12 3a9 9 0 019 9" opacity=".4"/></svg>Budgets</button>
+        <button class="mcell" data-goto="support"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 13a8 8 0 0116 0"/><rect x="2.5" y="13" width="4" height="6" rx="2"/><rect x="17.5" y="13" width="4" height="6" rx="2"/><path d="M19.5 19a4 4 0 01-4 2.5"/></svg>Support</button>
+        <button class="mcell" data-goto="tasks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8.5 12.5l2.5 2.5 5-5.5"/></svg>Tasks</button>
+      </div>
+
+      <div class="sec-label" style="display:block;margin:14px 2px 0">Tools</div>
+      <div class="mtools">
+        <span class="chip">Overview</span><span class="chip">Smart Search</span><span class="chip">Blacklist</span><span class="chip">Lifecycle</span><span class="chip">Retention</span><span class="chip">Velocity</span><span class="chip">Data Quality</span><span class="chip">Settings</span>
+      </div>
+
+      <div class="muser">
+        <span class="avatar" style="--av:var(--ink)">EK</span>
+        <div><div class="mu-n">Elad Kordonsky</div><div class="mu-r">Owner · Fusion Culture</div></div>
+        <div class="mu-actions"><span class="chip">Team</span><span class="chip">Logout</span></div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template id="tpl-flowrun-sheet">
+  <div class="sheet glass open" data-sheet="flowrun">
+    <div class="grab"></div>
+    <div class="sh-scroll">
+      <div class="spread">
+        <span class="fl-type" data-fr="type" style="color:var(--process);font-size:10px;font-weight:800;letter-spacing:.09em;text-transform:uppercase">⚙ Process flow</span>
+        <span class="chip" data-fr="mods">Sales · Finance</span>
+      </div>
+      <div data-fr="title" style="font-size:19px;font-weight:800;letter-spacing:-.02em;margin-top:7px">Dynamic price ladder</div>
+      <div data-fr="desc" style="font-size:12.5px;color:var(--text-soft);line-height:1.5;margin-top:4px">Nudge ticket tiers upward as events approach break-even. You approve every price change before it goes live.</div>
+      <div class="wchain" data-fr="chain" style="--fc:var(--process);margin-top:6px">
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt"><b style="color:var(--text)">Read pace vs BEP</b> · DB Oct is 780 past break-even, Tier 2 at 60%</span></div>
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt"><b style="color:var(--text)">Propose tier bump</b> · Tier 2 ₪340 → ₪360</span></div>
+        <div class="wstep gate"><span class="wnode"><i></i><b></b></span><span class="wtxt">Approval gate · nothing moves without you</span></div>
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt">Apply new price</span></div>
+        <div class="wstep"><span class="wnode"><i></i><b></b></span><span class="wtxt">Monitor demand · roll back if pace drops</span></div>
+      </div>
+      <div class="card" style="background:rgba(32,25,19,.05);border-radius:var(--r-md);padding:11px 13px;margin-top:4px">
+        <div class="spread"><span class="sec-label" data-fr="implabel" style="color:var(--process)">Expected impact</span></div>
+        <div data-fr="impact" style="font-size:13px;font-weight:700;margin-top:4px">+₪40k margin · touches 950 remaining tickets</div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:14px">
+        <button class="btn-ink" data-close-sheet style="flex:1.6">Start flow</button>
+        <button class="btn-ghost" data-close-sheet style="flex:1">Not now</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- ════════════════════════════════════════════════════════════════════════
+     GALLERY + LIVE APP MOUNTS
+     ════════════════════════════════════════════════════════════════════════ -->
+<div class="gal">
+  <header class="gal-head">
+    <div class="logo-row"><span class="logo">F</span><span class="wordmark">Flowz <span>· Mobile</span></span></div>
+    <h1>The whole ControlRoom, one thumb.</h1>
+    <p>Every screen of Flowz translated to the phone · same warm-cream glass, same three-tier IA, rebuilt around touch. Every frame below is live: swipe the widgets, tap insights and flows to expand, use the dock to walk between screens.</p>
+    <div class="decisions">
+      <span class="decision glass"><b>Dock, not bar</b> · primary nav moves to the thumb</span>
+      <span class="decision glass"><b>Ribbon survives</b> · one word, clock, events</span>
+      <span class="decision glass"><b>Scroll is allowed</b> · the no-scroll rule is desktop law only</span>
+      <span class="decision glass"><b>Hover → tap</b> · accordions become expanding cards</span>
+      <span class="decision glass"><b>Sheets, not modals</b> · everything rises from the dock edge</span>
+      <span class="decision glass"><b>Hues stay wayfinding</b> · screens keep the cream field</span>
+    </div>
+  </header>
+  <div id="gallery"></div>
+</div>
+
+<div id="live-app"></div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════════════
+   SHELL · mounts app instances. Gallery: one per frame, each starting on its
+   own screen. Phone (<700px): a single live instance, dock fully working.
+   ══════════════════════════════════════════════════════════════════════════ */
+(() => {
+const $  = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+
+const SCREENS = {};
+$$('template[data-screen]').forEach(t => {
+  SCREENS[t.dataset.screen] = { tpl: t, panel: t.dataset.panel, hue: t.dataset.hue || '#e8633f' };
+});
+
+/* which dock button lights up per screen */
+const DOCK_MAP = {
+  control: 'control', ltv: 'ltv', sales: 'sales', reach: 'reach',
+  'event-detail': 'sales',
+  events: 'menu', orders: 'menu', tickets: 'menu', customers: 'menu',
+  marketing: 'menu', finance: 'menu', budgets: 'menu', support: 'menu', tasks: 'menu',
+};
+
+const ICONS = {
+  control: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3"/><path d="M12 3.5V7M12 17v3.5M3.5 12H7M17 12h3.5"/></svg>',
+  ltv: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5s-8-4.9-8-11a4.5 4.5 0 018-2.8 4.5 4.5 0 018 2.8c0 6.1-8 11-8 11z"/></svg>',
+  sales: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 17.5l5-6 4 3.5 7.5-8.5"/><path d="M15 6.5h5v5"/></svg>',
+  reach: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><circle cx="12" cy="12" r="2.2"/><path d="M7.8 16.2a6 6 0 010-8.4M16.2 7.8a6 6 0 010 8.4M5 19a10 10 0 010-14M19 5a10 10 0 010 14"/></svg>',
+  menu: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="6" cy="6" r="2"/><circle cx="12" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="6" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="18" cy="12" r="2"/><circle cx="6" cy="18" r="2"/><circle cx="12" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg>',
+};
+
+const HUES = { control: 'var(--h-control)', ltv: 'var(--h-ltv)', sales: 'var(--h-sales)', reach: 'var(--h-reach)', menu: 'var(--ink)' };
+
+const EVENTS_POP = [
+  { n:'Korha Yoga', c:'#22c55e', d:'10 days',  s:'410 / 900' },
+  { n:'Pulse',      c:'#06b6d4', d:'13 days', s:'1,340 / 1,700' },
+  { n:'DB Oct',     c:'#4f7cff', d:'22 days', s:'1,850 / 2,800' },
+  { n:'Afterlife',  c:'#8b5cf6', d:'28 days', s:'720 / 1,300' },
+  { n:'FC PU',      c:'#a78bfa', d:'35 days', s:'1,850 / 2,800' },
+  { n:'Terra NYE',  c:'#f5b53d', d:'53 days', s:'980 / 2,200' },
+];
+
+/* ── charts, generated (never hand-authored paths) ─────────────────────── */
+function linePath(vals, w, h, pad=4, mx=null) {
+  const m = mx ?? Math.max(...vals.filter(v => v != null));
+  const pts = vals.map((v, i) => v == null ? null :
+    [pad + i * (w - 2*pad) / (vals.length - 1), h - pad - (v / m) * (h - 2*pad)]);
+  return pts.filter(Boolean).map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
+}
+function areaChart(el, series, opts={}) {
+  const w = opts.w || 300, h = opts.h || 96;
+  const mx = Math.max(...series.flatMap(s => s.v));
+  let inner = '';
+  series.forEach(s => {
+    const d = linePath(s.v, w, h, 4, mx);
+    if (s.fill) {
+      const first = 4, last = w - 4;
+      inner += `<path d="${d} L${last} ${h-4} L${first} ${h-4} Z" fill="${s.c}" opacity=".12"/>`;
+    }
+    inner += `<path d="${d}" fill="none" stroke="${s.c}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"${s.dash ? ' stroke-dasharray="4 5"' : ''}/>`;
+    const lastIdx = s.v.length - 1;
+    const lx = 4 + lastIdx * (w - 8) / (s.v.length - 1), ly = h - 4 - (s.v[lastIdx] / mx) * (h - 8);
+    inner += `<circle cx="${lx}" cy="${ly}" r="3" fill="${s.c}"/>`;
+  });
+  el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" style="width:100%;height:auto">
+    <g stroke="rgba(32,25,19,.07)"><line x1="4" y1="${h-4}" x2="${w-4}" y2="${h-4}"/><line x1="4" y1="${(h-8)/2+4}" x2="${w-4}" y2="${(h-8)/2+4}"/><line x1="4" y1="4" x2="${w-4}" y2="4"/></g>${inner}</svg>`;
+}
+function barChart(el, vals, color, opts={}) {
+  const w = opts.w || 300, h = opts.h || 90, mx = Math.max(...vals);
+  const bw = (w - 8) / vals.length - 3;
+  let inner = '';
+  vals.forEach((v, i) => {
+    const bh = Math.max(3, v / mx * (h - 10));
+    const hot = i === vals.length - 1;
+    inner += `<rect x="${4 + i * ((w-8)/vals.length)}" y="${h - 4 - bh}" width="${bw}" height="${bh}" rx="${Math.min(4, bw/2)}" fill="${color}" opacity="${hot ? 1 : .38}"/>`;
+  });
+  el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" style="width:100%;height:auto">${inner}</svg>`;
+}
+function ring(el) {
+  const pct = +el.dataset.ring, c = el.dataset.ringC || '#e8633f';
+  const size = +el.dataset.ringSize || 84, sw = Math.max(7, size * .1);
+  const r = (size - sw) / 2, circ = 2 * Math.PI * r;
+  const mark = el.dataset.ringMark ? +el.dataset.ringMark : null;
+  let markEl = '';
+  if (mark != null) {
+    const a = (mark / 100) * 2 * Math.PI - Math.PI / 2;
+    const x1 = size/2 + Math.cos(a) * (r - sw/2 - 1), y1 = size/2 + Math.sin(a) * (r - sw/2 - 1);
+    const x2 = size/2 + Math.cos(a) * (r + sw/2 + 1), y2 = size/2 + Math.sin(a) * (r + sw/2 + 1);
+    markEl = `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="rgba(32,25,19,.55)" stroke-width="2" stroke-linecap="round"/>`;
+  }
+  el.insertAdjacentHTML('afterbegin', `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+    <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="rgba(32,25,19,.08)" stroke-width="${sw}"/>
+    <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${c}" stroke-width="${sw}" stroke-linecap="round"
+      stroke-dasharray="${(pct/100*circ).toFixed(1)} ${circ.toFixed(1)}" transform="rotate(-90 ${size/2} ${size/2})"/>${markEl}</svg>`);
+}
+function donut(el) {
+  const parts = el.dataset.donut.split(',').map(p => { const [v, c] = p.split(':'); return { v: +v, c }; });
+  const size = +el.dataset.ringSize || 110, sw = size * .16;
+  const r = (size - sw) / 2, circ = 2 * Math.PI * r, total = parts.reduce((a, p) => a + p.v, 0);
+  let off = 0, segs = '';
+  parts.forEach(p => {
+    const len = p.v / total * circ;
+    segs += `<circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${p.c}" stroke-width="${sw}"
+      stroke-dasharray="${Math.max(0, len - 2.5).toFixed(1)} ${circ.toFixed(1)}" stroke-dashoffset="${(-off).toFixed(1)}"
+      transform="rotate(-90 ${size/2} ${size/2})" stroke-linecap="butt"/>`;
+    off += len;
+  });
+  el.insertAdjacentHTML('afterbegin', `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">${segs}</svg>`);
+}
+
+const CHARTS = {
+  lines7: el => areaChart(el, [
+    { v: [64,78,52,96,120,142,86], c: '#4f7cff', fill: true },
+    { v: [40,48,33,55,70,82,38],  c: '#06b6d4' },
+    { v: [14,16,11,17,15,19,18],  c: '#a78bfa' },
+  ]),
+  daily14: el => barChart(el, [38,52,71,65,89,143,97,78,112,134,156,142,88,75], '#10b981'),
+  evdaily: el => barChart(el, [14,19,26,24,33,53,36,29,41,50,58,53,33,86], '#4f7cff'),
+  churn: el => areaChart(el, [
+    { v: [420,510,480,560,640,590,610,680,720,650,700,640], c: '#8b5cf6', fill: true },
+    { v: [380,340,410,390,360,420,450,400,380,410,390,357], c: '#d6ccc0' },
+  ], { h: 88 }),
+  reachtrend: el => areaChart(el, [{ v: [180,210,240,230,280,320,360,410], c: '#3b82f6', fill: true }], { h: 64 }),
+};
+
+/* ── one app instance ──────────────────────────────────────────────────── */
+function mountApp(host, startScreen, opts = {}) {
+  const app = document.createElement('div');
+  app.className = 'app';
+  app.innerHTML = `
+    <div class="ribbon glass">
+      <span class="panel"></span>
+      <span class="rb-mid"><span class="clock"></span><span class="date"></span></span>
+      <button class="ev-chip"><span class="dotset">${EVENTS_POP.slice(0,3).map(e => `<i style="background:${e.c}"></i>`).join('')}</span>6 events</button>
+      <span class="org">FC</span>
+    </div>
+    <div class="pop glass"></div>
+    <div class="feed"></div>
+    <div class="sheet-veil"></div>
+    <div class="dock glass">${['control','ltv','sales','reach','menu'].map(k =>
+      `<button data-dock="${k}" style="--hue:${HUES[k]}"><span class="dk-label">${k === 'menu' ? 'MENU' : k.toUpperCase()}</span>${ICONS[k]}</button>`).join('')}
+    </div>`;
+  host.appendChild(app);
+
+  const feed = $('.feed', app), veil = $('.sheet-veil', app), pop = $('.pop', app);
+  pop.innerHTML = EVENTS_POP.map(e => `
+    <div class="lrow" data-goto="event-detail" style="padding:9px 8px"><i class="tag-dot" style="background:${e.c}"></i>
+      <div class="lr-main"><div class="lr-t">${e.n}</div><div class="lr-s">${e.s} sold</div></div>
+      <div class="lr-end"><span class="lr-s" style="font-weight:700">${e.d}</span></div></div>`).join('');
+
+  const now = new Date();
+  $('.clock', app).textContent = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+  $('.date', app).textContent = now.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+
+  function closeSheets() {
+    app.classList.remove('sheet-open');
+    $$('.sheet', app).forEach(s => s.remove());
+  }
+  function openSheet(tplId) {
+    closeSheets();
+    app.classList.add('sheet-open');
+    app.appendChild($(tplId).content.cloneNode(true).firstElementChild);
+  }
+
+  function show(name) {
+    const scr = SCREENS[name];
+    if (!scr) return;
+    app.dataset.screen = name;
+    $('.panel', app).textContent = scr.panel;
+    feed.replaceChildren(scr.tpl.content.cloneNode(true));
+    feed.scrollTop = 0;
+    const active = DOCK_MAP[name] || 'menu';
+    $$('.dock button', app).forEach(b => b.classList.toggle('on', b.dataset.dock === active));
+    /* activate charts + rings + swipe dots inside the fresh clone */
+    $$('[data-chart]', feed).forEach(el => CHARTS[el.dataset.chart] && CHARTS[el.dataset.chart](el));
+    $$('[data-ring]', feed).forEach(ring);
+    $$('[data-donut]', feed).forEach(donut);
+    $$('[data-swipe]', feed).forEach(w => {
+      const track = $('.swipe', w), dots = $('.dots', w), n = track.children.length;
+      dots.innerHTML = Array.from({ length: n }, (_, i) => `<i${i ? '' : ' class="on"'}></i>`).join('');
+      track.addEventListener('scroll', () => {
+        const page = Math.round(track.scrollLeft / (track.children[0].offsetWidth + 10));
+        $$('i', dots).forEach((d, i) => d.classList.toggle('on', i === Math.min(page, n - 1)));
+      }, { passive: true });
+    });
+  }
+
+  app.addEventListener('click', e => {
+    const dock = e.target.closest('[data-dock]');
+    if (dock) {
+      if (dock.dataset.dock === 'menu') { openSheet('#tpl-menu-sheet'); return; }
+      closeSheets(); app.classList.remove('pop-open'); show(dock.dataset.dock); return;
+    }
+    const runner = e.target.closest('[data-open-flowrun]');
+    if (runner) {
+      openSheet('#tpl-flowrun-sheet');
+      /* launched from a flow card → the sheet mirrors THAT flow, not the demo default */
+      const card = runner.closest('.flow');
+      if (card) {
+        const sh = $('.sheet[data-sheet="flowrun"]', app);
+        const fc = card.style.getPropertyValue('--fc').trim() || 'var(--process)';
+        const set = (k, v) => { const el = $(`[data-fr="${k}"]`, sh); if (el && v) el.textContent = v; };
+        set('type', card.querySelector('.fl-type').textContent + ' flow');
+        $('[data-fr="type"]', sh).style.color = fc;
+        $('[data-fr="implabel"]', sh).style.color = fc;
+        const mods = [...card.querySelectorAll('.fl-mod .chip')].map(c => c.textContent).join(' · ');
+        set('mods', mods);
+        set('title', card.querySelector('.fl-t').textContent);
+        set('desc', card.querySelector('.fl-d').textContent);
+        set('impact', card.querySelector('.fl-impact').textContent);
+        const chain = $('[data-fr="chain"]', sh);
+        chain.style.setProperty('--fc', fc);
+        chain.innerHTML = card.querySelector('.wchain').innerHTML;
+      }
+      return;
+    }
+    if (e.target.closest('[data-close-sheet]') || e.target === veil) { closeSheets(); return; }
+    const goto = e.target.closest('[data-goto]');
+    if (goto) { closeSheets(); app.classList.remove('pop-open'); show(goto.dataset.goto); return; }
+    if (e.target.closest('.ev-chip')) { app.classList.toggle('pop-open'); return; }
+    if (app.classList.contains('pop-open') && !e.target.closest('.pop')) app.classList.remove('pop-open');
+    const later = e.target.closest('.fl-run .btn-ghost');
+    if (later) { later.closest('.flow').classList.remove('open'); return; }
+    const ex = e.target.closest('[data-expand]');
+    if (ex && !e.target.closest('.btn-ink,.btn-ghost')) ex.classList.toggle('open');
+    const task = e.target.closest('[data-task]');
+    if (task) task.classList.toggle('done');
+    const morg = e.target.closest('.morg');
+    if (morg) { $$('.morg', app).forEach(m => m.classList.remove('on')); morg.classList.add('on'); }
+  });
+
+  show(startScreen);
+  if (opts.sheet) openSheet(opts.sheet);
+  if (opts.openFirst) { const f = $('[data-expand]', feed); f && f.classList.add('open'); }
+  return { show };
+}
+
+/* ── phone frame wrapper ───────────────────────────────────────────────── */
+function frame(startScreen, opts = {}) {
+  const el = document.createElement('div');
+  el.className = 'phone';
+  el.innerHTML = `<div class="screen"><span class="notch"></span>
+    <div class="statusbar"><span>9:41</span><span class="sb-icons">
+      <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="6" width="3" height="5" rx="1"/><rect x="4.5" y="4" width="3" height="7" rx="1"/><rect x="9" y="2" width="3" height="9" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1" opacity=".35"/></svg>
+      <svg width="23" height="11" viewBox="0 0 23 11" fill="none"><rect x="0" y="0" width="20" height="11" rx="3.2" stroke="currentColor" opacity=".4"/><rect x="1.8" y="1.8" width="13" height="7.4" rx="1.8" fill="currentColor"/><path d="M21.5 3.5v4a2 2 0 000-4z" fill="currentColor" opacity=".4"/></svg>
+    </span></div><span class="homebar"></span></div>`;
+  mountApp($('.screen', el), startScreen, opts);
+  return el;
+}
+
+/* ── gallery build ─────────────────────────────────────────────────────── */
+const GALLERY = [
+  { label: 'Core', note: 'The four dock destinations · ControlRoom plus the three smart dashboards. This is the daily loop: glance, read the signal, run the flow.',
+    slots: [
+      { s: 'control', t: 'ControlRoom', d: 'Glance widgets swipe sideways; insights and flows expand on tap.' },
+      { s: 'ltv', t: 'LTV · Community', d: 'Lifecycle donut, personas, and the win-back flow bank.' },
+      { s: 'sales', t: 'Sales', d: 'Tickets/revenue glance, event rail (tap DB Oct to drill in), ladder, signals.' },
+      { s: 'reach', t: 'Reach · Growth', d: 'Growth ring, paid vs organic, content leaderboard.' },
+    ]},
+  { label: 'Chrome', note: 'The desktop chrome, translated: corner menu → menu sheet on the dock; flow run → approval sheet. The ribbon stays exactly what it was · one word, clock, events.',
+    slots: [
+      { s: 'control', t: 'Menu sheet', d: 'Org switcher · search · flows/tasks · modules grid · tools · account.', o: { sheet: '#tpl-menu-sheet' } },
+      { s: 'control', t: 'Flow run', d: 'The approval gate is the hero · nothing moves without you.', o: { sheet: '#tpl-flowrun-sheet' } },
+      { s: 'event-detail', t: 'Event drill-in · DB Oct', d: 'The FestDash logic: sentiment verdict, FTP, BEP, TPD, projections.' },
+    ]},
+  { label: 'Modules', note: 'The nine operational work areas from the corner menu, each a focused single-job screen.',
+    slots: [
+      { s: 'events', t: 'Events', d: 'Live selling list with pace at a glance.' },
+      { s: 'orders', t: 'Orders', d: 'Money in, order by order.' },
+      { s: 'tickets', t: 'Tickets', d: 'Types, sell-through, scans.' },
+      { s: 'customers', t: 'Customers', d: 'The community · search, segments, profiles.' },
+      { s: 'marketing', t: 'Marketing', d: 'Campaigns and channels.' },
+      { s: 'finance', t: 'Finance', d: 'P&L at a glance.' },
+      { s: 'budgets', t: 'Budgets', d: 'Allocated vs spent per area.' },
+      { s: 'support', t: 'Support', d: 'CS queue with SLA health.' },
+      { s: 'tasks', t: 'Tasks', d: 'Tap to complete · critical first.' },
+    ]},
+];
+
+const galHost = $('#gallery');
+GALLERY.forEach(sec => {
+  const secEl = document.createElement('section');
+  secEl.className = 'gal-sec';
+  secEl.innerHTML = `<span class="sec-label">${sec.label}</span><div class="sec-note">${sec.note}</div><div class="frames"></div>`;
+  const framesEl = $('.frames', secEl);
+  sec.slots.forEach(slot => {
+    if (!SCREENS[slot.s]) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'slot';
+    wrap.innerHTML = `<div class="slot-cap"><div class="t">${slot.t}</div><div class="s">${slot.d}</div></div>`;
+    wrap.appendChild(frame(slot.s, slot.o || {}));
+    framesEl.appendChild(wrap);
+  });
+  galHost.appendChild(secEl);
+});
+
+/* ── live phone mode — mounts lazily whenever the viewport is phone-sized ── */
+const phoneMq = matchMedia('(max-width: 699px)');
+function mountLive() {
+  const la = $('#live-app');
+  if (la.dataset.mounted) return;
+  la.dataset.mounted = '1';
+  la.innerHTML = '<div class="screen"></div>';
+  mountApp($('.screen', la), 'control');
+}
+if (phoneMq.matches) mountLive();
+phoneMq.addEventListener('change', e => { if (e.matches) mountLive(); });
+})();
+</script>
+
+</body>
+</html>

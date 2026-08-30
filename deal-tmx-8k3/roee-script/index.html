@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Flowz — שיחת רועי · מתווה + תחמושת</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23F0641E'/><text x='50' y='72' font-size='62' font-weight='800' font-family='Arial' text-anchor='middle' fill='white'>Z</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FAF6EF; --cream-deep:#F3EDE2; --card:#FFFDF9;
+  --ink:#2B2620; --ink-soft:#6E6659;
+  --orange:#F0641E; --orange-soft:#FDE8DC;
+  --blue:#3B82F6; --blue-soft:#DBEAFE;
+  --green:#3E8914; --green-soft:#DCF3C8;
+  --gold:#E8A93D; --gold-soft:#FCF0D8; --gold-ink:#A8720F;
+  --red:#D14343; --red-soft:#FBE3E3;
+  --purple:#8B5CF6; --purple-soft:#EFE3FA;
+  --radius:20px; --shadow:0 10px 34px rgba(90,70,40,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Rubik',system-ui,sans-serif;background:var(--cream);color:var(--ink);direction:rtl;line-height:1.7}
+.en{font-family:'Sora',sans-serif;direction:ltr;unicode-bidi:isolate;display:inline-block}
+
+#gate{position:fixed;inset:0;background:var(--cream);z-index:999;display:flex;align-items:center;justify-content:center;text-align:center}
+#gate .box{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:36px 40px;max-width:420px}
+#gate input{font-family:'Sora';font-size:18px;padding:10px 14px;border:1.5px solid #E4DACB;border-radius:12px;width:100%;margin:16px 0 10px;text-align:center;direction:ltr}
+#gate button{font-family:'Rubik';font-weight:700;font-size:15px;background:var(--orange);color:#fff;border:none;border-radius:12px;padding:10px 22px;cursor:pointer}
+#gate .err{color:var(--red);font-size:13px;min-height:18px;margin-top:6px}
+
+.topbar{position:sticky;top:0;z-index:80;background:rgba(250,246,239,.92);backdrop-filter:blur(8px);border-bottom:1.5px solid #EBE2D2;padding:10px 18px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.topbar a.stage{font-size:12px;font-weight:700;color:var(--ink-soft);text-decoration:none;padding:5px 11px;border-radius:999px;border:1.5px solid transparent}
+.topbar a.stage:hover{color:var(--orange);border-color:var(--orange)}
+.topbar .hub{margin-inline-start:auto;font-family:'Sora';font-size:11px;font-weight:700;color:var(--ink-soft);text-decoration:none;border:1.5px solid #E4DACB;border-radius:999px;padding:5px 11px}
+
+.wrap{max-width:880px;margin:0 auto;padding:38px 22px 90px}
+.chip{font-size:11.5px;font-weight:700;padding:6px 14px;border-radius:999px;display:inline-flex;gap:7px;align-items:center}
+.chip-or{background:var(--orange);color:#fff}.chip-rd{background:var(--red-soft);color:var(--red)}.chip-bl{background:var(--blue-soft);color:#1D5FCC}.chip-go{background:var(--gold-soft);color:var(--gold-ink)}
+h1{font-size:40px;line-height:1.15;font-weight:800;letter-spacing:-.01em;margin-top:14px}
+.lede{font-size:16px;color:var(--ink-soft);margin-top:12px;max-width:760px}
+.legend{background:var(--card);border:1.5px dashed #E4DACB;border-radius:14px;padding:12px 16px;font-size:13px;color:var(--ink-soft);margin-top:20px;line-height:1.7}
+
+section.stage{margin-top:46px;scroll-margin-top:70px}
+.stg-head{display:flex;align-items:center;gap:12px}
+.stg-num{font-family:'Sora';font-size:13px;font-weight:800;background:var(--ink);color:#fff;border-radius:10px;padding:6px 12px;flex:0 0 auto}
+h2{font-size:24px;font-weight:800;line-height:1.3}
+.stg-sub{font-size:13.5px;color:var(--ink-soft);margin-top:4px}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 22px;border:1px solid rgba(120,95,60,.06);margin-top:14px}
+ul.list{list-style:none;display:flex;flex-direction:column;gap:9px;margin-top:8px}
+ul.list li{font-size:14.5px;line-height:1.65;padding-right:22px;position:relative}
+ul.list li::before{content:"";position:absolute;right:2px;top:11px;width:8px;height:8px;border-radius:50%;background:var(--orange)}
+.say{background:#FFF8F2;border-radius:14px;border-right:5px solid var(--orange);padding:13px 17px;font-size:15px;line-height:1.75;margin-top:10px;font-weight:500}
+.say .k{display:block;font-family:'Sora';font-size:10.5px;font-weight:800;letter-spacing:.08em;color:var(--ink-soft);margin-bottom:3px}
+.say.q{border-right-color:var(--blue);background:#F4F8FE}
+.say.warn{border-right-color:var(--red);background:#FFF4F4}
+.term{border-bottom:2px dotted var(--orange);cursor:help;font-weight:700}
+.ammo{display:inline-flex;align-items:center;gap:6px;font-family:'Rubik';font-size:12px;font-weight:800;color:#fff;background:var(--ink);border:none;border-radius:999px;padding:5px 13px;cursor:pointer;vertical-align:middle;margin:2px 0 2px 6px;transition:.15s}
+.ammo:hover{background:var(--orange);transform:translateY(-1px)}
+.ammo::before{content:"🎯";font-size:12px}
+.obj{margin-top:12px;background:var(--card);border-radius:16px;border:1.5px solid #EFE7D8;padding:14px 18px}
+.obj .oq{font-weight:800;font-size:15px;color:var(--red)}
+.obj .oa{font-size:14px;line-height:1.7;margin-top:6px}
+.foot{margin-top:50px;padding-top:18px;border-top:1.5px dashed #E4DACB;font-size:13px;color:var(--ink-soft);line-height:1.9}
+.foot a{color:var(--orange);font-weight:700;text-decoration:none}
+
+#tip{position:fixed;z-index:300;max-width:340px;background:var(--ink);color:#FAF6EF;border-radius:14px;padding:13px 16px;font-size:12.5px;line-height:1.6;box-shadow:0 18px 50px rgba(0,0,0,.35);display:none;pointer-events:none;direction:rtl;text-align:right}
+#tip .tt{font-family:'Sora';font-weight:700;font-size:13px;color:#FFB38A;margin-bottom:4px;direction:ltr;text-align:right}
+#tip .tn{margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,.15);font-size:11.5px;color:#C9BFA9;font-weight:600}
+
+#modal{position:fixed;inset:0;background:rgba(43,38,32,.6);z-index:400;display:none;align-items:center;justify-content:center;padding:20px}
+#modal.open{display:flex}
+#modal .mbox{background:var(--cream);border-radius:22px;width:min(980px,96vw);max-height:92vh;overflow:auto;box-shadow:0 30px 80px rgba(0,0,0,.4);padding:22px 26px;position:relative;direction:rtl}
+#modal .close{position:absolute;top:12px;left:14px;width:34px;height:34px;border-radius:11px;border:1.5px solid #E4DACB;background:var(--card);cursor:pointer;font-size:15px}
+#modal h3{font-size:19px;font-weight:800;margin-bottom:10px;padding-left:40px}
+#modal .mnote{font-size:12.5px;color:var(--ink-soft);background:var(--gold-soft);border-radius:12px;padding:10px 14px;margin-top:12px;line-height:1.7}
+table.mt{width:100%;border-collapse:collapse;font-size:13px;background:var(--card);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);margin-top:8px}
+table.mt th{background:var(--cream-deep);font-weight:800;text-align:right;padding:9px 12px;font-size:12px}
+table.mt td{padding:8px 12px;border-top:1px solid #F0E9DC;line-height:1.55;vertical-align:top}
+table.mt td.n{direction:ltr;text-align:right;font-family:'Sora';font-size:12.5px;white-space:nowrap}
+.good{color:var(--green);font-weight:800}.bad{color:var(--red);font-weight:800}.mid{color:var(--gold-ink);font-weight:800}
+#modal iframe{width:100%;height:min(62vh,560px);border:1.5px solid #E4DACB;border-radius:14px;background:#fff;margin-top:8px}
+.popout{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:800;color:var(--orange);text-decoration:none;border:1.5px solid var(--orange);border-radius:999px;padding:5px 13px;margin:10px 0 0}
+.popout:hover{background:var(--orange);color:#fff}
+
+@media (max-width:720px){h1{font-size:28px}h2{font-size:20px}.wrap{padding:26px 14px 70px}}
+@media print{.topbar,.ammo,#gate{display:none!important}body{background:#fff}}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="box">
+    <div class="chip chip-rd">סודי · אלעד + אביב בלבד</div>
+    <h2 style="font-size:21px;margin-top:14px">שיחת רועי — מתווה + תחמושת</h2>
+    <p style="font-size:13px;color:var(--ink-soft);margin-top:8px">קוד גישה:</p>
+    <input id="gateIn" type="password" placeholder="access code" autocomplete="off">
+    <button onclick="gateTry()">כניסה</button>
+    <div class="err" id="gateErr"></div>
+  </div>
+</div>
+
+<nav class="topbar">
+  <a class="stage" href="#s0">0 · הכנה</a>
+  <a class="stage" href="#s1">1 · פתיחה</a>
+  <a class="stage" href="#s2">2 · שאלות</a>
+  <a class="stage" href="#s3">3 · למה לא 30%</a>
+  <a class="stage" href="#s4">4 · ההצעה</a>
+  <a class="stage" href="#s5">5 · התנגדויות</a>
+  <a class="stage" href="#s6">6 · סגירה</a>
+  <a class="hub" href="../../">Hub ←</a>
+</nav>
+
+<div class="wrap">
+
+<span class="chip chip-rd">סודי · מסמך עבודה</span>
+<span class="chip chip-or" style="margin-inline-start:6px">שיחת רועי · מחר</span>
+<h1>מתווה השיחה עם רועי<br><span style="color:var(--orange)">רישיון בישראל · <span class="en">Earn-in</span> עד 8% בגלובלית</span></h1>
+<p class="lede">היעד: לצאת מהשיחה עם הסכמה עקרונית למבנה — חבילת ישראל מלאה בחוזים, אחוזים מורווחים למעלה — ועם פתח ל-<span class="en">term sheet</span> תוך שבוע. רועי הוא איש מספרים: כל טיעון במסמך מגובה במספר, וכל מספר נמצא במרחק ריחוף או קליק.</p>
+
+<div class="legend">
+  <b>איך עובדת שכבת התחמושת:</b> מונח עם <span class="term" data-t="demo">קו מנוקד</span> — ריחוף פותח כרטיס מידע קצר. כפתור <button class="ammo" onclick="openAmmo('demo2')">תחמושת</button> — קליק פותח חלון עם המספרים המלאים, טבלאות, תקדימים או שקף חי מהמצגות המעמיקות. <span class="en">Esc</span> סוגר. לפני הפגישה שווה לעבור על כל הכפתורים פעם אחת.
+</div>
+
+<!-- ═══ STAGE 0 ═══ -->
+<section class="stage" id="s0">
+  <div class="stg-head"><span class="stg-num">שלב 0</span><div><h2>לפני שנכנסים — הכנה</h2><p class="stg-sub">לא חלק מהשיחה. חמש דקות של יישור קו בינך לבין אביב.</p></div></div>
+  <div class="card">
+    <ul class="list">
+      <li><b>נעול מראש בינינו:</b> תקרת <span class="en">earn-in</span> — <span class="term" data-t="eight">8%</span> · מימון — <span class="term" data-t="funding">45–80 אלף ש"ח לחודש × 18 חודשים</span> · <span class="term" data-t="revshare">RevShare 0.3% ← 0.45%</span> · אבני דרך <b>קבועות מראש</b>, לא נוסחת שווי.</li>
+      <li><b>עיקרון המותג נעול:</b> <span class="term" data-t="poweredby">Powered by Flowz</span> — המותג שלהם למעלה, אזכור שלנו מתחתיו, מסך אחד למערכת. זה ויתור מיתוגי בישראל שאנחנו נותנים בכוונה — ומקבלים עליו תמורה.</li>
+      <li><b>לא שולחים כלום מראש.</b> המבנה מוצג בעל-פה; מסמך יוצא רק אחרי שהשיחה עיכלה אותו.</li>
+      <li><b>כלל הברזל:</b> אף אזכור של זאפה, אוונטים, או כל "פעם שעבר". ההיסטוריה מכוונת את הניסוחים — לא הופכת לטיעון. <button class="ammo" onclick="openAmmo('ghost')">הרקע המלא — לעיניים שלנו</button></li>
+      <li><b>רועי בלבד בחדר:</b> שלב 3 נשען על מספרים, שלב 2 מתקצר. אם הוא מסיט ל"זה החלטה של יוני" — מצוין: המטרה הופכת להיות שרועי ימכור את המבנה ליוני בשפה שלו.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══ STAGE 1 ═══ -->
+<section class="stage" id="s1">
+  <div class="stg-head"><span class="stg-num">שלב 1</span><div><h2>פתיחה — מסגור (2 דקות)</h2><p class="stg-sub">לא מו"מ. בנייה משותפת. שלושה משפטים וזהו.</p></div></div>
+  <div class="say"><span class="k">משפט הפתיחה</span>"באנו לבנות מתווה שמחזיק עשר שנים, לא לנצח במשא ומתן."</div>
+  <div class="say"><span class="k">האמינות</span>"עשינו עבודה עמוקה — משפטית, מבנית, כלכלית — כי אנחנו לוקחים את ההצעה שלכם ברצינות מלאה." <button class="ammo" onclick="openAmmo('homework')">מה באמת עשינו</button></div>
+  <div class="say"><span class="k">ההכוונה</span>"יש לנו מבנה שנראה לנו מדויק. אבל לפני שנציג אותו — חשוב לנו להבין לעומק מה אתם צריכים שהעסקה הזאת תיתן לכם."</div>
+</section>
+
+<!-- ═══ STAGE 2 ═══ -->
+<section class="stage" id="s2">
+  <div class="stg-head"><span class="stg-num">שלב 2</span><div><h2>שאלות הפירוק — להבין מה ה-30% אומר עבורם</h2><p class="stg-sub">לשאול, לשתוק, לרשום. מה שנשמע כאן מכתיב את כל ההמשך.</p></div></div>
+  <div class="say q"><span class="k">שאלה 1</span>"כשאתם אומרים 30% — מה זה נותן לכם שמספר קטן יותר לא נותן? ביטחון? השפעה? חלק ברווחים?" <button class="ammo" onclick="openAmmo('q1map')">מה לעשות עם כל תשובה</button></div>
+  <div class="say q"><span class="k">שאלה 2</span>"אם הייתם מקבלים את כל מה שאתם רוצים בישראל — המערכת, הבלעדיות, ההטמעה — בחוזים מסחריים מלאים, מה עוד היה חסר שהאחוזים אמורים לכסות?"</div>
+  <div class="say q"><span class="k">שאלה 3</span>"מה מדבר אליכם יותר: בעלות על הפעילות הישראלית, או חלק בסיפור אם הוא הופך לעולמי?"</div>
+  <div class="say q"><span class="k">שאלה 4 — לרועי במיוחד</span>"איך אתה מודד הצלחה של ההשקעה הזאת בעוד שלוש שנים? באיזה דוח היא מופיעה, ובאיזו שורה?"</div>
+  <div class="card" style="border-right:5px solid var(--blue)">
+    <b>למה השאלות קודמות להסבר:</b> מי שמסביר קודם — מתגונן; מי ששואל קודם — מכוון. אחרי שרועי דיבר עשר דקות, הוא גם מחויב חברתית להקשיב, וגם נתן לנו את המפה: אם התשובה היא "אפסייד" — ההצעה שלנו בנויה עליו בדיוק. אם התשובה היא "שליטה" — התגלתה הבעיה האמיתית, ועדיף עכשיו מאשר ב-<span class="en">term sheet</span>.
+  </div>
+</section>
+
+<!-- ═══ STAGE 3 ═══ -->
+<section class="stage" id="s3">
+  <div class="stg-head"><span class="stg-num">שלב 3</span><div><h2>ההסבר — למה 30% בחברה אחת שורף את הסיפור</h2><p class="stg-sub">חמש דקות, בלי סליידים. המסגור: לא אנחנו מסרבים — השוק מסרב.</p></div></div>
+  <div class="say"><span class="k">האילוץ החיצוני</span>"עברנו על זה עם אחד המשרדים הגדולים בארץ. התשובה היתה חד-משמעית: חברת טכנולוגיה עם שותף אסטרטגי שמחזיק 30% — קרנות פשוט לא נכנסות. יש לזה שם: <span class="term" data-t="captive">Captive Company</span>." <button class="ammo" onclick="openAmmo('captive')">המתמטיקה המלאה</button></div>
+  <div class="say"><span class="k">המספר של רועי</span>"תעשה איתי את החשבון: אחרי סבב <span class="term" data-t="seed">Seed</span> סטנדרטי, המייסדים עם 30% אסטרטגי נשארים מתחת ל-50%. מתחת לקו הזה רוב הקרנות סוגרות את התיק בלי פגישה — לא בגלל המוצר, בגלל הקאפ-טייבל." <button class="ammo" onclick="openAmmo('calc')">המחשבון החי — שלושת התרחישים</button></div>
+  <div class="say"><span class="k">היפוך האינטרסים</span>"30% אצלנו זה 30% ממשהו שלא יכול לגדול. אנחנו רוצים שיהיה לכם חלק ממשהו שכן."</div>
+  <div class="say"><span class="k">זווית הרוכשים — אם צריך עוד</span>"וגם רוכש עתידי לא קונה חברה שגוף מסחרי גדול מחזיק בה שליש. שווי החברה יורד בדיוק בגלל הדבר שנועד להגן עליכם." <button class="ammo" onclick="openAmmo('ceiling')">תקרת הזכוכית של ישראל-בלבד</button></div>
+</section>
+
+<!-- ═══ STAGE 4 ═══ -->
+<section class="stage" id="s4">
+  <div class="stg-head"><span class="stg-num">שלב 4</span><div><h2>ההצעה — שתי קומות</h2><p class="stg-sub">לפתוח בעיקרון, לא במספרים. המספרים מגיעים כשהוא שואל.</p></div></div>
+  <div class="say"><span class="k">משפט המבנה</span>"מה שאתם באמת צריכים בישראל — תקבלו בחוזים. מה שאתם באמת רוצים מהעתיד — תקבלו באחוזים. אבל למעלה, איפה שהעתיד גר."</div>
+
+  <div class="card">
+    <h3 style="font-size:17px;font-weight:800">קומה 1 · ישראל — בחוזים</h3>
+    <ul class="list">
+      <li><b>רישיון הפצה ושיווק</b> של המערכת בישראל — בלעדי, [3] שנים, מתחדש לפי עמידה ביעדים; לא עומדים — פוקע.</li>
+      <li><b><span class="term" data-t="poweredby">Powered by Flowz</span>:</b> המערכת נכנסת תחת המותג שלהם, מסך אחד, אזכור שלנו מתחתיו. "אתם הפנים ללקוח — אנחנו המנוע."</li>
+      <li><b>Roadmap משותף</b> באוריינטציית שירות למערכת הכרטיסים — 6 חודשי פיתוח ממוקד.</li>
+      <li><b>מימון הוצאות פיתוח ותפעול:</b> <span class="term" data-t="funding">45–80 אלף ש"ח לחודש, 18 חודשים</span> — מחויב מראש, משוחרר לפי roadmap. <button class="ammo" onclick="openAmmo('fundmath')">מה זה שווה בכסף</button></li>
+      <li><b><span class="term" data-t="revshare">RevShare</span>:</b> מהחודש השביעי — 0.3% ממחזור הסליקה, מדרגות עולות כל חצי שנה עד 0.45%. <button class="ammo" onclick="openAmmo('revmath')">טבלת התרחישים</button></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:17px;font-weight:800">קומה 2 · הגלובלית — <span class="en">Earn-in</span> עד <span class="term" data-t="eight">8%</span></h3>
+    <ul class="list">
+      <li><b>העיקרון:</b> "כל ערך שאתם נותנים — דאטה, הטמעה, הפצה, מימון — מזכה אתכם באחוזים בחברה הגלובלית. קבוע מראש, שחור על גבי לבן."</li>
+      <li><b>אבני דרך קבועות:</b> [2%] מסירת דאטה מלאה · [2%] הטמעה + design partner · [2%] יעדי הפצה · [2%] השלמת 18 חודשי מימון. <button class="ammo" onclick="openAmmo('milestones')">הטבלה המלאה + לוחות זמנים</button></li>
+      <li><b>בלי תשלום ממשי מצדם</b> מעבר למימון ההוצאות — אין צ'ק על אקוויטי, אין שאלת שווי עכשיו.</li>
+      <li><b>הדלת לחלום:</b> "ומעבר לזה — <span class="term" data-t="rofr">זכות ראשונים</span> להשקיע בכסף בסבב הבא, לפי שווי הסבב. אם תרצו יותר מהעתיד הזה — תוכלו לקנות ממנו."</li>
+    </ul>
+  </div>
+
+  <div class="say"><span class="k">המשפט שסוגר את השלב</span>"8% שהרווחתם בחברה שיכולה להיות שווה מיליארד — שווים יותר מ-30% בחברה שנתקעה על מאה מיליון שקל. ואת התקרה של חברות מקומיות בתחום הזה אתם מכירים טוב יותר מאיתנו." <button class="ammo" onclick="openAmmo('ceiling')">המספרים מאחורי המשפט</button></div>
+</section>
+
+<!-- ═══ STAGE 5 ═══ -->
+<section class="stage" id="s5">
+  <div class="stg-head"><span class="stg-num">שלב 5</span><div><h2>התנגדויות צפויות — והתשובות</h2><p class="stg-sub">רועי צפוי לירות בסדר הזה בערך. לכל תשובה יש קומת עומק בכפתור.</p></div></div>
+
+  <div class="obj"><div class="oq">"8% זה קטן עלינו. דיברנו על 30."</div>
+    <div class="oa">"זה 8% שמורווחים בשנה וחצי, בלי שקל של סיכון הוני מצדכם, עם דלת פתוחה לקנות עוד בכסף בסבב הבא. ואל תשווה את זה ל-30% — תשווה את זה למה ש-30% היו שווים <b>אחרי</b> שהיו הורגים לנו את הגיוס." <button class="ammo" onclick="openAmmo('small8')">ההשוואה במספרים</button></div></div>
+
+  <div class="obj"><div class="oq">"אנחנו לא חברת הייטק. אל תמכרו לנו נייר."</div>
+    <div class="oa">"בדיוק בגלל זה אין פה נייר-אוויר. יש נוסחה: ערך שנמסר = אחוז שנרשם. אבן דרך הושלמה — האחוז שלכם, לתמיד. הכול בחוזה, עם זכויות ביקורת לשני הכיוונים." (בלי להגיד <span class="en">SAFE</span> ובלי <span class="en">warrants</span> — המכניקה המשפטית מגיעה ב-term sheet.)</div></div>
+
+  <div class="obj"><div class="oq">"ומה אם תמכרו את החברה ואנחנו נשארים בחוץ?"</div>
+    <div class="oa">"האחוזים שלכם יושבים בדיוק בחברה שנמכרת. אתם פוגשים את הכסף באותה שנייה שאנחנו פוגשים אותו — לא נשארים באיזו חברת-בת מקומית שאף אחד לא קונה." <button class="ammo" onclick="openAmmo('exitlogic')">למה זה הסעיף שהכי מגן עליהם</button></div></div>
+
+  <div class="obj"><div class="oq">"מי מבטיח שהחברה הגלובלית בכלל תצליח?"</div>
+    <div class="oa">"אף אחד. אבל תראה מה קורה לכם בתרחיש הרע: נשארתם עם רישיון בלעדי, מערכת שעובדת, לקוחות מרוצים ו-RevShare — ולא שילמתם שקל על אחוזים של כלום. הסיכון ההוני כולו אצלנו."</div></div>
+
+  <div class="obj"><div class="oq">"חברות כרטוס לא עושות אקזיטים גדולים." <span style="font-weight:400;font-size:12.5px;color:var(--ink-soft)">(העמדה המוכרת שלו)</span></div>
+    <div class="oa">"נכון — כרטוס טהור לא. אבל אנחנו לא כרטוס: אנחנו שכבת ה-<span class="term" data-t="di">Decision Intelligence</span> שיושבת מעל. ובשכבה הזאת — וגם בטכנולוגיה שמסביב לכרטוס — יש תקדימים בכיוון השני, כולל ישראלי אחד ששווה להכיר." <button class="ammo" onclick="openAmmo('precedents')">התקדימים — כולל הישראלי</button></div></div>
+
+  <div class="say warn"><span class="k">אם עולה דרישת שליטה (דירקטוריון, וטו)</span>לא מתווכחים בחדר. "אנחנו רושמים את זה — בוא נבין קודם אם המבנה הכלכלי מקובל, ואז נדבר על ממשל." שליטה נפתרת ב-term sheet, לא בשיחת מבנה.</div>
+</section>
+
+<!-- ═══ STAGE 6 ═══ -->
+<section class="stage" id="s6">
+  <div class="stg-head"><span class="stg-num">שלב 6</span><div><h2>סגירה — הצעד הבא</h2><p class="stg-sub">יעד יציאה אחד: הסכמה עקרונית + לוח זמנים.</p></div></div>
+  <div class="card">
+    <ul class="list">
+      <li><b>המשפט:</b> "אם הכיוון מקובל עקרונית — אנחנו שולחים <span class="en">term sheet</span> תוך [7–10] ימים." (אנחנו מנסחים. תמיד.)</li>
+      <li><b>לבקש בדרך, כאילו אגב:</b> נתוני מכירות מבוקרים לתמחור יעדי ההפצה, וסטטוס מיזם הכרטיסים — שני עוגני ה-<span class="term" data-t="dd">DD</span> שלנו. <button class="ammo" onclick="openAmmo('ddwhy')">למה דווקא שני אלה</button></li>
+      <li><b><span class="en">No-shop</span> הדדי 30 יום</b> — רק אחרי חתימת term sheet, לא לפני.</li>
+      <li><b>ואם רועי אומר "אני צריך את יוני":</b> "ברור. מה אתה צריך מאיתנו כדי שתציג לו את זה בצורה הכי חזקה?" — הופכים אותו לשגריר, לא לשומר סף.</li>
+    </ul>
+  </div>
+</section>
+
+<div class="foot">
+  <b>המצגות המעמיקות (אותו לוגין):</b>
+  <a href="../" target="_blank">מצגת העסקה + המחשבון</a> ·
+  <a href="../roee/" target="_blank">המצגת של אביב — תמונת העסקה ושיחת רועי</a> ·
+  <a href="../eventim/" target="_blank">מחקר הרקע (EN) — לעיניים שלנו בלבד</a><br>
+  מסמך עבודה פנימי · 25.08.2026 · הקאנון בוואלט: <span class="en">Deck/Deal/roee-script.html</span> · כל המספרים המסומנים ⚠️ הם הערכות לא-מאומתות — לא לצטט כעובדה.
+</div>
+
+</div><!-- /wrap -->
+
+<div id="tip"><div class="tt"></div><div class="td"></div><div class="tn"></div></div>
+<div id="modal" onclick="if(event.target===this)closeAmmo()"><div class="mbox"><button class="close" onclick="closeAmmo()">✕</button><div id="mcontent"></div></div></div>
+
+<script>
+const GATE_KEY='tmx-gate-ok';
+function gateTry(){
+  const v=document.getElementById('gateIn').value.trim().toLowerCase();
+  if(v==='2houses'||v==='two houses'||v==='twohouses'){sessionStorage.setItem(GATE_KEY,'1');document.getElementById('gate').style.display='none';}
+  else document.getElementById('gateErr').textContent='קוד לא נכון';
+}
+document.getElementById('gateIn').addEventListener('keydown',e=>{if(e.key==='Enter')gateTry();});
+if(sessionStorage.getItem(GATE_KEY)==='1')document.getElementById('gate').style.display='none';
+
+/* hover terms */
+const TERMS={
+  demo:{t:'ככה זה נראה',d:'כרטיס קצר: הגדרה, מספר, או תזכורת לשיחה. בלי לעזוב את המסמך.',n:''},
+  eight:{t:'עד 8%',d:'בתוך הטווח שגולדפרב המליצו (ספרה בודדת, 3–10). מורווח בשלמותו תוך ~18 חודשים כנגד ארבע אבני דרך. לא במתנה — בהרווחה.',n:'תקדים שוק: גופים שתורמים דאטה מקבלים single digit'},
+  funding:{t:'מימון 45–80 אלף ש"ח/חודש',d:'מכסה משכורות, פיתוח, מערכות ואינטגרציות ל-18 חודשים. מחויב מראש ומשוחרר חודשית לפי roadmap — לא שיקול דעת חודשי שלהם.',n:'סה"כ: ₪810K–1.44M על פני התקופה'},
+  revshare:{t:'RevShare 0.3% → 0.45%',d:'מהחודש השביעי: 0.3% ממחזור הסליקה של מערכת הכרטיסים. מדרגות עולות כל חצי שנה עד 0.45%. ההכנסה השוטפת שלנו בישראל.',n:'על סליקה של ₪250M בשנה: ₪750K–1.1M לשנה'},
+  poweredby:{t:'Powered by Flowz',d:'העיקרון המיתוגי בישראל: המותג שלהם למעלה, אזכור שלנו מתחתיו, מסך אחד למערכת. ויתור מודע — בתמורה לחבילה הכלכלית.',n:'בעולם: Flowz מותג ומוצר עצמאיים לחלוטין'},
+  captive:{t:'Captive Company',d:'המונח שקרנות משתמשות בו לסטארטאפ ששחקן אסטרטגי מחזיק בו נתח גדול. סיכון השקעה: תלות, ניגודי אינטרסים, ורוכשים מתחרים שלא ייגשו.',n:'זו המילה שגולדפרב אמרו לנו מפורשות'},
+  seed:{t:'סבב Seed',d:'סבב ההון הראשון המשמעותי. סטנדרט: ~$1.5M על שווי ~$8M, המשקיע לוקח ~18.75% + השלמת מאגר אופציות ל-10%.',n:'המספרים שלנו מהמחשבון — כפתור התחמושת בשלב 3'},
+  rofr:{t:'זכות ראשונים (ROFN)',d:'הזכות להיות הראשונים שמוזמנים להשקיע בכסף בסבב הבא, לפי שווי הסבב. בלי מחיר קבוע מראש ובלי הנחה — דלת, לא הבטחה.',n:'העצה של אייל שנהב: "לתת להם אפשרות לחלום"'},
+  di:{t:'Decision Intelligence',d:'הקטגוריה שלנו: דאטה ← תובנות ← פעולות ← Flows. גרטנר פרסמו Magic Quadrant ראשון לקטגוריה בינואר 2026. אין אף שחקן ורטיקלי בכלכלת החוויות.',n:'המשפט של אלעד: "מה שפלנטיר עושה לאנרגיה — אנחנו לחוויות"'},
+  dd:{t:'Due Diligence',d:'בדיקת נאותות. שני הפריטים שלנו: נתוני מכירות מבוקרים (יעדי ההפצה נקבעים לפיהם) וסטטוס מיזם הכרטיסים (הבלעדיות תלויה בו).',n:''},
+};
+const tip=document.getElementById('tip');
+function showTip(el){
+  const T=TERMS[el.dataset.t]; if(!T)return;
+  tip.querySelector('.tt').textContent=T.t;
+  tip.querySelector('.td').textContent=T.d;
+  const n=tip.querySelector('.tn'); n.textContent=T.n||''; n.style.display=T.n?'block':'none';
+  tip.style.display='block';
+  const r=el.getBoundingClientRect(), tw=tip.offsetWidth, th=tip.offsetHeight;
+  let x=r.left+r.width/2-tw/2; x=Math.max(10,Math.min(innerWidth-tw-10,x));
+  let y=r.top-th-10; if(y<8)y=r.bottom+10;
+  tip.style.left=x+'px'; tip.style.top=y+'px';
+}
+function hideTip(){tip.style.display='none';}
+document.querySelectorAll('.term').forEach(el=>{
+  el.addEventListener('mouseenter',()=>showTip(el));
+  el.addEventListener('mouseleave',hideTip);
+  el.addEventListener('click',e=>{e.stopPropagation();showTip(el);});
+});
+addEventListener('click',hideTip);
+
+/* ammo modals */
+const AMMO={
+  demo2:'<h3>ככה נראית תחמושת</h3><p style="font-size:14px">חלונות כאלה מחזיקים טבלאות, תקדימים, תשובות-עומק, ותצוגות חיות מהמצגות המעמיקות. הכול זמין תוך שנייה בלי לצאת מהמסמך.</p>',
+
+  homework:'<h3>"עשינו עבודה עמוקה" — הגיבוי</h3><table class="mt"><tr><th>מה נעשה</th><th>איפה זה חי</th></tr><tr><td>ייעוץ מבני מלא אצל גולדפרב-גרוס-זליגמן (אייל שנהב)</td><td>שיחה מוקלטת 24.08 + מסמך הכנה</td></tr><tr><td>מודל כלכלי מלא — 3 תרחישים עם מחשבון חי</td><td>מצגת העסקה, שקף 12</td></tr><tr><td>Term sheet building blocks — IP, דאטה, יציאה</td><td>נספחים A+B מוכנים לניסוח</td></tr><tr><td>מחקר שוק מאומת: כרטוס ישראלי, תקדימי אקזיטים, מבני JV</td><td>מחקר 6 סוכנים + אימות אדוורסרי</td></tr></table><p class="mnote">לא מציגים את זה — זה הביטחון שמאחורי המשפט. אם רועי שואל "על סמך מה" — יש תשובה לכל סעיף.</p>',
+
+  ghost:'<h3>הרקע — לעיניים שלנו בלבד</h3><p style="font-size:13.5px;line-height:1.7">יוני יצא מזאפה בספטמבר 2019 לפי שווי ₪80M — 17 חודשים לפני שמערך הכרטיסים שבנה הפך לבסיס של מובילת השוק בבעלות אוונטים. הוא פספס את <b>הכיסא</b>, לא את הכסף (זאפה ב-2023: ₪85–90M, עם חובות ותביעות). ומי שנשאר — דולל מ-100% ל-19% ונאלץ לתבוע כדי לראות את ספרי הכרטוס.<br><br><b>שתי הצלקות:</b> "לא לפספס שוב את הפלטפורמה" (ולכן 30%) + "לא להיות המיעוט הנמחץ" (ולכן אנטי-SAFE). ההצעה שלנו עונה על שתיהן — בלי להגיד אף מילה על ההיסטוריה.</p><a class="popout" href="../eventim/#s3" target="_blank">פתיחה בחלון נפרד ↗</a><iframe data-src="../eventim/#s3" loading="lazy"></iframe><p class="mnote">⚠️ החומר הזה לא נכנס לחדר לעולם. הוא מכוון את הניסוחים שלנו בלבד.</p>',
+
+  q1map:'<h3>שאלה 1 — מפת התשובות</h3><table class="mt"><tr><th>אם רועי עונה…</th><th>המשמעות</th><th>המהלך שלנו</th></tr><tr><td>"אפסייד, חלק ברווח"</td><td class="good">התרחיש הטוב</td><td>ההצעה בנויה בדיוק על זה — earn-in למעלה + זכות ראשונים. לשקף 4 בביטחון מלא.</td></tr><tr><td>"ביטחון שלא תעזבו אותנו"</td><td class="mid">פתיר בחוזים</td><td>SLA, רישיון ארוך, יעדי שירות, קנסות — הכול חוזי. "ביטחון לא צריך אחוזים — צריך סעיפים."</td></tr><tr><td>"שליטה והשפעה על הכיוון"</td><td class="bad">הדגל האדום</td><td>לא מתעמתים. רושמים, חופרים: "השפעה על מה בדיוק?" — roadmap ישראלי (נותנים בחוזה) ≠ שליטה בחברה (לא נותנים).</td></tr><tr><td>"ככה הבורד החליט"</td><td class="mid">רועי שליח</td><td>לצייד אותו: "בוא נבנה יחד את הטיעון שאתה מציג לבורד." הוא הופך לשגריר.</td></tr></table>',
+
+  captive:'<h3>Captive Company — המתמטיקה שרועי יבין מיד</h3><table class="mt"><tr><th>תרחיש</th><th>מייסדים אחרי Seed</th><th>מה קרן רואה</th></tr><tr><td>בלי אסטרטגי (SAFE 5% בלבד)</td><td class="n good">~67%</td><td class="good">תקין — יש מקום לעוד 2 סבבים</td></tr><tr><td>המבנה שלנו: earn-in 8% למעלה</td><td class="n good">~61–63%</td><td class="good">תקין — האסטרטגי קטן ולא חוסם</td></tr><tr><td>toMix 30% בחברה אחת</td><td class="n bad">~46%</td><td class="bad">מתחת ל-50% = רוב הקרנות בחוץ עוד לפני פגישה</td></tr></table><p style="font-size:13.5px;margin-top:10px">ואחרי <span class="en">Series A</span> בתרחיש ה-30%: מייסדים ~35%. אף קרן צמיחה לא נכנסת לזה. <b>הנקודה לרועי:</b> ה-30% לא שווים פחות בגלל שאנחנו קמצנים — הם שווים פחות כי הם הורגים את המכונה שאמורה להצמיח אותם.</p>',
+
+  calc:'<h3>המחשבון החי — שלושת התרחישים</h3><p style="font-size:13px;color:var(--ink-soft)">שקף 12 במצגת העסקה. אפשר לפתוח מולו את המחשבון ולהזיז מספרים בזמן אמת אם רועי רוצה לשחק עם ההנחות.</p><a class="popout" href="../#s12" target="_blank">פתיחה בחלון נפרד — מול המחשבון החי ↗</a><iframe data-src="../#s12" loading="lazy"></iframe>',
+
+  ceiling:'<h3>תקרת הזכוכית של ישראל-בלבד — שמות ומספרים</h3><p style="font-size:12.5px;color:var(--ink-soft)">הטבלאות לעיניים שלך — בחדר אפשר לנקוב בשמות או להסתפק ב"חברות מקומיות בתחום"; שיקול שלך לפי הטון.</p><h3 style="font-size:15px;margin-top:10px">ישראל</h3><table class="mt"><tr><th>חברה</th><th>המסלול</th><th>השווי</th></tr><tr><td><b>זאפה</b> — מותג המופעים המוביל</td><td>₪60M (2014) ← ₪80M (2019) ← ₪85–90M (2023, עם חוב ותביעות)</td><td class="n bad">עשור באותו טווח</td></tr><tr><td><b>Eventer</b> (בגיבוי קשת)</td><td>ניסיון הנפקה ← מיזוג הופכי לבורסת ת"א (2023)</td><td class="n bad">~$6M</td></tr><tr><td><b>Bluestone</b> — מפיקת מופעים</td><td>לייב ניישן לקחה רוב (2017) ← הפכה ל-Ticketmaster Israel</td><td class="n mid">יציאה = להפוך לזרוע של ענק</td></tr><tr><td><b>TopTix</b> — קרמיאל, תוכנת כרטוס B2B</td><td>נמכרה ל-SeatGeek (2017) — כי המוצר היה גלובלי</td><td class="n good">$56M</td></tr></table><h3 style="font-size:15px;margin-top:14px">העולם</h3><table class="mt"><tr><th>חברה</th><th>המסלול</th><th>השווי</th></tr><tr><td><b>CTS Eventim</b> (גרמניה)</td><td>הפלטפורמה — 300M כרטיסים בשנה, 25 מדינות</td><td class="n good">€5.8B</td></tr><tr><td><b>See Tickets</b> (בריטניה/ארה"ב)</td><td>נרכשה ע"י Eventim (2024), על הכנסות של €137M</td><td class="n good">~€300M (פי ~2.2 מההכנסות)</td></tr><tr><td><b>SeatGeek</b> (ארה"ב)</td><td>גיוס 2021 לפי שווי מדווח</td><td class="n good">~$1B</td></tr><tr><td><b>DICE</b> (בריטניה)</td><td>גיוס בהובלת SoftBank (2021)</td><td class="n good">$122M</td></tr><tr><td><b>Eventbrite</b> (ארה"ב)</td><td>הנפקה 2018 לפי ~$1.8B — ומאז דשדוש מתמשך</td><td class="n mid">ההוכחה ששני הצדדים צודקים</td></tr><tr><td><b>TicketOne</b> (איטליה)</td><td>המובילה המקומית — נבלעה ע"י Eventim בשלבים</td><td class="n bad">~100% תמורת €35.9M בלבד</td></tr><tr><td><b>Palantir</b> (ארה"ב)</td><td>Decision Intelligence על דאטה תפעולי — הקטגוריה שלנו</td><td class="n good">$300B+</td></tr></table><p style="font-size:13.5px;margin-top:10px"><b>השורה:</b> מקומי-טהור נתקע בעשרות-מאות מיליוני שקלים (זאפה, Eventer, TicketOne). טכנולוגיה גלובלית — גם כשהיא נולדת בקרמיאל — נמכרת בעשרות-מאות מיליוני דולרים. ושכבת ההחלטות שמעל כולם היא הליגה של פלנטיר. <b>לכן: 8% מהגלובלית &gt; 30% מהמקומית.</b> ו-Eventbrite היא התשובה המושלמת לרועי — הוא צודק שכרטוס-צרכני-טהור נסחר קשה, וזו בדיוק הסיבה שאנחנו לא בונים כרטוס.</p>',
+  fundmath:'<h3>המימון — מה זה שווה ולמה זה לא "תשלום"</h3><table class="mt"><tr><th></th><th>חודשי</th><th>סה"כ 18 חודשים</th></tr><tr><td>רף תחתון</td><td class="n">₪45K</td><td class="n">₪810K</td></tr><tr><td>רף עליון</td><td class="n">₪80K</td><td class="n">₪1.44M</td></tr></table><p style="font-size:13.5px;margin-top:10px">מה זה קונה להם: roadmap מוטה לצרכיהם ל-18 חודשים, צוות שעובד בשבילם בפועל, ואבן דרך של 2% ב-earn-in. מה זה לא: בעלות. <b>ניסוח לרועי:</b> "אתם לא קונים אחוזים בכסף הזה — אתם קונים את זה שהמוצר ייבנה סביבכם. את האחוזים אתם מרוויחים בנפרד, על התוצאות."</p><p class="mnote">מסגרת ההשוואה אם צריך: הסכום הזה נמוך מעלות של 2 מפתחים שכירים אצלם — ומקבל חברת מוצר שלמה שעובדת בשבילם.</p>',
+
+  revmath:'<h3>RevShare — טבלת התרחישים</h3><table class="mt"><tr><th>מחזור סליקה שנתי</th><th>0.3% (שנה 1)</th><th>0.45% (משנה 3)</th></tr><tr><td>₪250M ⚠️ (ההערכה של יוני להיום)</td><td class="n">₪750K</td><td class="n">₪1.13M</td></tr><tr><td>₪400M</td><td class="n">₪1.2M</td><td class="n">₪1.8M</td></tr><tr><td>₪500M (היעד שלהם אחרי גיוס לקוחות)</td><td class="n">₪1.5M</td><td class="n">₪2.25M</td></tr><tr><td>₪1B (חלום הדיסראפשן שלהם)</td><td class="n">₪3M</td><td class="n">₪4.5M</td></tr></table><p style="font-size:13.5px;margin-top:10px"><b>הזווית לרועי:</b> ה-RevShare מיישר אינטרסים מושלם — ככל שמערכת הכרטיסים שלהם מוכרת יותר, שנינו מרוויחים יותר. אנחנו מרוויחים רק אם הם מנצחים.</p><p class="mnote">⚠️ מחזור הסליקה הנוכחי הוא הערכה שנאמרה בעל-פה — אין נתון ציבורי. לכן הבקשה לנתונים מבוקרים בשלב 6 היא תנאי לתמחור, לא חשדנות.</p>',
+
+  milestones:'<h3>אבני הדרך — ההצעה לטבלה</h3><table class="mt"><tr><th>אבן דרך</th><th>מה נמסר</th><th>מתי</th><th>אחוז</th></tr><tr><td>M1 · דאטה</td><td>העברת מלוא הדאטה ההיסטורי + חיבור שוטף</td><td>חודש 1–2</td><td class="n">2%</td></tr><tr><td>M2 · הטמעה</td><td>Design partner מלא: 4 אנשי מפתח, 8 שעות שבועיות, הטמעה חיה</td><td>חודש 3–6</td><td class="n">2%</td></tr><tr><td>M3 · הפצה</td><td>עמידה ביעד סליקה/לקוחות שיוגדר יחד על בסיס הנתונים המבוקרים</td><td>חודש 6–12</td><td class="n">2%</td></tr><tr><td>M4 · מימון</td><td>השלמת 18 חודשי מימון מלאים</td><td>חודש 18</td><td class="n">2%</td></tr><tr><td><b>סה"כ</b></td><td></td><td></td><td class="n"><b>8%</b></td></tr></table><p style="font-size:13.5px;margin-top:10px"><b>כללים:</b> כל יעד מדיד עם תאריך · הושלם = הוקנה לתמיד, בלי חילוט רטרואקטיבי · לא הושלם = לא נרשם · זכויות ביקורת הדדיות. פשוט מספיק כדי להסביר לבורד בשקף אחד.</p><p class="mnote">האחוזים בסוגריים = הצעת פתיחה שלנו. אפשר לשחק בחלוקה הפנימית — לא בתקרה.</p>',
+
+  small8:'<h3>"8% זה קטן" — ההשוואה המלאה</h3><table class="mt"><tr><th></th><th>30% בחברה אחת</th><th>8% בגלובלית + חבילת ישראל</th></tr><tr><td>שווי החברה בעוד 5 שנים</td><td class="bad">מוגבל — הגיוס נחסם, נשארים מקומיים</td><td class="good">פתוח — קרנות נכנסות, המוצר גלובלי</td></tr><tr><td>מה הם שילמו</td><td>דאטה + הפצה + מימון</td><td>אותו דבר בדיוק</td></tr><tr><td>סיכון הוני שלהם</td><td>גבוה — שותפות עמוקה בחברה צעירה</td><td class="good">אפס — רק ערך תפעולי שממילא נותנים</td></tr><tr><td>נזילות</td><td class="bad">מניות מיעוט בחברה פרטית ישראלית</td><td class="good">אחוזים בישות שנמכרת/מונפקת</td></tr><tr><td>+ ההכנסה השוטפת</td><td>—</td><td class="good">RevShare עד ₪2M+ בשנה, לנצח</td></tr></table><p style="font-size:13.5px;margin-top:10px"><b>ואם הוא עדיין לוחץ:</b> "המספר גמיש בתוך ספרה אחת — המבנה לא. תגיד לי איזה ערך נוסף אתם מביאים, ונתמחר אותו לאבן דרך."</p>',
+
+  exitlogic:'<h3>למה "האחוזים למעלה" זה הסעיף שהכי מגן עליהם</h3><p style="font-size:14px;line-height:1.75">התרחיש שהם באמת מפחדים ממנו: החברה מצליחה, נמכרת או מגייסת ענק — והם נשארו עם אחוזים בישות מקומית שאף אחד לא קונה.<br><br><b>במבנה שלנו זה בלתי אפשרי מבנית:</b> האחוזים שלהם יושבים בחברה הגלובלית — הישות היחידה שאי פעם תימכר או תונפק. אין תרחיש שבו אנחנו פוגשים כסף והם לא.<br><br>ולצד זה: אין להם אחריות, אין ערבויות, אין חובות — רק אפסייד. זו בדיוק הנקודה שהופכת את המבנה מ"קיבלנו פחות" ל"קיבלנו את החלק הנכון".</p><p class="mnote">אם רועי מבקש ביטחונות על זה — מצוין: זה סימן שהוא בפנים. עונים "בשמחה, ב-term sheet" — יש לנו את נספח היציאה מוכן.</p>',
+
+  precedents:'<h3>תקדימים — הטכנולוגיה שמסביב לכרטוס דווקא כן</h3><table class="mt"><tr><th>חברה</th><th>מה קרה</th><th>המספר</th></tr><tr><td><b>TopTix — קרמיאל, ישראל</b></td><td>תוכנת ניהול כרטוס B2B, נרכשה ע"י SeatGeek (2017)</td><td class="n good">$56M</td></tr><tr><td>See Tickets</td><td>נרכשה ע"י CTS Eventim (2024)</td><td class="n good">~€300M</td></tr><tr><td>CTS Eventim</td><td>הפלטפורמה עצמה — שווי שוק</td><td class="n good">€5.8B</td></tr><tr><td>SeatGeek</td><td>פלטפורמת כרטוס אמריקאית — גיוס 2021 לפי שווי מדווח</td><td class="n good">~$1B</td></tr><tr><td>DICE (בריטניה)</td><td>כרטוס מובייל — גיוס בהובלת SoftBank (2021)</td><td class="n good">$122M</td></tr><tr><td>Palantir</td><td>Decision Intelligence על דאטה תפעולי — הקטגוריה שלנו, בענק</td><td class="n good">$300B+</td></tr></table><p style="font-size:13.5px;margin-top:10px"><b>המהלך:</b> רועי צודק לגבי כרטוס טהור מקומי — ומסכימים איתו בקול. ואז: "בדיוק בגלל זה אנחנו לא בונים חברת כרטוס. אנחנו בונים את שכבת ההחלטות שכל חברות הכרטוס צריכות. וחברה ישראלית מקרמיאל כבר הוכיחה שהשכבה הטכנולוגית נמכרת ב-$56M — לפני עשור, בשוק קטן פי כמה."</p>',
+
+  ddwhy:'<h3>שני פריטי ה-DD — ולמה מבקשים אותם עכשיו</h3><table class="mt"><tr><th>מה מבקשים</th><th>הסיבה הרשמית (אמיתית)</th><th>הסיבה השקטה</th></tr><tr><td>נתוני מכירות מבוקרים</td><td>"יעדי ההפצה של אבן דרך 3 נקבעים כאחוז מהמחזור — צריך את הבסיס"</td><td>מספרי הסליקה שנזרקו לא מאומתים בשום מקור. לא מתמחרים earn-in על הערכה בעל-פה.</td></tr><tr><td>סטטוס מיזם הכרטיסים</td><td>"הרישיון והאינטגרציה נבנים סביבו — צריך לוחות זמנים"</td><td>המיזם לא הוכרז בשום מקום. אם הוא בשלבים מוקדמים מהמצופה — הבלעדיות שלנו שווה יותר, והתזמון משתנה.</td></tr></table><p class="mnote">שתי הבקשות מנוסחות כצורך תפעולי של המתווה — לא כחשדנות. ככה זה גם נשמע בחדר.</p>',
+};
+const modal=document.getElementById('modal'), mcontent=document.getElementById('mcontent');
+function openAmmo(k){
+  mcontent.innerHTML=AMMO[k]||'';
+  mcontent.querySelectorAll('iframe[data-src]').forEach(f=>{if(!f.src)f.src=f.dataset.src;});
+  modal.classList.add('open');
+}
+function closeAmmo(){modal.classList.remove('open');}
+addEventListener('keydown',e=>{if(e.key==='Escape')closeAmmo();});
+</script>
+</body>
+</html>

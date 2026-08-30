@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flowz · Segmentation Decision Workshop</title>
+<meta name="description" content="A guided decision deck for lifecycle, LTV tiers, badges, scoring, and rollout.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Static port of Aviv's flowz-segmentation-questionnaire (Next.js) for the
+   static hub. app/globals.css is embedded verbatim below; question data is
+   extracted verbatim from app/questions.ts. Same localStorage key and export
+   format, so answers and briefs are interchangeable with the original app. */
+/* Flowz Hub tokens and deck chrome are intentionally kept byte-for-byte equivalent where the questionnaire reuses them. */
+:root{
+  --cream:#FAF6EF;
+  --cream-deep:#F3EDE2;
+  --card:#FFFDF9;
+  --ink:#2B2620;
+  --ink-soft:#6E6659;
+  --orange:#F0641E;
+  --orange-soft:#FDE8DC;
+  --blue:#3B82F6;
+  --blue-soft:#DBEAFE;
+  --lightblue-bg:#EAF4FB;
+  --green-soft:#DCF3C8;
+  --green:#3E8914;
+  --purple:#8B5CF6;
+  --purple-soft:#EFE3FA;
+  --pink-soft:#F8E1F4;
+  --teal:#0D9488;
+  --teal-soft:#CCF3EC;
+  --gold:#E8A93D;
+  --gold-soft:#FCF0D8;
+  --red:#D14343;
+  --radius:22px;
+  --shadow:0 10px 34px rgba(90,70,40,.10);
+  --t-slide:.55s;
+  --t-chip:.25s;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--cream);color:var(--ink);overflow:hidden}
+button{font:inherit}
+h1,h2,h3,.display{font-family:'Sora',sans-serif}
+
+/* Deck chrome */
+.deck{position:relative;width:100vw;height:100vh;overflow:hidden}
+.slide-stage{position:absolute;inset:0;animation:slideIn .42s ease both}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:44px 64px 74px}
+.slide-inner{width:100%;max-width:1180px}
+.progress{position:fixed;left:0;top:0;height:4px;background:var(--orange);width:0;transition:width .4s ease;z-index:60;border-radius:0 4px 4px 0}
+.nav{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:60;align-items:center}
+.dot{width:9px;height:9px;border-radius:50%;background:#D9CFBE;cursor:pointer;transition:var(--t-chip);border:none;padding:0}
+.dot.on{background:var(--orange);transform:scale(1.35)}
+.dot.complete:not(.on){background:var(--green)}
+.arrows{position:fixed;bottom:14px;right:22px;display:flex;gap:8px;z-index:60}
+.arrow-btn{width:42px;height:42px;border-radius:14px;border:1.5px solid #E4DACB;background:var(--card);font-size:17px;color:var(--ink);cursor:pointer;transition:.2s;box-shadow:0 3px 10px rgba(90,70,40,.07)}
+.arrow-btn:hover:not(:disabled){background:var(--orange);color:#fff;border-color:var(--orange)}
+.arrow-btn:disabled{opacity:.32;cursor:default}
+.slide-num{position:fixed;bottom:26px;left:26px;font-size:11.5px;color:#B4A88F;font-weight:600;letter-spacing:.08em;z-index:60}
+.corner-brand{position:fixed;top:20px;left:26px;font-family:'Sora';font-weight:800;font-size:15px;letter-spacing:.02em;z-index:60}
+.corner-brand span{color:var(--orange)}
+.corner-chip{position:fixed;top:18px;right:24px;z-index:60;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:var(--gold-soft);color:#8a6b1f;border:1px solid #EDD9A8;border-radius:999px;padding:5px 12px}
+.foot-link{position:fixed;bottom:24px;right:122px;z-index:60;font-size:12px;font-weight:600;color:var(--ink-soft);border:1.5px solid #E4DACB;background:var(--card);border-radius:999px;padding:8px 16px;transition:.2s;cursor:pointer}
+.foot-link:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.save-state{position:fixed;bottom:24px;left:calc(50% + 84px);transform:translateX(-50%);z-index:60;font-size:11px;font-weight:600;color:#9A8E7B}
+
+/* Shared Flowz blocks */
+.kicker{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--orange);margin-bottom:10px}
+.h-title{font-size:34px;font-weight:800;letter-spacing:-.02em;line-height:1.12;margin-bottom:8px}
+.h-sub{font-size:15px;color:var(--ink-soft);max-width:860px;line-height:1.55}
+.btn{display:inline-block;border-radius:999px;padding:11px 22px;font-size:13.5px;font-weight:700;border:none;text-decoration:none;transition:.2s;cursor:pointer}
+.btn.primary{background:var(--orange);color:#fff}
+.btn.primary:hover{background:#d4551a}
+.btn.ghost{border:1.5px solid #E4DACB;color:var(--ink);background:var(--card)}
+.btn.ghost:hover{border-color:var(--orange);color:var(--orange)}
+.btn.text-btn{background:transparent;color:var(--ink-soft);padding-inline:10px}
+.btn.text-btn:hover{color:var(--red)}
+.title-links{display:flex;gap:12px;justify-content:center;margin-top:26px}
+
+/* Intro */
+.intro-inner{text-align:center;max-width:980px}
+.intro-title{font-size:54px;letter-spacing:-.04em;line-height:1.02}
+.intro-sub{margin:16px auto 0;max-width:760px}
+.intro-stats{display:flex;justify-content:center;gap:12px;margin:26px 0 18px}
+.stat-card{width:126px;background:var(--card);border:1px solid #F0E8DA;border-radius:18px;box-shadow:var(--shadow);padding:14px 16px;display:flex;flex-direction:column;gap:2px}
+.stat-card strong{font-family:'Sora';font-size:25px;color:var(--orange)}
+.stat-card span{font-size:10.5px;color:var(--ink-soft);font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+.section-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:850px;margin:0 auto}
+.section-chip{display:inline-flex;align-items:center;gap:7px;background:var(--cream-deep);border:1px solid #E8DECF;border-radius:999px;padding:6px 12px;font-size:11px;font-weight:600;color:var(--ink-soft)}
+.section-chip b{width:20px;height:20px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;background:var(--ink);color:#fff;font-family:'Sora';font-size:10px}
+
+/* Questions */
+.question-layout{max-width:1040px}
+.question-heading{display:grid;grid-template-columns:64px 1fr;gap:18px;align-items:start}
+.question-number{font-family:'Sora';font-size:42px;line-height:1;font-weight:800;color:#D9CFBE}
+.multi-hint{display:inline-block;margin-top:10px;font-size:10px;text-transform:uppercase;letter-spacing:.1em;font-weight:800;color:var(--teal);background:var(--teal-soft);border-radius:999px;padding:4px 10px}
+.answer-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:25px}
+.answer-grid.dense{grid-template-columns:repeat(3,1fr);gap:10px}
+.answer-card{min-height:88px;text-align:left;display:flex;align-items:flex-start;gap:13px;background:var(--card);border:1.5px solid #EDE4D3;border-radius:17px;padding:16px 18px;color:var(--ink);cursor:pointer;box-shadow:var(--shadow);transition:transform .15s ease,border-color .15s ease,background .15s ease}
+.answer-grid.dense .answer-card{min-height:68px;padding:12px 14px;border-radius:14px}
+.answer-card:hover{transform:translateY(-2px);border-color:var(--orange)}
+.answer-card:focus-visible,.btn:focus-visible,.arrow-btn:focus-visible,.dot:focus-visible,.review-row:focus-visible{outline:3px solid rgba(59,130,246,.35);outline-offset:2px}
+.answer-card.selected{border-color:var(--orange);background:linear-gradient(135deg,#FFF7F0,var(--card));box-shadow:0 12px 36px rgba(240,100,30,.12)}
+.radio-mark,.check-mark{width:18px;height:18px;border:2px solid #C9BDA6;flex:none;margin-top:2px;position:relative}
+.radio-mark{border-radius:50%}
+.check-mark{border-radius:6px}
+.selected .radio-mark,.selected .check-mark{border-color:var(--orange);background:var(--orange)}
+.selected .radio-mark::after{content:'';position:absolute;inset:4px;border-radius:50%;background:white}
+.selected .check-mark::after{content:'✓';position:absolute;inset:-4px 0 0 1px;text-align:center;color:#fff;font-size:14px;font-weight:800}
+.answer-copy{display:flex;flex-direction:column;gap:8px;font-size:13.5px;font-weight:700;line-height:1.4}
+.answer-grid.dense .answer-copy{font-size:12.5px}
+.answer-copy small{align-self:flex-start;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--green);background:var(--green-soft);border-radius:999px;padding:3px 9px}
+.workshop-note{margin-top:16px;background:var(--orange-soft);border:1px solid #F6C9AC;border-radius:14px;padding:13px 18px;display:flex;gap:12px;font-size:12.5px;line-height:1.48;color:var(--ink-soft)}
+.workshop-note b{color:var(--ink);white-space:nowrap}
+
+/* Review */
+.review-slide{padding-top:64px;padding-bottom:72px}
+.review-inner{height:100%;max-width:1160px;display:flex;flex-direction:column;min-height:0}
+.review-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:15px;flex:none}
+.completion-card{width:175px;background:var(--card);border:1px solid #F0E8DA;border-radius:18px;box-shadow:var(--shadow);padding:13px 15px}
+.completion-card strong{display:block;font-family:'Sora';font-size:22px;color:var(--orange)}
+.completion-card strong span{font-size:12px;color:var(--ink-soft)}
+.completion-card small{font-size:9.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-soft);font-weight:700}
+.completion-track{height:5px;background:var(--cream-deep);border-radius:999px;margin-top:8px;overflow:hidden}
+.completion-track i{display:block;height:100%;background:var(--orange);border-radius:999px;transition:width .3s ease}
+.review-scroll{flex:1;min-height:0;overflow:auto;display:grid;grid-template-columns:1fr 1fr;align-items:start;gap:12px;padding:2px 8px 8px 2px;scrollbar-color:#D9CFBE transparent}
+.review-card{background:var(--card);border:1px solid #F0E8DA;border-radius:17px;box-shadow:var(--shadow);padding:12px 14px}
+.review-card-head{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--cream-deep);padding-bottom:8px;margin-bottom:3px}
+.review-card-head h2{font-size:13px;display:flex;align-items:center;gap:8px}
+.review-card-head h2 span{width:23px;height:23px;border-radius:8px;background:var(--ink);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:9px}
+.review-card-head small{font-size:10px;font-weight:700;color:var(--ink-soft)}
+.review-row{width:100%;display:grid;grid-template-columns:30px minmax(120px,1.1fr) minmax(140px,1fr);gap:8px;align-items:center;text-align:left;border:none;border-bottom:1px solid var(--cream-deep);background:transparent;padding:7px 4px;color:var(--ink);cursor:pointer}
+.review-row:last-child{border-bottom:none}
+.review-row:hover{background:var(--orange-soft);border-radius:8px}
+.review-num{font-family:'Sora';font-size:9.5px;color:#B4A88F;font-weight:700}
+.review-question{font-size:10.5px;font-weight:700;line-height:1.25}
+.review-answer{font-size:10px;color:var(--ink-soft);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.review-row.unanswered .review-answer{color:var(--red);font-weight:700}
+.review-actions{display:flex;align-items:center;gap:9px;margin-top:12px;flex:none}
+.review-actions .btn{padding:9px 17px;font-size:12px}
+.export-state{font-size:10.5px;color:var(--green);font-weight:700;margin-left:auto}
+
+@keyframes slideIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+@media (max-width:900px){
+  .slide{padding-inline:34px}
+  .answer-grid.dense{grid-template-columns:1fr 1fr}
+  .review-scroll{grid-template-columns:1fr}
+}
+
+@media (max-width:680px){
+  body{overflow:auto}
+  .deck{height:auto;min-height:100dvh;overflow:visible}
+  .slide-stage{position:relative;min-height:100dvh}
+  .slide{position:relative;min-height:100dvh;padding:78px 18px 118px;justify-content:flex-start}
+  .intro-inner{padding-top:30px}
+  .intro-title{font-size:39px}
+  .intro-stats{gap:7px}.stat-card{width:100px;padding:11px}.stat-card strong{font-size:21px}
+  .section-chips{display:grid;grid-template-columns:1fr 1fr}.section-chip{justify-content:flex-start}
+  .question-heading{grid-template-columns:42px 1fr;gap:8px}.question-number{font-size:29px}.h-title{font-size:25px}.h-sub{font-size:13px}
+  .answer-grid,.answer-grid.dense{grid-template-columns:1fr}.answer-card,.answer-grid.dense .answer-card{min-height:0;padding:13px 14px}.answer-copy,.answer-grid.dense .answer-copy{font-size:12.5px}
+  .workshop-note{flex-direction:column;gap:3px}
+  .corner-brand{left:16px}.corner-chip{right:13px;max-width:210px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .nav{bottom:25px;left:48%}.save-state{display:none}.foot-link{display:none}
+  .review-slide{padding-top:72px}.review-head{align-items:flex-start}.completion-card{width:130px}.review-scroll{display:block}.review-card{margin-bottom:10px}.review-row{grid-template-columns:26px 1fr}.review-answer{grid-column:2;white-space:normal}.review-actions{flex-wrap:wrap}.export-state{width:100%;margin-left:0}
+}
+
+@media (max-height:720px) and (min-width:681px){
+  .slide{padding-top:40px}.answer-grid{margin-top:18px}.answer-card{min-height:72px;padding:13px 16px}.h-title{font-size:30px}.h-sub{font-size:13px}.workshop-note{margin-top:12px;padding:10px 15px}.intro-title{font-size:46px}.intro-stats{margin-block:18px 12px}.review-head{margin-bottom:9px}
+}
+
+</style>
+</head>
+<body>
+<main class="deck">
+  <div class="progress" id="progress"></div>
+  <div class="corner-brand">FLOW<span>Z</span></div>
+  <div class="corner-chip" id="cornerChip"></div>
+  <div class="slide-stage" id="stage"></div>
+  <button class="foot-link" id="footLink">Review decisions</button>
+  <nav class="nav" id="nav" aria-label="Questionnaire sections"></nav>
+  <div class="arrows">
+    <button class="arrow-btn" id="prev" aria-label="Previous slide">←</button>
+    <button class="arrow-btn" id="next" aria-label="Next slide">→</button>
+  </div>
+  <div class="slide-num" id="slideNum">START</div>
+  <div class="save-state" id="saveState" role="status" aria-live="polite"></div>
+</main>
+<script>
+const option = (label, recommended = false) => ({ label, recommended });
+
+const QUESTIONS = [
+  {
+    id: 1,
+    section: 'Product model', sectionCode: 'A', type: 'single',
+    title: "Who should initially see an attendee's tier?",
+    prompt: 'Choose the audience for the first release.',
+    options: [option('Flowz staff only'), option('Client staff only'), option('Client staff now; attendees may see it in a later loyalty product', true), option('Client staff and attendees from v1')],
+    lens: 'Attendee-facing status needs benefits, communications, and demotion rules. Internal visibility lets the operating model mature first.',
+  },
+  {
+    id: 2, section: 'Product model', sectionCode: 'A', type: 'single',
+    title: 'What should be the primary segmentation model?',
+    prompt: 'Choose the main language clients will see throughout Flowz.',
+    options: [option('Separate Lifecycle, Tier, and Badges', true), option('One combined RFM segment'), option('One numeric customer score'), option('Tier only')],
+  },
+  {
+    id: 3, section: 'Product model', sectionCode: 'A', type: 'single',
+    title: 'Should Flowz also show a Lifecycle × Tier grid?',
+    prompt: 'The grid can combine the dimensions visually without replacing them in the data model.',
+    options: [option('Yes — as a dashboard view, not a separate customer state', true), option('No')],
+  },
+  {
+    id: 4, section: 'Product model', sectionCode: 'A', type: 'single',
+    title: 'Should users see a raw numeric score?',
+    prompt: 'Decide whether the underlying math becomes part of the product language.',
+    options: [option('No — show labels, reasons, and trends instead', true), option('Yes, but client staff only'), option('Yes, including attendees')],
+    lens: 'Modern systems often calculate numbers underneath, then surface named states and the reasons behind them.',
+  },
+  {
+    id: 5, section: 'Product model', sectionCode: 'A', type: 'single',
+    title: 'Should every assignment display “Why?”',
+    prompt: 'This applies to lifecycle, tier, and automatic badges.',
+    options: [option('Yes', true), option('No')],
+  },
+  {
+    id: 6, section: 'Lifecycle', sectionCode: 'B', type: 'single',
+    title: "How should a customer's lifecycle be calculated?",
+    prompt: 'Choose how event-series behavior becomes one lifecycle label.',
+    options: [option('One org-wide lifecycle using all events'), option('A separate lifecycle for every event series'), option('Calculate activity per series, then derive one org-wide lifecycle', true)],
+  },
+  {
+    id: 7, section: 'Lifecycle', sectionCode: 'B', type: 'single',
+    title: 'Which lifecycle names should be the default?',
+    prompt: 'Choose the set a producer should understand without a legend.',
+    options: [option('New → Returning → Regular → Cooling → Lapsed', true), option('New → Rising → Core → At-risk → Lapsed'), option('New → Active → Loyal → At-risk → Inactive')],
+  },
+  {
+    id: 8, section: 'Lifecycle', sectionCode: 'B', type: 'single',
+    title: 'How should recency be measured?',
+    prompt: 'Annual and seasonal events make a fixed inactivity clock risky.',
+    options: [option('Calendar days since purchase'), option('Missed editions only'), option('Missed editions, with a calendar fallback when no series is identifiable', true)],
+    lens: 'The fallback prevents customers from becoming impossible to classify while event-series data is incomplete.',
+  },
+  {
+    id: 9, section: 'Lifecycle', sectionCode: 'B', type: 'single',
+    title: 'What should count as attendance?',
+    prompt: 'Choose the evidence Flowz should trust when assigning frequency and recency.',
+    options: [option('Any valid paid ticket purchase'), option('Check-in or scan data only'), option('Check-in when available; valid paid ticket as the fallback', true)],
+  },
+  {
+    id: 10, section: 'Lifecycle', sectionCode: 'B', type: 'single',
+    title: 'How long should someone remain “New”?',
+    prompt: 'Choose when a first-time customer becomes a returning customer.',
+    options: [option('For 90 days after their first purchase'), option('Until they qualify for a second event or edition', true), option('Until their first event takes place')],
+  },
+  {
+    id: 11, section: 'Lifecycle', sectionCode: 'B', type: 'single',
+    title: 'How should Returning and Regular be separated?',
+    prompt: 'Choose the default frequency boundary.',
+    options: [option('Second qualifying edition = Returning; third or later = Regular', true), option('Two or three editions = Returning; four or later = Regular'), option('Use client-specific percentiles')],
+  },
+  {
+    id: 12, section: 'Lifecycle', sectionCode: 'B', type: 'single',
+    title: 'When should someone become Cooling?',
+    prompt: 'Choose the first reliable warning signal.',
+    options: [option('After missing one expected edition', true), option('After a fixed inactivity period'), option('Only when both an edition is missed and engagement declines')],
+  },
+  {
+    id: 13, section: 'Lifecycle', sectionCode: 'B', type: 'single',
+    title: 'When should someone become Lapsed?',
+    prompt: 'Choose how much missed attendance confirms the relationship has cooled.',
+    options: [option('After one missed edition'), option('After two consecutive missed editions', true), option('After three consecutive missed editions')],
+  },
+  {
+    id: 14, section: 'Lifecycle', sectionCode: 'B', type: 'single',
+    title: 'Should Cooling be split by engagement?',
+    prompt: 'Reachable customers and silent customers need different win-back actions.',
+    options: [option('Yes: Cooling · Reachable and Cooling · Silent', true), option('Later phase'), option('No — keep one Cooling state')],
+  },
+  {
+    id: 15, section: 'Tier and LTV', sectionCode: 'C', type: 'single',
+    title: 'Should tier represent value across the entire client organization?',
+    prompt: 'Choose whether a customer earns one status or several event-specific statuses.',
+    options: [option('Yes — one tier across all eligible events and purchases', true), option('No — separate tier per event series'), option('Show both org-wide and series-specific tiers')],
+  },
+  {
+    id: 16, section: 'Tier and LTV', sectionCode: 'C', type: 'single',
+    title: 'How should attendance and spending determine tier?',
+    prompt: 'This is the central scoring-model decision.',
+    options: [option('Hard gates: pass both minimum attendance and minimum LTV'), option('Combination matrix: different attendance/LTV combinations can reach the same tier', true), option('Weighted points: attendance and spending contribute to one score'), option('Spending only')],
+    lens: 'A combination matrix lets a high-spending rooms buyer with two events outrank a low-spending attendee with four events without introducing arbitrary weights.',
+  },
+  {
+    id: 17, section: 'Tier and LTV', sectionCode: 'C', type: 'single',
+    title: 'What qualification window should tiers use?',
+    prompt: 'Choose how the model adapts to annual versus high-frequency producers.',
+    options: [option('Fixed rolling 12 months'), option('Fixed rolling 24 months'), option('Producer-cadence-based, with 24 months as the default', true), option('Lifetime history')],
+  },
+  {
+    id: 18, section: 'Tier and LTV', sectionCode: 'C', type: 'multi',
+    title: 'Which revenue should count toward LTV?',
+    prompt: 'Select every included revenue source. Refunded or cancelled value should normally remain unselected.',
+    options: [option('Ticket revenue', true), option('Accommodation and rooms', true), option('Food and beverage', true), option('Merchandise', true), option('Shuttle and transport'), option('Add-ons and upgrades', true), option('Service fees'), option('Refunded or cancelled purchases')],
+  },
+  {
+    id: 19, section: 'Tier and LTV', sectionCode: 'C', type: 'single',
+    title: 'How should group orders be credited?',
+    prompt: 'Choose how the purchaser receives value and attendance credit.',
+    options: [option('Give all value and all ticket counts to the purchaser'), option("Count only the purchaser's personal ticket"), option('Give monetary value to the purchaser, count the event once, and add a Group Buyer badge', true)],
+    lens: 'This recognizes the organizer’s commercial value without pretending that ten tickets equal ten separate attended editions.',
+  },
+  {
+    id: 20, section: 'Tier and LTV', sectionCode: 'C', type: 'single',
+    title: 'How many tiers should the default ladder contain?',
+    prompt: 'Choose the smallest ladder that still creates meaningful progression.',
+    options: [option('Three'), option('Four', true), option('Five')],
+  },
+  {
+    id: 21, section: 'Tier and LTV', sectionCode: 'C', type: 'single',
+    title: 'How should the top tier be determined?',
+    prompt: 'Balance exclusivity against status stability.',
+    options: [option('Fixed qualification thresholds'), option('Live top percentage of customers'), option('Fixed thresholds plus a warning when the tier becomes too large', true), option('Seasonal top percentage, frozen until the next season')],
+    lens: 'A live percentage can demote someone only because another customer spent more. A population warning preserves exclusivity without making status zero-sum.',
+  },
+  {
+    id: 22, section: 'Tier and LTV', sectionCode: 'C', type: 'single',
+    title: 'When should tier upgrades occur?',
+    prompt: 'Choose how quickly newly earned status appears.',
+    options: [option('Immediately after qualification', true), option('Monthly'), option('At the end of the season')],
+  },
+  {
+    id: 23, section: 'Tier and LTV', sectionCode: 'C', type: 'single',
+    title: 'When should tier downgrades occur?',
+    prompt: 'Choose the protection around a potentially negative customer moment.',
+    options: [option('Immediately when the customer falls below the threshold'), option('At season end, after notice and a grace period', true), option('Once per calendar year'), option('Never automatically')],
+  },
+  {
+    id: 24, section: 'Tier and LTV', sectionCode: 'C', type: 'single',
+    title: "Should tiers freeze during the producer's off-season?",
+    prompt: 'Prevent status changes when customers have no realistic opportunity to qualify.',
+    options: [option('Yes', true), option('No')],
+  },
+  {
+    id: 25, section: 'Tier and LTV', sectionCode: 'C', type: 'single',
+    title: 'Should client staff see progress toward the next tier?',
+    prompt: 'Choose whether the profile shows the remaining attendance and value gap.',
+    options: [option('Yes', true), option('Later phase'), option('No')],
+  },
+  {
+    id: 26, section: 'Tier and LTV', sectionCode: 'C', type: 'single',
+    title: 'Which default tier names should ship?',
+    prompt: 'This is a brand decision, so no option is pre-recommended.',
+    options: [option('Drop → Wave → Stream → Tsunami'), option('Ripple → Wave → Surge → Tsunami'), option('GA → Front Row → Backstage → All-Access'), option('Bronze → Silver → Gold → Platinum'), option('Rookie → Riser → Elite → Apex')],
+  },
+  {
+    id: 27, section: 'Tier and LTV', sectionCode: 'C', type: 'single',
+    title: 'Should clients be able to rename tiers?',
+    prompt: 'Stable internal keys can preserve workflows while names change.',
+    options: [option('Yes — names change, but stable internal tier keys remain unchanged', true), option('No')],
+  },
+  {
+    id: 28, section: 'Tier and LTV', sectionCode: 'C', type: 'single',
+    title: 'Should persona variants such as “Droper / Waver / Streamer” be offered?',
+    prompt: 'Choose whether customers are described as identities or tier nouns.',
+    options: [option('Yes, as the default'), option('Offer them as an optional naming skin'), option('No — use nouns only', true)],
+  },
+  {
+    id: 29, section: 'Badges and engagement', sectionCode: 'D', type: 'multi',
+    title: 'Which automatic badges should ship by default?',
+    prompt: 'Select the starter set. More can be added later without expanding the core axes.',
+    options: [option('Early Buyer', true), option('Last-Minute Buyer'), option('Group Buyer', true), option('High Spender', true), option('Rooms Buyer'), option('Merchandise Buyer'), option('Veteran', true), option('Responsive', true), option('Advocate or Referrer'), option('Out-of-Towner')],
+  },
+  {
+    id: 30, section: 'Badges and engagement', sectionCode: 'D', type: 'single',
+    title: 'Should automatic badges and manual tags remain separate?',
+    prompt: 'Automatic badges explain behavior; manual tags record human knowledge.',
+    options: [option('Yes', true), option('No')],
+  },
+  {
+    id: 31, section: 'Badges and engagement', sectionCode: 'D', type: 'single',
+    title: 'When should clients be able to create custom automatic badges?',
+    prompt: 'Choose whether the first version includes a client rule builder.',
+    options: [option('In v1'), option('Later phase', true), option('Never')],
+  },
+  {
+    id: 32, section: 'Badges and engagement', sectionCode: 'D', type: 'multi',
+    title: 'Which signals may contribute to engagement?',
+    prompt: 'Select every trusted engagement input.',
+    options: [option('Email clicks', true), option('Email opens'), option('Email replies', true), option('WhatsApp replies', true), option('SMS clicks or replies'), option('Support interactions'), option('Referral conversions', true), option('Event attendance', true)],
+  },
+  {
+    id: 33, section: 'Badges and engagement', sectionCode: 'D', type: 'single',
+    title: 'How should a customer with insufficient engagement data be classified?',
+    prompt: 'Choose how Flowz distinguishes missing data from real silence.',
+    options: [option('Silent'), option('Unscored or Unknown', true), option("Use the client's average engagement level")],
+  },
+  {
+    id: 34, section: 'Badges and engagement', sectionCode: 'D', type: 'single',
+    title: 'Where may engagement affect segmentation?',
+    prompt: 'Choose the boundaries of the engagement signal.',
+    options: [option('Lifecycle only'), option('Badges only'), option('Lifecycle and badges, but never tier', true), option('Lifecycle, badges, and tier')],
+  },
+  {
+    id: 35, section: 'Client configuration', sectionCode: 'E', type: 'single',
+    title: 'Who should be allowed to edit segmentation definitions?',
+    prompt: 'Choose the permission and commercial boundary.',
+    options: [option('Flowz operators only'), option('Client owners or admins on the Pro plan', true), option('Every client admin'), option('Every client user')],
+  },
+  {
+    id: 36, section: 'Client configuration', sectionCode: 'E', type: 'multi',
+    title: 'What may authorized clients edit?',
+    prompt: 'Select the controls clients may change. Numeric score weights should normally remain unselected.',
+    options: [option('Tier names, colors, and icons', true), option('Tier thresholds', true), option('Tier qualification window', true), option('Missed-edition thresholds', true), option('Which event series count', true), option('Automatic badge rules'), option('Lifecycle names'), option('Number of tiers'), option('Numeric score weights')],
+  },
+  {
+    id: 37, section: 'Client configuration', sectionCode: 'E', type: 'single',
+    title: 'Must every rule change show its impact before saving?',
+    prompt: 'The preview would show movement counts and affected customers.',
+    options: [option('Yes', true), option('No')],
+    lens: 'A rule change can silently reclassify thousands of customers. Previewing the movement makes the consequence explicit.',
+  },
+  {
+    id: 38, section: 'Client configuration', sectionCode: 'E', type: 'single',
+    title: 'Must configuration changes have an audit history?',
+    prompt: 'Record who changed what, when, and the previous value.',
+    options: [option('Yes', true), option('No')],
+  },
+  {
+    id: 39, section: 'Client configuration', sectionCode: 'E', type: 'single',
+    title: 'When should changed definitions take effect?',
+    prompt: 'Choose how clients control the moment assignments change.',
+    options: [option('Immediately'), option('On a chosen effective date', true), option('At the next season boundary'), option('Flowz chooses based on the type of change')],
+  },
+  {
+    id: 40, section: 'Rollout and migration', sectionCode: 'F', type: 'single',
+    title: 'What should v1 include?',
+    prompt: 'Choose the smallest coherent release.',
+    options: [option('Lifecycle and tier only'), option('Lifecycle, tier, and default automatic badges', true), option('The complete client-editable system'), option('Lifecycle only')],
+  },
+  {
+    id: 41, section: 'Rollout and migration', sectionCode: 'F', type: 'single',
+    title: 'Should the new engine run alongside the existing system before replacement?',
+    prompt: 'Choose how long old and new assignments should be compared.',
+    options: [option('Yes, for at least one complete event cycle', true), option('Yes, for 30 days'), option('No — replace it immediately')],
+    lens: 'A complete event cycle tests the seasonal behavior that calendar-based models routinely miss.',
+  },
+  {
+    id: 42, section: 'Rollout and migration', sectionCode: 'F', type: 'single',
+    title: 'How should existing customers be migrated?',
+    prompt: 'Choose the cutover method for current assignments.',
+    options: [option('Immediately recompute and overwrite current assignments'), option('Preserve current assignments without recomputing'), option('Calculate old and new assignments side by side, review differences, then switch', true)],
+    lens: 'Side-by-side results expose surprising movements before the new model becomes the source of truth.',
+  },
+  {
+    id: 43, section: 'Rollout and migration', sectionCode: 'F', type: 'single',
+    title: 'Who should receive the new model first?',
+    prompt: 'Choose the initial rollout audience.',
+    options: [option('Desert Bass or SupaCRM only', true), option('A small opt-in client beta'), option('Every client simultaneously')],
+  },
+];
+
+const SECTIONS = Array.from(new Map(QUESTIONS.map((question) => [question.sectionCode, question.section])).entries());
+
+
+const REVIEW = QUESTIONS.length + 1;
+const KEY = 'flowz-segmentation-decisions-v1';
+let slide = 0, answers = {}, exportState = '';
+
+try { const s = localStorage.getItem(KEY); if (s) answers = JSON.parse(s); } catch {}
+const persist = () => { try { localStorage.setItem(KEY, JSON.stringify(answers)); } catch {} };
+const answeredCount = () => QUESTIONS.filter(q => (answers[q.id] || []).length).length;
+const pad = n => String(n).padStart(2, '0');
+
+function buildMarkdown() {
+  const lines = ['# Flowz Segmentation Decision Workshop', '',
+    'Generated: ' + new Date().toLocaleString(), '',
+    'Answered: ' + answeredCount() + ' / ' + QUESTIONS.length, ''];
+  SECTIONS.forEach(([code, name]) => {
+    lines.push('## ' + code + '. ' + name, '');
+    QUESTIONS.filter(q => q.sectionCode === code).forEach(q => {
+      const sel = answers[q.id] || [];
+      lines.push('### ' + q.id + '. ' + q.title);
+      lines.push(sel.length ? '- Decision: ' + sel.join('; ') : '- Decision: **Not answered**');
+      const rec = q.options.filter(o => o.recommended).map(o => o.label);
+      if (rec.length) lines.push('- Research default: ' + rec.join('; '));
+      lines.push('');
+    });
+  });
+  return lines.join('\n');
+}
+
+const h = (tag, cls, text) => {
+  const el = document.createElement(tag);
+  if (cls) el.className = cls;
+  if (text !== undefined) el.textContent = text;
+  return el;
+};
+
+function setSlide(n) { slide = Math.max(0, Math.min(REVIEW, n)); render(); }
+
+function selectAnswer(q, label) {
+  const prev = answers[q.id] || [];
+  answers[q.id] = q.type === 'multi'
+    ? (prev.includes(label) ? prev.filter(x => x !== label) : [...prev, label])
+    : [label];
+  persist(); render();
+}
+
+function renderIntro(stage) {
+  const s = h('section', 'slide active');
+  const inner = h('div', 'slide-inner intro-inner');
+  inner.appendChild(h('div', 'kicker', 'Flowz · Segmentation decision workshop'));
+  const t = h('h1', 'display intro-title'); t.innerHTML = 'Decide the system<br>together.';
+  inner.appendChild(t);
+  inner.appendChild(h('p', 'h-sub intro-sub',
+    'A closed-choice workshop for lifecycle, LTV tiers, badges, client controls, and rollout. Every answer is saved on this device and exported as one implementation brief.'));
+  const stats = h('div', 'intro-stats');
+  [[String(QUESTIONS.length), 'decisions'], [String(SECTIONS.length), 'sections'], [String(answeredCount()), 'answered']]
+    .forEach(([v, l]) => { const c = h('div', 'stat-card'); c.appendChild(h('strong', '', v)); c.appendChild(h('span', '', l)); stats.appendChild(c); });
+  inner.appendChild(stats);
+  const chips = h('div', 'section-chips');
+  SECTIONS.forEach(([code, name]) => { const c = h('span', 'section-chip'); c.appendChild(h('b', '', code)); c.append(name); chips.appendChild(c); });
+  inner.appendChild(chips);
+  const links = h('div', 'title-links');
+  const start = h('button', 'btn primary', answeredCount() ? 'Continue workshop' : 'Start workshop');
+  start.onclick = () => setSlide((QUESTIONS.find(q => !(answers[q.id] || []).length) || { id: REVIEW }).id);
+  const rev = h('button', 'btn ghost', 'Review decisions');
+  rev.onclick = () => setSlide(REVIEW);
+  links.append(start, rev);
+  inner.appendChild(links);
+  s.appendChild(inner); stage.appendChild(s);
+}
+
+function renderQuestion(stage, q) {
+  const s = h('section', 'slide active');
+  const inner = h('div', 'slide-inner question-layout');
+  inner.appendChild(h('div', 'kicker', 'Segmentation decisions · ' + q.sectionCode + '. ' + q.section));
+  const head = h('div', 'question-heading');
+  head.appendChild(h('span', 'question-number', pad(q.id)));
+  const hd = h('div');
+  hd.appendChild(h('h1', 'h-title', q.title));
+  hd.appendChild(h('p', 'h-sub', q.prompt));
+  if (q.type === 'multi') hd.appendChild(h('span', 'multi-hint', 'Select all that apply'));
+  head.appendChild(hd);
+  inner.appendChild(head);
+  const grid = h('div', 'answer-grid' + (q.options.length > 6 ? ' dense' : ''));
+  grid.setAttribute('role', q.type === 'multi' ? 'group' : 'radiogroup');
+  const sel = answers[q.id] || [];
+  q.options.forEach(o => {
+    const b = h('button', 'answer-card' + (sel.includes(o.label) ? ' selected' : ''));
+    b.setAttribute('role', q.type === 'multi' ? 'checkbox' : 'radio');
+    b.setAttribute('aria-checked', sel.includes(o.label));
+    b.appendChild(h('span', q.type === 'multi' ? 'check-mark' : 'radio-mark'));
+    const copy = h('span', 'answer-copy');
+    copy.appendChild(h('span', '', o.label));
+    if (o.recommended) copy.appendChild(h('small', '', 'Recommended'));
+    b.appendChild(copy);
+    b.onclick = () => selectAnswer(q, o.label);
+    grid.appendChild(b);
+  });
+  inner.appendChild(grid);
+  if (q.lens) {
+    const note = h('div', 'workshop-note');
+    note.appendChild(h('b', '', 'Decision lens'));
+    note.appendChild(h('span', '', q.lens));
+    inner.appendChild(note);
+  }
+  s.appendChild(inner); stage.appendChild(s);
+}
+
+function renderReview(stage) {
+  const s = h('section', 'slide active review-slide');
+  const inner = h('div', 'slide-inner review-inner');
+  const head = h('div', 'review-head');
+  const hl = h('div');
+  hl.appendChild(h('div', 'kicker', 'Workshop summary'));
+  hl.appendChild(h('h1', 'h-title', 'Review before export'));
+  hl.appendChild(h('p', 'h-sub', 'Select any row to return to that decision.'));
+  const comp = h('div', 'completion-card');
+  const st = h('strong', '', String(answeredCount()));
+  st.appendChild(h('span', '', ' / ' + QUESTIONS.length));
+  comp.appendChild(st);
+  comp.appendChild(h('small', '', 'answered'));
+  const track = h('div', 'completion-track');
+  const fill = h('i'); fill.style.width = (answeredCount() / QUESTIONS.length * 100) + '%';
+  track.appendChild(fill); comp.appendChild(track);
+  head.append(hl, comp);
+  inner.appendChild(head);
+  const scroll = h('div', 'review-scroll');
+  SECTIONS.forEach(([code, name]) => {
+    const qs = QUESTIONS.filter(q => q.sectionCode === code);
+    const card = h('div', 'review-card');
+    const ch = h('div', 'review-card-head');
+    const h2 = h('h2'); h2.appendChild(h('span', '', code)); h2.append(name);
+    ch.appendChild(h2);
+    ch.appendChild(h('small', '', qs.filter(q => (answers[q.id] || []).length).length + ' / ' + qs.length));
+    card.appendChild(ch);
+    qs.forEach(q => {
+      const vals = answers[q.id] || [];
+      const row = h('button', 'review-row' + (vals.length ? '' : ' unanswered'));
+      row.appendChild(h('span', 'review-num', pad(q.id)));
+      row.appendChild(h('span', 'review-question', q.title));
+      row.appendChild(h('span', 'review-answer', vals.length ? vals.join(' · ') : 'Not answered'));
+      row.onclick = () => setSlide(q.id);
+      card.appendChild(row);
+    });
+    scroll.appendChild(card);
+  });
+  inner.appendChild(scroll);
+  const acts = h('div', 'review-actions');
+  const copyB = h('button', 'btn primary', 'Copy as Markdown');
+  copyB.onclick = async () => {
+    try { await navigator.clipboard.writeText(buildMarkdown()); exportState = 'Copied to clipboard'; }
+    catch { exportState = 'Clipboard unavailable — use Download instead'; }
+    render();
+  };
+  const dlB = h('button', 'btn ghost', 'Download decisions (.md)');
+  dlB.onclick = () => {
+    const blob = new Blob([buildMarkdown()], { type: 'text/markdown;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'flowz-segmentation-decisions.md'; a.click();
+    URL.revokeObjectURL(url);
+    exportState = 'Decision file downloaded'; render();
+  };
+  const resetB = h('button', 'btn text-btn', 'Reset answers');
+  resetB.onclick = () => {
+    if (!confirm('Reset all workshop answers on this device?')) return;
+    answers = {}; persist(); exportState = 'Answers reset'; render();
+  };
+  const state = h('span', 'export-state', exportState);
+  state.setAttribute('role', 'status');
+  acts.append(copyB, dlB, resetB, state);
+  inner.appendChild(acts);
+  s.appendChild(inner); stage.appendChild(s);
+}
+
+function render() {
+  const q = slide > 0 && slide <= QUESTIONS.length ? QUESTIONS[slide - 1] : null;
+  document.getElementById('progress').style.width = (slide === 0 ? 0 : slide / REVIEW * 100) + '%';
+  document.getElementById('cornerChip').textContent = answeredCount() + ' / ' + QUESTIONS.length + ' answered · Internal';
+
+  const stage = document.getElementById('stage');
+  stage.innerHTML = '';
+  stage.style.animation = 'none'; void stage.offsetHeight; stage.style.animation = '';
+  if (slide === 0) renderIntro(stage);
+  else if (q) renderQuestion(stage, q);
+  else renderReview(stage);
+
+  const nav = document.getElementById('nav');
+  nav.innerHTML = '';
+  SECTIONS.forEach(([code, name]) => {
+    const qs = QUESTIONS.filter(x => x.sectionCode === code);
+    const d = h('button', 'dot'
+      + (q && q.sectionCode === code ? ' on' : '')
+      + (qs.every(x => (answers[x.id] || []).length) ? ' complete' : ''));
+    d.title = code + '. ' + name;
+    d.onclick = () => setSlide(qs[0].id);
+    nav.appendChild(d);
+  });
+
+  document.getElementById('prev').disabled = slide === 0;
+  document.getElementById('next').disabled = slide === REVIEW;
+  document.getElementById('slideNum').textContent =
+    slide === 0 ? 'START' : slide === REVIEW ? 'REVIEW' : pad(slide) + ' / ' + QUESTIONS.length;
+
+  const foot = document.getElementById('footLink');
+  foot.style.display = slide > 0 && slide < REVIEW ? '' : 'none';
+  const save = document.getElementById('saveState');
+  save.style.display = slide > 0 && slide < REVIEW ? '' : 'none';
+  if (q) save.textContent = (answers[q.id] || []).length ? 'Saved on this device' : 'Choose an answer';
+}
+
+document.getElementById('prev').onclick = () => setSlide(slide - 1);
+document.getElementById('next').onclick = () => setSlide(slide + 1);
+document.getElementById('footLink').onclick = () => setSlide(REVIEW);
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') setSlide(slide + 1);
+  if (e.key === 'ArrowLeft') setSlide(slide - 1);
+});
+render();
+
+</script>
+</body>
+</html>

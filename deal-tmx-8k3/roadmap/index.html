@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Flowz — Product Roadmap · Shared Build Plan</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23F0641E'/><text x='50' y='72' font-size='62' font-weight='800' font-family='Arial' text-anchor='middle' fill='white'>Z</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FAF6EF; --cream-deep:#F3EDE2; --card:#FFFDF9;
+  --ink:#2B2620; --ink-soft:#6E6659;
+  --orange:#F0641E; --orange-soft:#FDE8DC;
+  --blue:#3B82F6; --blue-soft:#DBEAFE;
+  --green:#3E8914; --green-soft:#DCF3C8;
+  --purple:#8B5CF6; --purple-soft:#EFE3FA;
+  --teal:#0D9488; --teal-soft:#CCF3EC;
+  --gold:#E8A93D; --gold-soft:#FCF0D8; --gold-ink:#A8720F;
+  --red:#D14343; --red-soft:#FBE3E3;
+  --radius:22px; --shadow:0 10px 34px rgba(90,70,40,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--cream);color:var(--ink);overflow:hidden}
+h1,h2,h3{font-family:'Sora',sans-serif}
+
+#gate{position:fixed;inset:0;background:var(--cream);z-index:999;display:flex;align-items:center;justify-content:center;text-align:center}
+#gate .box{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:36px 40px;max-width:430px}
+#gate input{font-family:'Sora';font-size:18px;padding:10px 14px;border:1.5px solid #E4DACB;border-radius:12px;width:100%;margin:16px 0 10px;text-align:center}
+#gate button{font-weight:700;font-size:15px;background:var(--orange);color:#fff;border:none;border-radius:12px;padding:10px 22px;cursor:pointer}
+#gate .err{color:var(--red);font-size:13px;min-height:18px;margin-top:6px}
+
+.deck{position:relative;width:100vw;height:100vh}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:44px 60px 84px;opacity:0;visibility:hidden;transform:translateY(24px);transition:opacity .5s ease,transform .5s ease,visibility 0s .5s}
+.slide.active{opacity:1;visibility:visible;transform:translateY(0);transition:opacity .5s ease,transform .5s ease}
+.slide-inner{width:100%;max-width:1200px;max-height:calc(100vh - 118px);overflow:auto;padding:4px 2px 12px}
+.slide-inner::-webkit-scrollbar{width:6px}.slide-inner::-webkit-scrollbar-thumb{background:#E4DACB;border-radius:4px}
+.progress{position:fixed;left:0;top:0;height:4px;background:var(--orange);width:0;transition:width .4s ease;z-index:60;border-radius:0 4px 4px 0}
+.nav{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:60}
+.dot{width:9px;height:9px;border-radius:50%;background:#D9CFBE;cursor:pointer;transition:.25s;border:none}
+.dot.on{background:var(--orange);transform:scale(1.35)}
+.arrows{position:fixed;bottom:14px;right:22px;display:flex;gap:8px;z-index:60}
+.arrow-btn{height:42px;padding:0 16px;border-radius:14px;border:1.5px solid #E4DACB;background:var(--card);font-size:14px;font-weight:700;color:var(--ink);cursor:pointer;transition:.2s;box-shadow:0 3px 10px rgba(90,70,40,.07)}
+.arrow-btn:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.slide-num{position:fixed;bottom:24px;left:26px;font-size:12px;letter-spacing:.14em;color:#B4A890;z-index:60;font-weight:600}
+.home-link{position:fixed;top:16px;right:22px;z-index:60;font-size:12px;font-weight:700;color:var(--ink-soft);text-decoration:none;background:var(--card);border:1.5px solid #E4DACB;border-radius:999px;padding:7px 14px;font-family:'Sora'}
+.home-link:hover{color:var(--orange);border-color:var(--orange)}
+#masterInt{position:fixed;top:16px;right:96px;z-index:60;font-size:11.5px;font-weight:800;letter-spacing:.04em;border-radius:999px;padding:7px 14px;cursor:pointer;border:1.5px solid var(--green);background:var(--green-soft);color:var(--green);font-family:'Sora'}
+#masterInt.off{border-color:#E4DACB;background:var(--card);color:#B4A890}
+.conf{position:fixed;top:16px;left:22px;z-index:60;font-size:11.5px;font-weight:800;letter-spacing:.1em;color:var(--red);background:var(--red-soft);border-radius:999px;padding:7px 14px}
+
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);margin-bottom:14px}
+.eyebrow .dotmark{width:8px;height:8px;border-radius:50%;background:var(--orange);animation:pulse 2.4s infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.5}}
+.h-xl{font-size:50px;line-height:1.08;font-weight:800;letter-spacing:-.02em}
+.h-lg{font-size:31px;line-height:1.16;font-weight:800;letter-spacing:-.015em}
+.h-md{font-size:18px;font-weight:700}
+.lede{font-size:16px;line-height:1.65;color:var(--ink-soft);max-width:880px}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 20px;border:1px solid rgba(120,95,60,.06)}
+.rise{opacity:0;transform:translateY(18px)}
+.active .rise{animation:riseIn .7s cubic-bezier(.2,.7,.2,1) forwards}
+.active .rise.d1{animation-delay:.1s}.active .rise.d2{animation-delay:.22s}.active .rise.d3{animation-delay:.34s}.active .rise.d4{animation-delay:.46s}
+@keyframes riseIn{to{opacity:1;transform:translateY(0)}}
+.chip{font-size:11.5px;font-weight:700;letter-spacing:.04em;padding:6px 14px;border-radius:999px;display:inline-flex;align-items:center;gap:7px}
+.chip-or{background:var(--orange);color:#fff}.chip-gr{background:var(--green-soft);color:var(--green)}.chip-bl{background:var(--blue-soft);color:#1D5FCC}.chip-rd{background:var(--red-soft);color:var(--red)}.chip-go{background:var(--gold-soft);color:var(--gold-ink)}.chip-pu{background:var(--purple-soft);color:#6D3FC4}.chip-tl{background:var(--teal-soft);color:#0B7267}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.foot-note{margin-top:13px;font-size:12.5px;color:#B4A890;font-weight:600}
+p.body{font-size:13.8px;line-height:1.65;color:var(--ink-soft)}
+ul.list{list-style:none;display:flex;flex-direction:column;gap:8px}
+ul.list li{font-size:13.4px;line-height:1.6;padding-left:20px;position:relative;color:var(--ink)}
+ul.list li::before{content:"";position:absolute;left:2px;top:9px;width:7px;height:7px;border-radius:50%;background:var(--orange)}
+ul.list.ok li::before{background:var(--green)}
+ul.list.bad li::before{background:var(--red)}
+
+.term{border-bottom:2px dotted var(--orange);cursor:help;font-weight:600;color:var(--ink)}
+#tip{position:fixed;z-index:300;max-width:340px;background:var(--ink);color:#FAF6EF;border-radius:14px;padding:13px 16px;font-size:12.5px;line-height:1.55;box-shadow:0 18px 50px rgba(0,0,0,.35);display:none;pointer-events:none}
+#tip .tt{font-family:'Sora';font-weight:700;font-size:13px;color:#FFB38A;margin-bottom:4px}
+#tip .td{color:#E8E2D6}
+#tip .tn{margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,.15);font-size:11.5px;color:#C9BFA9;font-weight:600}
+
+.ammo{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;color:#fff;background:var(--ink);border:none;border-radius:999px;padding:5px 12px;cursor:pointer;vertical-align:middle;margin:2px 6px 2px 0;transition:.15s;font-family:'Inter'}
+.ammo:hover{background:var(--orange);transform:translateY(-1px)}
+.ammo::before{content:"🎯";font-size:11px}
+#modal{position:fixed;inset:0;background:rgba(43,38,32,.6);z-index:400;display:none;align-items:center;justify-content:center;padding:20px}
+#modal.open{display:flex}
+#modal .mbox{background:var(--cream);border-radius:22px;width:min(960px,96vw);max-height:92vh;overflow:auto;box-shadow:0 30px 80px rgba(0,0,0,.4);padding:22px 26px;position:relative}
+#modal .close{position:absolute;top:12px;right:14px;width:34px;height:34px;border-radius:11px;border:1.5px solid #E4DACB;background:var(--card);cursor:pointer;font-size:15px}
+#modal h3{font-size:19px;font-weight:800;margin-bottom:10px;padding-right:40px}
+#modal .mnote{font-size:12.5px;color:var(--ink-soft);background:var(--gold-soft);border-radius:12px;padding:10px 14px;margin-top:12px;line-height:1.65}
+table.mt{width:100%;border-collapse:collapse;font-size:12.8px;background:var(--card);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);margin-top:8px}
+table.mt th{background:var(--cream-deep);font-weight:800;text-align:left;padding:9px 12px;font-size:11.8px}
+table.mt td{padding:8px 12px;border-top:1px solid #F0E9DC;line-height:1.5;vertical-align:top}
+.good{color:var(--green);font-weight:800}.bad{color:var(--red);font-weight:800}.mid{color:var(--gold-ink);font-weight:800}
+
+.intbtn{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;color:var(--green);background:var(--green-soft);border:1.5px solid var(--green);border-radius:999px;padding:5px 13px;cursor:pointer;margin:10px 0 0;transition:.15s;font-family:'Sora'}
+.intbtn:hover{background:var(--green);color:#fff}
+.intbtn::before{content:"🔒";font-size:11px}
+.intblock{display:none;margin-top:10px;background:#F2F8EC;border:1.5px dashed var(--green);border-radius:14px;padding:13px 16px;font-size:13px;line-height:1.65}
+.intblock.open{display:block}
+.intblock .ih{font-family:'Sora';font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:5px}
+body.int-off .intbtn, body.int-off .intblock{display:none!important}
+
+.status{font-family:'Sora';font-size:9.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:3px 9px;border-radius:999px;vertical-align:middle}
+.st-live{background:var(--green-soft);color:var(--green)}
+.st-build{background:var(--gold-soft);color:var(--gold-ink)}
+.st-proc{background:var(--teal-soft);color:#0B7267}
+.st-road{background:var(--blue-soft);color:#1D5FCC}
+
+.bird{width:100%;border-collapse:separate;border-spacing:4px;font-size:11.8px}
+.bird th{font-family:'Sora';font-size:11px;font-weight:800;padding:8px 6px;text-align:center;border-radius:10px}
+.bird th.now{background:var(--green-soft);color:var(--green)}
+.bird th.next{background:var(--teal-soft);color:#0B7267}
+.bird th.later{background:var(--blue-soft);color:#1D5FCC}
+.bird th.beyond{background:var(--purple-soft);color:#6D3FC4}
+.bird th.lane{background:var(--cream-deep);color:var(--ink);text-align:left;padding-left:10px;width:130px}
+.bird td{background:var(--card);border-radius:10px;padding:7px 9px;line-height:1.45;vertical-align:top;box-shadow:0 2px 8px rgba(90,70,40,.05)}
+.bird td b{font-size:11.8px}
+.bird td small{display:block;color:var(--ink-soft);font-size:10.8px}
+
+.tl{position:relative;margin-top:12px;padding:24px 0 4px}
+.tl .line{position:absolute;top:33px;left:0;right:0;height:4px;background:#E4DACB;border-radius:4px}
+.tl .pts{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.tl .pt{position:relative;padding-top:23px;font-size:11.4px;line-height:1.4}
+.tl .pt::before{content:"";position:absolute;top:4px;left:calc(50% - 7px);width:14px;height:14px;border-radius:50%;background:var(--card);border:4px solid var(--orange)}
+.tl .pt.g::before{border-color:var(--green)}
+.tl .pt b{display:block;font-size:11.8px}
+.tl .pt .yy{font-family:'Sora';font-size:10.2px;font-weight:800;color:var(--ink-soft)}
+
+
+.glance{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
+.glcol{border-radius:18px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.glcol.now{background:#EAF6E2}.glcol.next{background:#E2F4F1}.glcol.later{background:#E8F0FD}.glcol.beyond{background:#F1EAFB}
+.glhead{font-family:'Sora';font-size:12.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:8px 10px;border-radius:12px;text-align:center;color:#fff}
+.glcol.now .glhead{background:var(--green)}.glcol.next .glhead{background:var(--teal)}.glcol.later .glhead{background:var(--blue)}.glcol.beyond .glhead{background:var(--purple)}
+.glhead small{display:block;font-size:10px;font-weight:700;opacity:.85;letter-spacing:.04em;text-transform:none}
+.gltile{background:var(--card);border-radius:11px;padding:7px 11px;font-weight:800;font-size:13px;line-height:1.3;box-shadow:0 3px 10px rgba(90,70,40,.07)}
+.gltile small{display:block;font-weight:600;font-size:10.4px;color:var(--ink-soft);margin-top:1px}
+.gltile.hero{background:var(--orange);color:#fff;font-size:14px}
+.gltile.hero small{color:#FFE1CF}
+
+@media (max-width:900px), (max-height:620px){
+  body{overflow:auto}.deck{width:auto;height:auto}
+  .slide{position:relative;inset:auto;opacity:1;visibility:visible;transform:none;min-height:0;padding:36px 16px;border-bottom:1.5px dashed #E4DACB}
+  .slide-inner{max-height:none;overflow:visible}
+  .rise{opacity:1;transform:none;animation:none!important}
+  .nav,.arrows,.slide-num,.progress{display:none}
+  .h-xl{font-size:31px}.h-lg{font-size:23px}
+  .two-col,.three-col{grid-template-columns:1fr}
+  .glance{grid-template-columns:1fr 1fr}
+  .tl .pts{grid-template-columns:1fr 1fr}
+  .bird{font-size:10.5px}
+}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="box">
+    <div class="chip chip-rd">Confidential · Flowz founders</div>
+    <h2 style="font-size:21px;margin-top:14px">Product Roadmap — Shared Build Plan</h2>
+    <p style="font-size:13px;color:var(--ink-soft);margin-top:8px">Access code:</p>
+    <input id="gateIn" type="password" placeholder="access code" autocomplete="off">
+    <button onclick="gateTry()">Enter</button>
+    <div class="err" id="gateErr"></div>
+  </div>
+</div>
+
+<div class="progress"></div>
+<a class="home-link" href="../../">← Hub</a>
+<button id="masterInt" onclick="toggleMaster()">Internal layer: ON</button>
+<div class="conf">CONFIDENTIAL · AUG 2026</div>
+
+<div class="deck">
+
+<!-- 1 TITLE -->
+<section class="slide active">
+  <div class="slide-inner" style="text-align:center">
+    <div class="rise"><div class="eyebrow" style="justify-content:center;display:flex"><span class="dotmark"></span>Flowz × toMix · Shared Build Plan</div></div>
+    <h1 class="h-xl rise d1">Product Roadmap</h1>
+    <p class="lede rise d2" style="margin:20px auto 0">From kickoff to an agentic decision-intelligence platform — realistic, dependency-honest, and deliberately ambitious. Months are relative to <span class="term" data-t="m0">M0 (kickoff)</span>; every claim aligns with the timelines already committed in our technology deck.</p>
+    <div class="rise d3" style="margin-top:26px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <span class="chip chip-gr">V2.0 GA at ~M2</span>
+      <span class="chip chip-tl">Reach channels M2–M4</span>
+      <span class="chip chip-bl">Agentic engine M4–M7</span>
+      <span class="chip chip-pu">Finance &amp; depth M8+</span>
+    </div>
+    <p class="foot-note rise d4">Hover any dotted term for a data card · 🎯 buttons open deep-dive popups · 🔒 green buttons reveal the internal layer (kill it with the switch top-right before screen-sharing)</p>
+    <button class="intbtn" onclick="toggleInt(this)">Internal note</button>
+    <div class="intblock" style="text-align:left;max-width:760px;margin-left:auto;margin-right:auto"><div class="ih">Internal</div>Built for the toMix conversation. Before presenting: click "Internal layer: ON" (top-right) to turn it OFF — every green button and block disappears, no trace. The deck then reads as a clean shared-roadmap artifact. Timeline is "slightly pushed forward" by design — aggressive but defensible; the tech-deck claims (1–2w per ticketing integration, ~4w per channel, 5–7w portfolio view) are the floor we can always retreat to.</div>
+  </div>
+</section>
+
+<!-- 1b GLANCE -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise" style="text-align:center"><span class="chip chip-or">The roadmap in five seconds</span></div>
+    <div class="glance rise d1">
+      <div class="glcol now">
+        <div class="glhead">NOW<small>M0 – M2</small></div>
+        <div class="gltile hero">🚀 V2.0 Launch<small>Stage A done · GA at ~M2</small></div>
+        <div class="gltile">🇮🇱 Hebrew + RTL</div>
+        <div class="gltile">🏷️ Multi-Brand<small>optimized for portfolios</small></div>
+        <div class="gltile">💡 Insights &amp; Flows<small>algorithmic</small></div>
+        <div class="gltile">✅ Organization Tasks<small>flows stop at people</small></div>
+        <div class="gltile">✉️ SMS + Email<small>in-system packages</small></div>
+        <div class="gltile">🎟️ toMix Ticketing<small>deep connect + API redesign</small></div>
+        <div class="gltile">👥 2 Hires<small>from a vetted pool of 5</small></div>
+      </div>
+      <div class="glcol next">
+        <div class="glhead">NEXT<small>M2 – M4</small></div>
+        <div class="gltile">📣 Meta PPC<small>specialist + plan ready</small></div>
+        <div class="gltile">💬 WhatsApp<small>official · broadcasts to segments</small></div>
+        <div class="gltile">🔎 Google PPC<small>creator &amp; optimizer</small></div>
+        <div class="gltile">🎚️ Live-data tuning<small>insight thresholds per brand</small></div>
+      </div>
+      <div class="glcol later">
+        <div class="glhead">LATER<small>M4 – M7</small></div>
+        <div class="gltile">📖 Market Playbook<small>mined from toMix data</small></div>
+        <div class="gltile">🧬 Behavioral Patterns<small>buyer-behavior library</small></div>
+        <div class="gltile">🤖 Agentic Engine<small>insights &amp; flows that reason</small></div>
+      </div>
+      <div class="glcol beyond">
+        <div class="glhead">BEYOND<small>M8+</small></div>
+        <div class="gltile">💰 Finance &amp; Budgeting<small>suppliers · invoices · budget vs actual</small></div>
+        <div class="gltile">🎧 Support Module<small>service on the same profile</small></div>
+        <div class="gltile">🎪 Day Console<small>live-event ops view</small></div>
+        <div class="gltile">📊 Benchmarks + Partner API</div>
+      </div>
+    </div>
+    <p class="foot-note rise d2" style="text-align:center">That's the whole story. Now let's dial in — slide by slide →</p>
+  </div>
+</section>
+
+<!-- 2 HOW TO READ -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-or">How to read this roadmap</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">Horizons, workstreams, and an honesty system</h2>
+    <div class="three-col rise d2" style="margin-top:14px">
+      <div class="card"><h3 class="h-md">Horizons, not dates</h3><p class="body" style="margin-top:8px"><span class="term" data-t="nnl">Now / Next / Later</span> horizons anchored to <span class="term" data-t="m0">M0</span> = kickoff (deal signed, budget live). No calendar promises that slip if signing moves — the sequence and durations are the commitment.</p></div>
+      <div class="card"><h3 class="h-md">Five workstreams</h3><p class="body" style="margin-top:8px">Product Core · Data &amp; Integrations · Activation Channels · Intelligence · Team &amp; Ops — running in parallel, dependency-gated where reality demands it.</p></div>
+      <div class="card"><h3 class="h-md">Status chips</h3><p class="body" style="margin-top:8px"><span class="status st-live">Live</span> <span class="status st-build">Built</span> <span class="status st-proc">In process</span> <span class="status st-road">Roadmap</span> — same honesty system as the technology deck: nothing claimed live that isn't.</p></div>
+    </div>
+    <div class="card rise d3" style="margin-top:14px">
+      <h3 class="h-md">The spine we build on <span class="status st-live">Live</span></h3>
+      <p class="body" style="margin-top:6px">Data Core (unified customer &amp; commerce model, in-database LTV) · Sync Engine (minutes-level, one-shot historical backfill) · <span class="term" data-t="idres">identity resolution</span> · ControlRoom + Sales / LTV / Reach dashboards · org isolation (fails closed) · production-proven on a real client with 300k+ communications synced. The roadmap starts from a working platform, not a whiteboard.</p>
+    </div>
+    <button class="intbtn" onclick="toggleInt(this)">Internal note</button>
+    <div class="intblock"><div class="ih">Internal</div>The "spine" list is exactly the tech deck's LIVE chips — don't inflate it. Anything Aviv retracted in v2 (AI search, Hebrew-English matching as live claims) stays out of the live column here too; they appear later as roadmap items.</div>
+  </div>
+</section>
+
+<!-- 3 BIRD'S EYE -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-bl">Bird's-eye view</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">One map: four horizons × five workstreams</h2>
+    <table class="bird rise d2" style="margin-top:12px">
+      <tr>
+        <th class="lane"></th>
+        <th class="now">NOW · M0–M2<br><small style="font-weight:600">→ V2.0 GA</small></th>
+        <th class="next">NEXT · M2–M4<br><small style="font-weight:600">Reach</small></th>
+        <th class="later">LATER · M4–M7<br><small style="font-weight:600">Agentic</small></th>
+        <th class="beyond">BEYOND · M8+<br><small style="font-weight:600">Depth</small></th>
+      </tr>
+      <tr>
+        <th class="lane">Product Core</th>
+        <td><b><span class="term" data-t="stagea">Stage A</span> user stories → <span class="term" data-t="v2">V2.0</span></b><small>Hebrew + RTL · multi-brand optimization · Organization Tasks</small></td>
+        <td><b>V2.x iterations</b><small>usage-driven fixes, per-brand tuning</small></td>
+        <td><b>Portfolio analytics</b><small>cross-brand views deepen</small></td>
+        <td><b>Finance &amp; budgeting · Support module</b><small>the depth moat</small></td>
+      </tr>
+      <tr>
+        <th class="lane">Data &amp; Integrations</th>
+        <td><b>toMix data intake + ticketing deep-connect</b><small>API redesign, webhooks, write-back where allowed</small></td>
+        <td><b>Refresh hardening</b><small>live feeds, data-quality center v1</small></td>
+        <td><b><span class="term" data-t="playbook">Market Playbook</span> + <span class="term" data-t="patterns">Behavioral Patterns</span></b><small>mined from toMix data</small></td>
+        <td><b>Partner API · benchmarks</b><small>anonymized, cross-market</small></td>
+      </tr>
+      <tr>
+        <th class="lane">Activation Channels</th>
+        <td><b>SMS + Email in-system</b><small>white-label + leading-provider integrations</small></td>
+        <td><b>Meta PPC → WhatsApp → Google PPC</b><small>~4 weeks each, sequenced</small></td>
+        <td><b>Channel optimization loops</b><small>budget shift suggestions, A/B rails</small></td>
+        <td><b>Click-to-WhatsApp synergy · new channels</b><small>as market demands</small></td>
+      </tr>
+      <tr>
+        <th class="lane">Intelligence</th>
+        <td><b>Insights + Flows — <span class="term" data-t="algo">algorithmic</span></b><small>from the 100-item bank; flows stop at named people</small></td>
+        <td><b>Tuning on live data</b><small>thresholds calibrated per brand</small></td>
+        <td><b><span class="term" data-t="agentic">Agentic</span> engine — 2 steps</b><small>analyze → playbook → grounded reasoning</small></td>
+        <td><b>Autonomous flows</b><small>approval-gated automation widens</small></td>
+      </tr>
+      <tr>
+        <th class="lane">Team &amp; Ops</th>
+        <td><b>2 hires from pool of 5 · <span class="term" data-t="dpa">DPA</span> · security pass</b><small>comp model TBD</small></td>
+        <td><b>Meta PPC specialist active</b><small>person + plan already secured</small></td>
+        <td><b>Agentic lead ramps</b><small>role mix per user stories</small></td>
+        <td><b>Scale hires</b><small>funded by growth</small></td>
+      </tr>
+    </table>
+    <p class="foot-note rise d3">Every cell expands in the phase slides that follow. Sequence is the commitment; durations carry the tech-deck floor. <button class="ammo" onclick="openAmmo('claims')">Committed timeline claims</button></p>
+  </div>
+</section>
+
+<!-- 4 PHASE 0 -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-gr">NOW · Phase 0 — Foundation (M0, weeks 1–3)</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">Team on board, data flowing, ticketing wired</h2>
+    <div class="three-col rise d2" style="margin-top:14px">
+      <div class="card">
+        <h3 class="h-md">Team &amp; Ops <span class="status st-proc">In process</span></h3>
+        <ul class="list" style="margin-top:8px">
+          <li><b>2 hires from a vetted pool of 5</b> — final role mix decided with the agreed roadmap + Stage A user stories (slide 9)</li>
+          <li>Joint roadmap lock with toMix — scope freeze for <span class="term" data-t="stagea">Stage A</span></li>
+          <li>Security &amp; compliance pass scheduled pre-onboarding</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="h-md">Data intake <span class="status st-build">Ready</span></h3>
+        <ul class="list" style="margin-top:8px">
+          <li><span class="term" data-t="dpa">DPA</span> signed → full historical transfer (backfill is a proven one-shot process)</li>
+          <li><span class="term" data-t="idres">Identity resolution</span> + dedupe across brands — the multi-brand hard part, already live</li>
+          <li>Number validation with toMix's team — trust is built on the first matching figure</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="h-md">Ticketing deep-connect <span class="status st-proc">Kickoff</span></h3>
+        <ul class="list" style="margin-top:8px">
+          <li>Full connection to toMix's ticketing platform — <b>including redesigned API functions</b>, webhooks, live order feed</li>
+          <li>Write-back where the platform allows (list creation, order edits)</li>
+          <li>Floor: any ticketing platform lives in 1–2 weeks; a first-party deep integration gets the extra care</li>
+        </ul>
+      </div>
+    </div>
+    <button class="intbtn" onclick="toggleInt(this)">Internal notes</button>
+    <div class="intblock"><div class="ih">Internal</div>· Comp for the 2 hires — salary vs project-based — TBD soon; funded by the 18-month budget (₪45–80K/mo). Don't let toMix turn hire approval into a control lever: budget releases per roadmap, hiring decisions are ours.<br>· DPA before the first file is also <b>earn-in milestone M1</b> — the deal and the roadmap same-page here.<br>· Data-inventory gate from the MVP plan applies: no data → no dashboard. If toMix's historical exports are messier than claimed, Phase 0 stretches — that's the honest risk of "slightly pushed forward".</div>
+  </div>
+</section>
+
+<!-- 5 PHASE 1 V2 -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-gr">NOW · Phase 1 — Version 2.0 (M1–M2)</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">Stage A closed → <span style="color:var(--orange)">V2.0 GA at ~M2</span></h2>
+    <div class="two-col rise d2" style="margin-top:14px">
+      <div class="card">
+        <h3 class="h-md">In the release</h3>
+        <ul class="list" style="margin-top:8px">
+          <li><b>Hebrew + full RTL</b> — UI, data fields, templates, emails <span class="status st-road">Roadmap</span></li>
+          <li><b>Multi-brand optimization</b> — org isolation is <span class="status st-live">Live</span>; brand selectors, concurrent-event views tuned for toMix's archetype; cross-brand portfolio view scoped (5–7w) <span class="status st-build">Scoped</span></li>
+          <li><b>Actionable Insights — algorithmic</b> — signal rules from the 100-item bank <span class="status st-proc">In process</span></li>
+          <li><b>Actionable Flows — algorithmic</b> — insight → orchestrated action with approval gates <span class="status st-proc">In process</span></li>
+          <li><b>Organization Tasks</b> — flows include <span class="term" data-t="stops">"stops"</span>: steps assigned to named people, tracked to done <span class="status st-road">Roadmap</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="h-md">Messaging day one</h3>
+        <ul class="list" style="margin-top:8px">
+          <li><b>SMS package in-system</b> via <span class="term" data-t="wl">white-label</span> infrastructure <span class="status st-road">Roadmap · high feasibility</span></li>
+          <li><b>Email package in-system</b> via white-label + <b>integrations to leading providers</b> when the client prefers their own stack (one provider already live, new ones 1–2w each) <span class="status st-live">Partially live</span></li>
+          <li>Same rails for everything: segment → template → approval → send → results back into the profile</li>
+        </ul>
+        <p class="body" style="margin-top:10px"><b>V2.0 definition of done:</b> Stage A user stories closed · toMix ticketing feed live · insights + flows firing on real data · tasks routing to real people. <button class="ammo" onclick="openAmmo('v2scope')">V2.0 scope checklist</button></p>
+      </div>
+    </div>
+    <button class="intbtn" onclick="toggleInt(this)">Internal notes</button>
+    <div class="intblock"><div class="ih">Internal</div>· "~M2" is the pushed-forward number; the defensible retreat is M3 (assembly-line + validation steps take their toll). Announce V2.0 GA with toMix as co-launch — good for the relationship, good for the earn-in narrative.<br>· The 100-item Insights/Flows bank is written (50+50, specified to data needs) — the engine is the build, not the content.<br>· White-label SMS/email vendor selection: 2–3 candidates shortlisted, decision with the hires; don't name vendors in any shared version.</div>
+  </div>
+</section>
+
+<!-- 6 PHASE 2 REACH -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-tl">NEXT · Phase 2 — Reach (M2–M4)</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">Meta first, WhatsApp second, Google third</h2>
+    <div class="three-col rise d2" style="margin-top:14px">
+      <div class="card" style="border-top:5px solid var(--teal)">
+        <h3 class="h-md">1 · Meta <span class="term" data-t="ppc">PPC</span> <span class="status st-proc">Validated · in process</span></h3>
+        <p class="body" style="margin-top:8px">Campaign creation, management and optimization across Facebook + Instagram — audiences and lookalikes built from any Flowz segment, results flowing back into profiles. <b>The specialist and the feasible plan are already secured.</b> ~4 weeks via <span class="term" data-t="partner">certified partners</span>.</p>
+      </div>
+      <div class="card" style="border-top:5px solid var(--teal)">
+        <h3 class="h-md">2 · WhatsApp official <span class="status st-proc">Validated · in process</span></h3>
+        <p class="body" style="margin-top:8px">Broadcasts to CRM segments (segments <i>are</i> the broadcast lists), template messages with dynamic fields, two-way inbox, chat-bots, <span class="term" data-t="ctwa">click-to-WhatsApp ads</span> — on the client's own number. Sequenced right after Meta; same rails.</p>
+      </div>
+      <div class="card" style="border-top:5px solid var(--blue)">
+        <h3 class="h-md">3 · Google PPC <span class="status st-road">Roadmap · route mapped</span></h3>
+        <p class="body" style="margin-top:8px">Campaign creator &amp; optimizer — launch, spend, CTR/CPC/CPM per ad in real time. Supporting channel by design; lands once Meta + WhatsApp are earning their keep.</p>
+      </div>
+    </div>
+    <p class="foot-note rise d3">Channel economics and approval mechanics: <button class="ammo" onclick="openAmmo('msgecon')">Israel message economics</button> <button class="ammo" onclick="openAmmo('depchain')">The approval dependency chain</button></p>
+    <button class="intbtn" onclick="toggleInt(this)">Internal notes</button>
+    <div class="intblock"><div class="ih">Internal</div>· The real gate: <b>Meta Business Verification requires incorporation</b> (registered entity, matching docs, business-domain email, live HTTPS site). It gates production-grade Marketing API access, Tech Provider status, Embedded Signup scale and messaging tiers. Fast lane meanwhile: partner/BSP pilots carry clients' own verifications. Incorporation timing is therefore a <i>product</i> dependency, not just legal housekeeping.<br>· Single-small-vendor concentration risk on the ads fast lane — demand a written ISV agreement + DPA before client-facing features ride it; exit ramp to our own Meta app is designed in.<br>· Unofficial WhatsApp channel: retired, DD liability, never client-facing.</div>
+  </div>
+</section>
+
+<!-- 7 PHASE 3 AGENTIC -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-bl">LATER · Phase 3 — Agentic (M4–M7)</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">Insights &amp; Flows grow a brain — in two deliberate steps</h2>
+    <div class="two-col rise d2" style="margin-top:14px">
+      <div class="card" style="border-top:5px solid var(--blue)">
+        <h3 class="h-md">Step 1 · Learn the market (M4–M5)</h3>
+        <p class="body" style="margin-top:8px">Deep analysis of toMix's cross-segment data — events, tourism, culinary, family, festivals — concluding in two proprietary assets:</p>
+        <ul class="list" style="margin-top:8px">
+          <li><b><span class="term" data-t="playbook">Market Playbook</span></b> — what works, when, for which audience, at what price curve</li>
+          <li><b><span class="term" data-t="patterns">Behavioral Patterns</span></b> library — recurring buyer behaviors: timing, triggers, churn signatures, upgrade paths</li>
+        </ul>
+      </div>
+      <div class="card" style="border-top:5px solid var(--purple)">
+        <h3 class="h-md">Step 2 · Feed the engine (M5–M7)</h3>
+        <p class="body" style="margin-top:8px">Insights &amp; Flows upgrade from <span class="term" data-t="algo">algorithmic</span> to <span class="term" data-t="agentic">agentic</span>: AI reasoning grounded in the 100-item bank + the Playbook + the Patterns library. The system starts <i>proposing</i> flows it composed itself — always through approval gates, widening autonomy only as trust is earned.</p>
+        <p class="body" style="margin-top:8px">Sequencing is principled: <b>agentic only after algorithmic proves out</b> — concrete and measurable before clever.</p>
+      </div>
+    </div>
+    <p class="foot-note rise d3"><button class="ammo" onclick="openAmmo('agentic2')">The two-step architecture in detail</button> <button class="ammo" onclick="openAmmo('bank')">Inside the 100-item Insights &amp; Flows bank</button></p>
+    <button class="intbtn" onclick="toggleInt(this)">Internal notes</button>
+    <div class="intblock"><div class="ih">Internal</div>· The Playbook + Patterns derived from toMix data are exactly the "derived insights" of data-license clause A.7 — perpetual, anonymized, usable by Global worldwide. This phase is where the deal's data value materializes; guard the clause.<br>· Agentic Lead hire ideally lands M3–M4 so ramp-up meets Step 1.<br>· This slide is also the answer to "what makes you Palantir-for-experiences and not another CRM" — vision ammunition for any investor conversation.</div>
+  </div>
+</section>
+
+<!-- 8 PHASE 4 DEPTH -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-pu">BEYOND · Phase 4 — Depth (M8–M12+)</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">The modules that make Flowz the whole operating system</h2>
+    <div class="two-col rise d2" style="margin-top:14px">
+      <div class="card" style="border-top:5px solid var(--purple)">
+        <h3 class="h-md">Finance &amp; Event Budgeting <span class="status st-road">Roadmap</span></h3>
+        <ul class="list" style="margin-top:8px">
+          <li>Internal sheets system — budgets per event, versioned</li>
+          <li>Suppliers, purchase orders, invoices, payment status</li>
+          <li>Budget vs actuals live against ticket revenue; settlement views</li>
+          <li>Budget-drift insights feed the same Insights &amp; Flows rails</li>
+        </ul>
+        <p class="body" style="margin-top:8px"><b>Why it's the moat:</b> event finance is the one layer no competitor offers — total whitespace in the category.</p>
+      </div>
+      <div class="card" style="border-top:5px solid var(--purple)">
+        <h3 class="h-md">Support &amp; Service module <span class="status st-road">Roadmap</span></h3>
+        <ul class="list" style="margin-top:8px">
+          <li>Customer threads across channels (mail, WhatsApp, SMS) in one queue</li>
+          <li>Assignment, SLA timers, canned answers, satisfaction tracking</li>
+          <li>Support history lives on the same customer profile as purchases and campaigns — service becomes an LTV signal</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card rise d3" style="margin-top:14px">
+      <h3 class="h-md">Also on the Beyond horizon</h3>
+      <p class="body" style="margin-top:6px"><b>Live-Event Day Console</b> — the day-of ops view for the person running the floor · <b>Segmentation &amp; Tiers</b> — lifecycle × value tiers with badges · <b>Data Quality Center</b> — health scores, duplicate queues · <b>Anonymized Benchmarks</b> — "events like yours" comparisons across the portfolio · <b>Partner API &amp; webhooks</b> — Flowz as a platform others build on.</p>
+    </div>
+    <button class="intbtn" onclick="toggleInt(this)">Internal notes</button>
+    <div class="intblock"><div class="ih">Internal</div>· Support module = the "like Zoho" ask — never name Zoho (or any vendor) in shared versions; "Support &amp; Service module" is the permanent name.<br>· Live-Event Day Console answers a known gap: the champion's highest-stakes moment (live event) currently has no product surface — it's also a wedge for org-wide adoption beyond desk users.<br>· Benchmarks ride the derived-insights clause; they're also a future *sales asset* for every next client.</div>
+  </div>
+</section>
+
+<!-- 9 TEAM -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-or">Team &amp; Capacity</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">Two seats, six role options, one principle: the roadmap picks the roles</h2>
+    <div class="two-col rise d2" style="margin-top:14px">
+      <div class="card">
+        <h3 class="h-md">Hiring now</h3>
+        <p class="body" style="margin-top:8px"><b>2 hires from a vetted pool of 5 candidates</b> — already sourced, already screened, ready to start at M0. Compensation model (salary vs project-based) finalized at kickoff. The final role mix is decided by the agreed roadmap and the Stage A user stories — capacity follows scope, not the reverse.</p>
+        <p class="body" style="margin-top:10px"><b>Already secured separately:</b> the Meta PPC specialist with a feasible implementation plan — activates in Phase 2.</p>
+      </div>
+      <div class="card">
+        <h3 class="h-md">The role options</h3>
+        <ul class="list" style="margin-top:8px">
+          <li><b>Full-Stack Developer</b> — V2.0 velocity, Stage A throughput</li>
+          <li><b>Integrations / Data Engineer</b> — ticketing deep-connect, channel rails</li>
+          <li><b>Big Data Analyst / Developer</b> — Playbook &amp; Patterns mining (Phase 3 Step 1)</li>
+          <li><b>Agentic Engineering Lead</b> — the Phase 3 Step 2 owner</li>
+          <li><b>Growth / AdTech Engineer</b> — PPC rails hardening across Meta, Google, WhatsApp</li>
+          <li><b>Customer Success &amp; Onboarding Lead</b> — toMix adoption, tasks-module rollout, feedback loop</li>
+        </ul>
+      </div>
+    </div>
+    <button class="intbtn" onclick="toggleInt(this)">Internal notes</button>
+    <div class="intblock"><div class="ih">Internal</div>· Funded by the 18-month budget (₪45–80K/mo covers ~2 salaries + infra comfortably at IL rates).<br>· Likely opening pair if Stage A stays as scoped: Full-Stack + Integrations/Data. The Agentic Lead becomes hire #3 near M3–M4 — or earlier if one pool candidate covers both data + agentic.<br>· Keep hiring authority explicitly ours in the term sheet — budget released per roadmap, not per-hire approval.</div>
+  </div>
+</section>
+
+<!-- 10 DEPENDENCIES -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-rd">Dependencies &amp; Risks — the honesty slide</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">What this timeline assumes, and what can move it</h2>
+    <div class="two-col rise d2" style="margin-top:14px">
+      <div class="card">
+        <h3 class="h-md">Hard dependencies</h3>
+        <ul class="list bad" style="margin-top:8px">
+          <li><b>Incorporation → platform approvals.</b> <span class="term" data-t="bv">Business Verification</span> needs a registered entity; it gates production-grade Meta/WhatsApp access. Partner-carried pilots bridge the gap.</li>
+          <li><b><span class="term" data-t="dpa">DPA</span> before the first data file.</b> Non-negotiable, and quick if prioritized.</li>
+          <li><b>Client-side authorizations.</b> Ad accounts, WhatsApp numbers, ticketing API access — toMix actions on the critical path.</li>
+          <li><b>Integration validation before deployment</b> — step 3 of the assembly line, always.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="h-md">Working assumptions</h3>
+        <ul class="list" style="margin-top:8px">
+          <li>Parallel execution across workstreams — the two hires make this real</li>
+          <li>Historical data quality is workable (identity resolution absorbs mess, not chaos)</li>
+          <li>Ticketing write-back lands where the platform allows — scope confirmed in Phase 0</li>
+          <li>Sequence holds even if a phase stretches: nothing downstream builds on sand</li>
+        </ul>
+      </div>
+    </div>
+    <button class="intbtn" onclick="toggleInt(this)">Internal notes</button>
+    <div class="intblock"><div class="ih">Internal</div>· This slide doubles as our protection: every dependency named here that sits on toMix's side (authorizations, data quality, ticketing access) is a documented reason a milestone slips without it being our miss — which matters because earn-in tranches and budget releases ride these milestones.<br>· Incorporation timing is now product-critical — another reason the founders' agreement + formation move this month.</div>
+  </div>
+</section>
+
+<!-- 11 DEAL ALIGNMENT -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-go">Roadmap ↔ Partnership</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">One story: the roadmap and the deal move together</h2>
+    <div class="tl rise d2">
+      <div class="line"></div>
+      <div class="pts">
+        <div class="pt g"><b>M0 · Kickoff</b><span class="yy">SIGNING</span>Budget live · hires start · DPA signed</div>
+        <div class="pt g"><b>M1 · Data complete</b><span class="yy">MILESTONE 1</span>Full historical transfer + live feed</div>
+        <div class="pt"><b>M2 · V2.0 GA</b><span class="yy">RELEASE</span>Stage A closed · co-launch</div>
+        <div class="pt g"><b>M3–M6 · Implementation</b><span class="yy">MILESTONE 2</span>Design-partner window: 4 key people, weekly cadence</div>
+        <div class="pt g"><b>M6–M12 · Distribution</b><span class="yy">MILESTONE 3</span>Reach channels live · distribution targets measured</div>
+        <div class="pt g"><b>M18 · Funding complete</b><span class="yy">MILESTONE 4</span>18-month budget fully delivered</div>
+      </div>
+    </div>
+    <p class="body rise d3" style="margin-top:16px">Green markers are partnership milestones; the rest are product releases. Each side can see, at any month, exactly what was delivered and what unlocked — <b>no "satisfactory progress" language anywhere.</b></p>
+    <button class="intbtn" onclick="toggleInt(this)">Internal notes</button>
+    <div class="intblock"><div class="ih">Internal</div>The green markers are the four earn-in tranches (2% each → 8% cap in Global) from the Roee-meeting structure. In a toMix-facing presentation this slide stays — it's the strongest trust artifact we have: their equity and our roadmap on one line. The internal layer is the only thing that names the percentages.</div>
+  </div>
+</section>
+
+<!-- 12 SUMMARY -->
+<section class="slide">
+  <div class="slide-inner" style="text-align:center">
+    <div class="rise"><span class="chip chip-or">Summary</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:12px">Aggressive where it counts, honest where it matters</h2>
+    <div class="three-col rise d2" style="margin-top:18px;text-align:left">
+      <div class="card"><h3 class="h-md">M2</h3><p class="body" style="margin-top:6px">V2.0 GA — Hebrew/RTL, multi-brand, algorithmic Insights &amp; Flows, Organization Tasks, SMS/Email in-system, toMix ticketing wired.</p></div>
+      <div class="card"><h3 class="h-md">M4</h3><p class="body" style="margin-top:6px">Reach complete — Meta PPC live with our specialist, WhatsApp official broadcasting to segments, Google PPC building.</p></div>
+      <div class="card"><h3 class="h-md">M7</h3><p class="body" style="margin-top:6px">Agentic engine reasoning over the Market Playbook and Behavioral Patterns mined from toMix's data — the moat nobody else can copy.</p></div>
+    </div>
+    <p class="lede rise d3" style="margin:22px auto 0">Next step: freeze Stage A user stories together, sign, and M0 starts counting.</p>
+    <p class="foot-note rise d4">Companion decks: Technology &amp; Delivery (TDD) · Deal structure + calculator · Meeting script — all on the hub, same login.</p>
+  </div>
+</section>
+
+</div>
+
+<div id="tip"><div class="tt"></div><div class="td"></div><div class="tn"></div></div>
+<div id="modal" onclick="if(event.target===this)closeAmmo()"><div class="mbox"><button class="close" onclick="closeAmmo()">✕</button><div id="mcontent"></div></div></div>
+
+<div class="nav" id="dots"></div>
+<div class="arrows">
+  <button class="arrow-btn" id="prev">← Prev</button>
+  <button class="arrow-btn" id="next">Next →</button>
+</div>
+<div class="slide-num" id="snum">01 / 13</div>
+
+<script>
+/* gate */
+const GATE_KEY='tmx-gate-ok';
+function gateTry(){
+  const v=document.getElementById('gateIn').value.trim().toLowerCase();
+  if(v==='2houses'||v==='two houses'||v==='twohouses'){sessionStorage.setItem(GATE_KEY,'1');document.getElementById('gate').style.display='none';}
+  else document.getElementById('gateErr').textContent='Wrong code';
+}
+document.getElementById('gateIn').addEventListener('keydown',e=>{if(e.key==='Enter')gateTry();});
+if(sessionStorage.getItem(GATE_KEY)==='1')document.getElementById('gate').style.display='none';
+
+/* tooltip state — declared BEFORE the slide engine (go() calls hideTip) */
+const tip=document.getElementById('tip');
+let tipLock=false;
+function hideTip(){if(!tipLock){tip.style.display='none';}}
+
+/* slide engine */
+const slides=[...document.querySelectorAll('.slide')];
+const dotsWrap=document.getElementById('dots');
+slides.forEach((_,i)=>{const d=document.createElement('button');d.className='dot'+(i===0?' on':'');d.onclick=()=>go(i);dotsWrap.appendChild(d);});
+const dots=[...dotsWrap.children];
+let cur=0;
+function go(i){
+  cur=Math.max(0,Math.min(slides.length-1,i));
+  slides.forEach((s,k)=>s.classList.toggle('active',k===cur));
+  dots.forEach((d,k)=>d.classList.toggle('on',k===cur));
+  document.querySelector('.progress').style.width=((cur+1)/slides.length*100)+'%';
+  document.getElementById('snum').textContent=String(cur+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
+  hideTip();
+}
+const h0=parseInt((location.hash||'').replace('#s',''));
+go(isNaN(h0)?0:h0-1);
+document.getElementById('next').onclick=()=>go(cur+1);
+document.getElementById('prev').onclick=()=>go(cur-1);
+addEventListener('keydown',e=>{
+  if(document.getElementById('modal').classList.contains('open')){if(e.key==='Escape')closeAmmo();return;}
+  if(document.activeElement&&document.activeElement.tagName==='INPUT')return;
+  if(['ArrowRight',' ','PageDown'].includes(e.key)){e.preventDefault();go(cur+1);}
+  if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(cur-1);}
+});
+let tx=null;
+addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;tx=null;if(Math.abs(dx)>60&&matchMedia('(min-width:901px)').matches){go(cur+(dx<0?1:-1));}},{passive:true});
+
+/* internal layer */
+function toggleInt(btn){const b=btn.nextElementSibling;b.classList.toggle('open');}
+const INT_KEY='roadmap-int-on';
+function applyMaster(on){
+  document.body.classList.toggle('int-off',!on);
+  const m=document.getElementById('masterInt');
+  m.textContent='Internal layer: '+(on?'ON':'OFF');
+  m.classList.toggle('off',!on);
+}
+function toggleMaster(){
+  const on=document.body.classList.contains('int-off');
+  localStorage.setItem(INT_KEY,on?'1':'0');
+  applyMaster(on);
+}
+applyMaster(localStorage.getItem(INT_KEY)!=='0');
+
+/* hover terms */
+const TERMS={
+  m0:{t:'M0 — Kickoff',d:'Month zero: deal signed, funded budget live, hires start. All roadmap months count from here — no calendar promises that slip when signing moves.',n:''},
+  nnl:{t:'Now / Next / Later',d:'Standard product-roadmap horizon framing: Now = committed and in motion, Next = sequenced and scoped, Later = directional with principled gates, Beyond = strategic depth.',n:''},
+  stagea:{t:'Stage A user stories',d:'The agreed first scope: the user-story set frozen jointly at kickoff. Closing Stage A is the release gate for V2.0.',n:'Scope freeze at M0 · release at ~M2'},
+  v2:{t:'V2.0 GA',d:'General Availability of the second-generation platform — the new surface becomes the main product for daily use, launched with toMix as design partner.',n:'Definition of done on slide 5'},
+  idres:{t:'Identity resolution',d:'Phone-first matching with email fallback, deduplicating the same customer across ticketing systems, files and brands — already live in production.',n:'Critical for multi-brand: same buyer appears in several brands'},
+  dpa:{t:'DPA — Data Processing Agreement',d:'The privacy contract that must be signed before the first customer-data file moves: roles, security exhibit, sub-processors, breach flow, deletion.',n:'Also the deal\'s first earn-in milestone'},
+  stops:{t:'"Stops" — tasks inside flows',d:'A flow step that halts at a named person: approve a discount, brief a designer, call a supplier. The flow tracks the human step to completion — that\'s the Organization Tasks module.',n:'Example: stalled sales → 3 creative briefs assigned A/B/C'},
+  wl:{t:'White-label infrastructure',d:'SMS and email sending capacity resold under the Flowz surface — in-system packages clients can use without bringing their own provider.',n:'Client prefers their own stack? Direct integrations instead'},
+  algo:{t:'Algorithmic (Track 1)',d:'Signal rules computed straight from the data: pace vs target, churn flags, budget drift. Concrete, measurable, no magic — ships first.',n:'From the written 100-item bank'},
+  agentic:{t:'Agentic (Track 2)',d:'AI reasoning over the organization\'s live data, grounded in the insight bank + market playbooks. Proposes flows it composed — always behind approval gates.',n:'Principled gate: only after algorithmic proves out'},
+  playbook:{t:'Market Playbook',d:'What works in this market: launch timing, price curves, audience-segment response, channel mix — concluded from toMix\'s cross-segment history.',n:'Proprietary asset · grounds the agentic engine'},
+  patterns:{t:'Behavioral Patterns',d:'A library of recurring buyer behaviors: purchase timing signatures, churn precursors, upgrade triggers, reactivation windows.',n:'Feeds agentic reasoning + benchmark comparisons'},
+  ppc:{t:'PPC — Pay Per Click',d:'Paid acquisition campaigns (Meta, Google). Flowz creates, manages and optimizes them from the same segments the rest of the platform runs on.',n:'Meta specialist + implementation plan already secured'},
+  partner:{t:'Certified technology partners',d:'Stage-A route: platform-certified partners carry the heavy Meta/WhatsApp approvals, compressing time-to-market to weeks while client assets stay with the client.',n:'Exit ramp to first-party access designed in'},
+  ctwa:{t:'Click-to-WhatsApp ads',d:'Meta ads that open a WhatsApp conversation. Every ad-driven conversation opens a 72-hour free messaging window — ads and messaging compound.',n:'Ad-driven conversations: ₪0 message fees for 72h'},
+  bv:{t:'Meta Business Verification',d:'Meta\'s identity check for production API access: registered legal entity, matching documents, business-domain email, live site. Gates advanced access, Tech Provider status and messaging scale.',n:'Why incorporation timing is a product dependency'},
+};
+function showTip(el){
+  const T=TERMS[el.dataset.t]; if(!T)return;
+  tip.querySelector('.tt').textContent=T.t;
+  tip.querySelector('.td').textContent=T.d;
+  const n=tip.querySelector('.tn'); n.textContent=T.n||''; n.style.display=T.n?'block':'none';
+  tip.style.display='block';
+  const r=el.getBoundingClientRect(), tw=tip.offsetWidth, th=tip.offsetHeight;
+  let x=r.left+r.width/2-tw/2; x=Math.max(10,Math.min(innerWidth-tw-10,x));
+  let y=r.top-th-10; if(y<8)y=r.bottom+10;
+  tip.style.left=x+'px'; tip.style.top=y+'px';
+}
+document.querySelectorAll('.term').forEach(el=>{
+  el.setAttribute('tabindex','0');
+  el.addEventListener('mouseenter',()=>{tipLock=false;showTip(el);});
+  el.addEventListener('mouseleave',hideTip);
+  el.addEventListener('focus',()=>showTip(el));
+  el.addEventListener('blur',hideTip);
+  el.addEventListener('click',e=>{e.stopPropagation();tipLock=!tipLock;showTip(el);});
+});
+addEventListener('click',()=>{tipLock=false;hideTip();});
+
+/* ammo modals */
+const AMMO={
+  claims:'<h3>Committed timeline claims — the floor we never contradict</h3><table class="mt"><tr><th>Claim</th><th>Where committed</th><th>Number</th></tr><tr><td>New ticketing integration (API or dedicated parser)</td><td>Technology deck</td><td class="good">1–2 weeks each</td></tr><tr><td>New email-provider integration</td><td>Technology deck</td><td class="good">1–2 weeks each</td></tr><tr><td>New activation channel (Meta / WhatsApp / Google / SMS) via certified partners</td><td>Technology deck</td><td class="good">~4 weeks each</td></tr><tr><td>Cross-brand portfolio view (optional build)</td><td>Technology deck</td><td class="mid">5–7 weeks once prioritized</td></tr><tr><td>Insights &amp; Flows engine</td><td>Technology deck</td><td class="mid">"prioritized with partners" — algorithmic first, no committed date</td></tr></table><p class="mnote">This roadmap sequences those claims into phases and adds the ambition layer (V2.0 at M2, agentic at M7). If challenged, the tech-deck numbers are the always-defensible floor.</p>',
+
+  v2scope:'<h3>V2.0 — scope checklist (Stage A)</h3><table class="mt"><tr><th>Area</th><th>Ships in V2.0</th></tr><tr><td>Localization</td><td>Hebrew UI + full RTL across dashboards, templates, emails, data fields</td></tr><tr><td>Multi-brand</td><td>Brand selectors + concurrent-event views tuned for multi-brand operators; portfolio view scoped as fast-follow (5–7w)</td></tr><tr><td>Intelligence</td><td>Algorithmic Insights + Flows live from the 100-item bank, thresholds per brand</td></tr><tr><td>Tasks</td><td>Organization Tasks: flow steps assigned to named people, tracked, nudged, closed</td></tr><tr><td>Messaging</td><td>SMS + Email packages in-system (white-label) + direct integrations to leading providers</td></tr><tr><td>Data</td><td>toMix ticketing platform fully connected — redesigned API functions, live feed, write-back where allowed</td></tr><tr><td>Trust</td><td>Numbers validated with the client; security &amp; compliance pass done pre-onboarding</td></tr></table><p class="mnote">Definition of done = every Stage A user story closed + all of the above demoable on live toMix data. Anything else discovered along the way goes to V2.x — scope discipline is what makes M2 real.</p>',
+
+  msgecon:'<h3>Israel message economics (per delivered message)</h3><table class="mt"><tr><th>Type</th><th>USD</th><th>≈ NIS</th><th>Note</th></tr><tr><td>Marketing (WhatsApp)</td><td>$0.0353</td><td>₪0.13</td><td>Promotions, broadcasts</td></tr><tr><td>Utility</td><td>$0.0053</td><td>₪0.02</td><td>Order/ticket confirmations, reminders</td></tr><tr><td>Authentication</td><td>$0.0053</td><td>₪0.02</td><td>OTP codes</td></tr><tr><td>Service (in 24h window)</td><td class="good">Free</td><td class="good">₪0</td><td>Replies within the customer-service window</td></tr><tr><td>Click-to-WhatsApp conversations</td><td class="good">Free 72h</td><td class="good">₪0</td><td>Ad-driven chats — ads + messaging compound</td></tr></table><p class="mnote">Scale example: a 1,000-person coupon blast ≈ $35 (~₪130) in platform fees. Messaging capacity itself scales in tiers (250 → 2,000 → 10K → 100K → unlimited unique users/24h) as quality and volume grow — another reason verification and warm-up start early.</p>',
+
+  depchain:'<h3>The approval dependency chain (Meta &amp; WhatsApp)</h3><table class="mt"><tr><th>Step</th><th>Depends on</th><th>Typical duration</th></tr><tr><td>Company incorporation</td><td>Founders + counsel (in motion)</td><td>—</td></tr><tr><td>Meta Business Verification</td><td>Registered entity, matching docs, business-domain email, live site</td><td>days–weeks</td></tr><tr><td>App Review (advanced access)</td><td>BV + demo videos</td><td>~3–7 business days per attempt</td></tr><tr><td>Direct production access (ads + WhatsApp Tech Provider)</td><td>All of the above</td><td class="mid">~4–10 weeks total from zero</td></tr><tr><td><b>Fast lane meanwhile</b></td><td>Certified partners / BSP carry clients\' own verifications</td><td class="good">days per client</td></tr></table><p class="mnote">The roadmap runs both lanes in parallel: partners deliver Phase 2 on time; first-party access matures behind them and pilots migrate over (a number migration keeps display name, quality rating and limits — takes minutes).</p>',
+
+  agentic2:'<h3>The agentic architecture — two steps, deliberately</h3><table class="mt"><tr><th>Step</th><th>Input</th><th>Output</th><th>Months</th></tr><tr><td><b>1 · Learn</b></td><td>toMix cross-segment history: events, tourism, culinary, family, festivals — plus live V2.0 telemetry</td><td>Market Playbook (what works, when, for whom, at what price curve) + Behavioral Patterns library (timing signatures, churn precursors, upgrade triggers)</td><td>M4–M5</td></tr><tr><td><b>2 · Reason</b></td><td>100-item insight/flow bank + Playbook + Patterns + the org\'s live data</td><td>Agentic Insights &amp; Flows: the system composes and proposes flows itself, through approval gates; autonomy widens as trust is earned</td><td>M5–M7</td></tr></table><p class="mnote">Why two steps and not one: an agent without grounded market knowledge is a chatbot with opinions. The Playbook and Patterns are the grounding corpus — and they\'re proprietary, mined from data nobody else has. That\'s the "Palantir for the experience economy" claim made real.</p>',
+
+  bank:'<h3>Inside the 100-item Insights &amp; Flows bank</h3><p style="font-size:13.5px;line-height:1.65">Written and specified — 50 insights + 50 flows, each mapped to exact data needs and a paired action. Sample categories:</p><table class="mt"><tr><th>Category</th><th>Examples</th></tr><tr><td>Sales &amp; velocity (I1–I12)</td><td>Pace vs last edition · break-even date projection · sell-out projection · 48h launch spike · tier exhaustion · refund spike</td></tr><tr><td>Customer &amp; LTV (I13–I24)</td><td>New vs repeat buyer share · at-risk segment · lapsed reactivation · churn after ≥2 editions · VIP non-repurchase · ambassador detection</td></tr><tr><td>Flows (F1–F50)</td><td>Stalled sales → segment analysis → creative briefs assigned to 3 people · price-window alerts → approval → campaign push · churn flag → win-back sequence</td></tr></table><p class="mnote">The engine is the build; the content already exists. That\'s why "algorithmic insights at V2.0" is a credible claim and not a research project.</p>',
+};
+const modal=document.getElementById('modal'), mcontent=document.getElementById('mcontent');
+function openAmmo(k){mcontent.innerHTML=AMMO[k]||'';modal.classList.add('open');}
+function closeAmmo(){modal.classList.remove('open');}
+</script>
+</body>
+</html>

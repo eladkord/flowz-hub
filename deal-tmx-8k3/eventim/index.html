@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Flowz — The Ghost at the Table · Eventim × Zappa × Feingold</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23F0641E'/><text x='50' y='72' font-size='62' font-weight='800' font-family='Arial' text-anchor='middle' fill='white'>Z</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FAF6EF; --cream-deep:#F3EDE2; --card:#FFFDF9;
+  --ink:#2B2620; --ink-soft:#6E6659;
+  --orange:#F0641E; --orange-soft:#FDE8DC;
+  --blue:#3B82F6; --blue-soft:#DBEAFE;
+  --green:#3E8914; --green-soft:#DCF3C8;
+  --purple:#8B5CF6; --purple-soft:#EFE3FA;
+  --teal:#0D9488; --teal-soft:#CCF3EC;
+  --gold:#E8A93D; --gold-soft:#FCF0D8; --gold-ink:#A8720F;
+  --red:#D14343; --red-soft:#FBE3E3;
+  --radius:22px; --shadow:0 10px 34px rgba(90,70,40,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--cream);color:var(--ink);overflow:hidden}
+h1,h2,h3{font-family:'Sora',sans-serif}
+
+#gate{position:fixed;inset:0;background:var(--cream);z-index:999;display:flex;align-items:center;justify-content:center;text-align:center}
+#gate .box{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:36px 40px;max-width:430px}
+#gate input{font-family:'Sora';font-size:18px;padding:10px 14px;border:1.5px solid #E4DACB;border-radius:12px;width:100%;margin:16px 0 10px;text-align:center}
+#gate button{font-family:'Inter';font-weight:700;font-size:15px;background:var(--orange);color:#fff;border:none;border-radius:12px;padding:10px 22px;cursor:pointer}
+#gate .err{color:var(--red);font-size:13px;min-height:18px;margin-top:6px}
+
+.deck{position:relative;width:100vw;height:100vh}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:44px 64px 84px;opacity:0;visibility:hidden;transform:translateY(24px);transition:opacity .5s ease,transform .5s ease,visibility 0s .5s}
+.slide.active{opacity:1;visibility:visible;transform:translateY(0);transition:opacity .5s ease,transform .5s ease}
+.slide-inner{width:100%;max-width:1180px;max-height:calc(100vh - 120px);overflow:auto;padding:4px 2px 12px}
+.slide-inner::-webkit-scrollbar{width:6px}.slide-inner::-webkit-scrollbar-thumb{background:#E4DACB;border-radius:4px}
+.progress{position:fixed;left:0;top:0;height:4px;background:var(--orange);width:0;transition:width .4s ease;z-index:60;border-radius:0 4px 4px 0}
+.nav{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:60}
+.dot{width:9px;height:9px;border-radius:50%;background:#D9CFBE;cursor:pointer;transition:.25s;border:none}
+.dot.on{background:var(--orange);transform:scale(1.35)}
+.arrows{position:fixed;bottom:14px;right:22px;display:flex;gap:8px;z-index:60}
+.arrow-btn{height:42px;padding:0 16px;border-radius:14px;border:1.5px solid #E4DACB;background:var(--card);font-size:14px;font-weight:700;color:var(--ink);cursor:pointer;transition:.2s;box-shadow:0 3px 10px rgba(90,70,40,.07)}
+.arrow-btn:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.slide-num{position:fixed;bottom:24px;left:26px;font-size:12px;letter-spacing:.14em;color:#B4A890;z-index:60;font-weight:600}
+.home-link{position:fixed;top:16px;right:22px;z-index:60;font-size:12px;font-weight:700;color:var(--ink-soft);text-decoration:none;background:var(--card);border:1.5px solid #E4DACB;border-radius:999px;padding:7px 14px;transition:.2s;font-family:'Sora'}
+.home-link:hover{color:var(--orange);border-color:var(--orange)}
+.conf{position:fixed;top:16px;left:22px;z-index:60;font-size:11.5px;font-weight:800;letter-spacing:.1em;color:var(--red);background:var(--red-soft);border-radius:999px;padding:7px 14px}
+
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);margin-bottom:14px}
+.eyebrow .dotmark{width:8px;height:8px;border-radius:50%;background:var(--orange);animation:pulse 2.4s infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.5}}
+.h-xl{font-size:52px;line-height:1.08;font-weight:800;letter-spacing:-.02em}
+.h-lg{font-size:33px;line-height:1.16;font-weight:800;letter-spacing:-.015em}
+.h-md{font-size:19px;font-weight:700}
+.lede{font-size:16.5px;line-height:1.65;color:var(--ink-soft);max-width:860px}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px 22px;border:1px solid rgba(120,95,60,.06)}
+.rise{opacity:0;transform:translateY(18px)}
+.active .rise{animation:riseIn .7s cubic-bezier(.2,.7,.2,1) forwards}
+.active .rise.d1{animation-delay:.1s}.active .rise.d2{animation-delay:.22s}.active .rise.d3{animation-delay:.34s}.active .rise.d4{animation-delay:.46s}
+@keyframes riseIn{to{opacity:1;transform:translateY(0)}}
+.chip{font-size:11.5px;font-weight:700;letter-spacing:.04em;padding:6px 14px;border-radius:999px;display:inline-flex;align-items:center;gap:7px}
+.chip-or{background:var(--orange);color:#fff}.chip-gr{background:var(--green-soft);color:var(--green)}.chip-bl{background:var(--blue-soft);color:#1D5FCC}.chip-rd{background:var(--red-soft);color:var(--red)}.chip-go{background:var(--gold-soft);color:var(--gold-ink)}.chip-pu{background:var(--purple-soft);color:#6D3FC4}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.foot-note{margin-top:14px;font-size:12.5px;color:#B4A890;font-weight:600}
+p.body{font-size:14px;line-height:1.7;color:var(--ink-soft)}
+ul.list{list-style:none;display:flex;flex-direction:column;gap:8px}
+ul.list li{font-size:13.5px;line-height:1.6;padding-left:20px;position:relative;color:var(--ink)}
+ul.list li::before{content:"";position:absolute;left:2px;top:9px;width:7px;height:7px;border-radius:50%;background:var(--orange)}
+ul.list.ok li::before{background:var(--green)}
+ul.list.bad li::before{background:var(--red)}
+
+.term{border-bottom:2px dotted var(--orange);cursor:help;font-weight:600;color:var(--ink)}
+#tip{position:fixed;z-index:300;max-width:340px;background:var(--ink);color:#FAF6EF;border-radius:14px;padding:13px 16px;font-size:12.5px;line-height:1.55;box-shadow:0 18px 50px rgba(0,0,0,.35);display:none;pointer-events:none}
+#tip .tt{font-family:'Sora';font-weight:700;font-size:13px;color:#FFB38A;margin-bottom:4px}
+#tip .td{color:#E8E2D6}
+#tip .tn{margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,.15);font-size:11.5px;color:#C9BFA9;font-weight:600}
+
+.tl{position:relative;margin-top:14px;padding:24px 0 6px}
+.tl .line{position:absolute;top:34px;left:0;right:0;height:4px;background:#E4DACB;border-radius:4px}
+.tl .pts{display:grid;grid-template-columns:repeat(8,1fr);gap:6px}
+.tl .pt{position:relative;padding-top:24px;font-size:11.4px;line-height:1.4}
+.tl .pt::before{content:"";position:absolute;top:4px;left:calc(50% - 7px);width:14px;height:14px;border-radius:50%;background:var(--card);border:4px solid var(--orange)}
+.tl .pt.g::before{border-color:#B4A890}
+.tl .pt.r::before{border-color:var(--red)}
+.tl .pt b{display:block;font-size:11.8px}
+.tl .pt .yy{font-family:'Sora';font-size:10.5px;font-weight:800;color:var(--ink-soft)}
+
+table.t{width:100%;border-collapse:collapse;font-size:12.6px;background:var(--card);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+table.t th{background:var(--cream-deep);font-weight:800;text-align:left;padding:9px 12px;font-size:11.5px;letter-spacing:.03em}
+table.t td{padding:8px 12px;border-top:1px solid #F0E9DC;vertical-align:top;line-height:1.5}
+.vg{color:var(--green);font-weight:800}.vy{color:var(--gold-ink);font-weight:800}.vr{color:var(--red);font-weight:800}
+
+.scar{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px}
+.scar .card{border-top:5px solid var(--red)}
+.map{display:flex;flex-direction:column;gap:9px;margin-top:12px}
+.map .row{display:grid;grid-template-columns:250px 34px 1fr;gap:10px;align-items:center;background:var(--card);border-radius:14px;padding:10px 14px;border:1.5px solid #EFE7D8;font-size:13px;line-height:1.5}
+.map .ask{font-weight:800;font-size:13.2px}
+.map .arr{color:var(--orange);font-weight:800;font-size:17px;text-align:center}
+.resolve{margin-top:14px;background:var(--ink);color:#fff;border-radius:var(--radius);padding:16px 22px;font-size:15px;line-height:1.65;font-weight:600}
+.resolve em{color:#FFB38A;font-style:normal;font-weight:800}
+.say{background:var(--card);border-radius:14px;border-left:5px solid var(--green);padding:12px 16px;font-size:13.5px;line-height:1.6;margin-top:8px}
+.say.dont{border-left-color:var(--red)}
+.say .k{font-family:'Sora';font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
+.src{font-size:11.6px;line-height:1.75;color:var(--ink-soft);word-break:break-all}
+.chart{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:14px}
+
+@media (max-width:900px), (max-height:620px){
+  body{overflow:auto}.deck{width:auto;height:auto}
+  .slide{position:relative;inset:auto;opacity:1;visibility:visible;transform:none;min-height:0;padding:36px 18px;border-bottom:1.5px dashed #E4DACB}
+  .slide-inner{max-height:none;overflow:visible}
+  .rise{opacity:1;transform:none;animation:none!important}
+  .nav,.arrows,.slide-num,.progress{display:none}
+  .h-xl{font-size:32px}.h-lg{font-size:24px}
+  .two-col,.three-col,.scar{grid-template-columns:1fr}
+  .tl .pts{grid-template-columns:1fr 1fr}
+  .map .row{grid-template-columns:1fr;gap:4px}.map .arr{display:none}
+}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="box">
+    <div class="chip chip-rd">Confidential · Elad + Aviv only</div>
+    <h2 style="font-size:21px;margin-top:14px">The Ghost at the Table</h2>
+    <p style="font-size:13px;color:var(--ink-soft);margin-top:8px;line-height:1.6">Counterparty study — unlisted &amp; gated. Access code:</p>
+    <input id="gateIn" type="password" placeholder="access code" autocomplete="off">
+    <button onclick="gateTry()">Enter</button>
+    <div class="err" id="gateErr"></div>
+  </div>
+</div>
+
+<div class="progress"></div>
+<a class="home-link" href="../../">← Hub</a>
+<div class="conf">CONFIDENTIAL · COUNTERPARTY STUDY · 25.08.2026</div>
+
+<div class="deck">
+
+<!-- 1 TITLE -->
+<section class="slide active">
+  <div class="slide-inner" style="text-align:center">
+    <div class="rise"><div class="eyebrow" style="justify-content:center;display:flex"><span class="dotmark"></span>Flowz · Counterparty Study · Elad + Aviv</div></div>
+    <h1 class="h-xl rise d1">The Ghost at the Table</h1>
+    <p class="lede rise d2" style="margin:20px auto 0">Why a 2021 deal <b>Yoni Feingold was never part of</b> is running our 2026 negotiation. The verified story of <span class="term" data-t="eventim">CTS Eventim</span> × <span class="term" data-t="zappa">Zappa</span>, what Yoni actually lost (and didn't), what happened to the man who "won" — and how to use all of it.</p>
+    <div class="rise d3" style="margin-top:26px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <span class="chip chip-or">14 slides</span>
+      <span class="chip chip-bl">Every claim source-verified · Aug 2026</span>
+      <span class="chip chip-go">Hover any dotted term for a data card</span>
+    </div>
+    <p class="foot-note rise d4">Method: 5-angle parallel web research (Hebrew + English press, corporate filings) + independent adversarial fact-check. Sources on the last slide. Hypothesis credit: Elad.</p>
+  </div>
+</section>
+
+<!-- 2 EXEC SUMMARY -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-or">Executive summary</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">Your hypothesis is half right — and the true half is better ammunition</h2>
+    <div class="two-col rise d2" style="margin-top:14px">
+      <div class="card" style="border-top:5px solid var(--green)">
+        <h3 class="h-md" style="color:var(--green)">What the record confirms</h3>
+        <ul class="list ok" style="margin-top:10px">
+          <li>Yoni exited <span class="term" data-t="zappa">Zappa</span> completely in <b>Sept 2019</b> — <b>17 months before</b> the <span class="term" data-t="eventim">Eventim</span> ticketing <span class="term" data-t="jv">JV</span>, 4 years before Eventim took over Zappa itself.</li>
+          <li>His creation, <span class="term" data-t="zappatickets">Zappa Tickets</span> — the group's most profitable arm — became the base of <span class="term" data-t="eventimisrael">Eventim Israel</span>'s market leadership. <b>Under someone else's ownership.</b></li>
+          <li>So yes: he factually missed the entire Eventim chapter. The <b>platform seat</b> went to <span class="term" data-t="einat">Golan Einat</span> and later <span class="term" data-t="delek">Delek Israel</span>.</li>
+        </ul>
+      </div>
+      <div class="card" style="border-top:5px solid var(--red)">
+        <h3 class="h-md" style="color:var(--red)">What the record refutes</h3>
+        <ul class="list bad" style="margin-top:10px">
+          <li><b>He did not lose money.</b> He sold at ₪80M (2019). Zappa's valuation four years later, post-Eventim: <b>₪85–90M — with heavy debt and lawsuits.</b> Arguably he sold at the top.</li>
+          <li><b>No ticketing company from inside Zappa ever IPO'd or hit $100M.</b> The only public $100M+ company in the story is CTS Eventim itself (~€5.8B).</li>
+          <li>The sale price "never made public"? It was in four newspapers simultaneously.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="resolve rise d3">The real insight: Yoni watched <em>both</em> movies. He watched his ticketing baby become a giant's beachhead without him — <em>and</em> he watched the man who stayed get diluted from 100% to 19%, inject ₪30M more, and end up suing for transparency. One scar says <em>"never miss the seat again."</em> The other says <em>"never be the minority partner of a giant."</em> Both are sitting at our table.</div>
+  </div>
+</section>
+
+<!-- 3 TIMELINE -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-bl">The verified timeline</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">2004 → 2026: the whole chain, source-checked</h2>
+    <div class="tl rise d2">
+      <div class="line"></div>
+      <div class="pts">
+        <div class="pt"><b>Zappa founded</b><span class="yy">2004</span>by siblings Yoni, Noam &amp; Ruti Feingold (Haifa)</div>
+        <div class="pt g"><b><span class="term" data-t="eventimisrael">Eventim Israel</span> opens</b><span class="yy">2011</span>Israel = Eventim's 21st market. MD: <span class="term" data-t="feinstein">Ami Feinstein</span></div>
+        <div class="pt"><b><span class="term" data-t="einat">Einat</span> buys 40%</b><span class="yy">2014</span>at ₪60M valuation</div>
+        <div class="pt r"><b>Yoni's full exit</b><span class="yy">Sep 2019</span>last 25% sold at <b>₪80M</b> valuation — "right before COVID"</div>
+        <div class="pt"><b>The <span class="term" data-t="jv">JV</span></b><span class="yy">Feb 2021</span><span class="term" data-t="zappatickets">Zappa Tickets</span> → Eventim-controlled NewCo (~51/49) + <span class="term" data-t="lien">liens</span> on the brand</div>
+        <div class="pt g"><b><span class="term" data-t="delek">Delek</span> buys in</b><span class="yy">Dec 2021</span>10% for ₪12M (~₪120M implied)</div>
+        <div class="pt r"><b>Eventim takes Zappa</b><span class="yy">Sep 2023</span>Eventim 51 / Delek 30 / Einat 19 at ₪85–90M</div>
+        <div class="pt r"><b>Litigation</b><span class="yy">2025</span>Delek sues Eventim: artists leaving, opaque ticketing books. ₪14M rescue injection</div>
+      </div>
+    </div>
+    <div class="three-col rise d3" style="margin-top:16px">
+      <div class="card"><h3 class="h-md">₪80M → ₪85–90M</h3><p class="body">Zappa's valuation moved ~6–12% in the four years <b>after</b> Yoni left — through COVID, the Eventim JV, and the takeover. The equity upside he "missed" barely existed.</p></div>
+      <div class="card"><h3 class="h-md">100% → 19%</h3><p class="body"><span class="term" data-t="einat">Einat</span>'s arc as the local partner: full owner → 19% minority, ₪30M of fresh money in, then a courtroom. This is the movie Yoni watched from the front row.</p></div>
+      <div class="card"><h3 class="h-md">~₪300M/yr</h3><p class="body">What <span class="term" data-t="eventimisrael">Eventim Israel</span> sells in tickets annually today as the self-described market leader — built on the asset Yoni created. <b>That</b> is the missed upside: strategic, not financial.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 THE DEAL HE MISSED -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-go">Anatomy of the deal he missed</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">Feb 2021: how Eventim took the Israeli ticketing crown</h2>
+    <table class="t rise d2" style="margin-top:14px">
+      <thead><tr><th style="width:190px">Element</th><th>What happened</th><th style="width:290px">Why it matters to us</th></tr></thead>
+      <tbody>
+        <tr><td><b>The asset</b></td><td><span class="term" data-t="zappatickets">Zappa Tickets</span> — "Zappa's most profitable subsidiary and central division" (Globes): ~1M tickets/yr, ~₪170M annual ticket sales out of ~₪250M group revenue.</td><td>The local crown jewel. In our deal, <b>Flowz is cast in this role.</b></td></tr>
+        <tr><td><b>The structure</b></td><td>Transferred into a new joint company <b>controlled by Eventim</b> (~51/49). Financial terms never disclosed.</td><td>Majority-or-nothing. The partner contributes the asset; the giant holds control.</td></tr>
+        <tr><td><b>The security</b></td><td>Eventim registered <span class="term" data-t="lien">first-degree liens</span> on Zappa shares — and on the <b>ZAPPA trademark itself</b>.</td><td>The giant collateralized the partner's own brand. Remember this when toMix asks to "unify brands."</td></tr>
+        <tr><td><b>The counterparty</b></td><td><span class="term" data-t="einat">Golan Einat</span> — who had bought out the Feingolds 17 months earlier.</td><td>Yoni was never in the room. His "loss" is a counterfactual — which makes it psychology, not accounting.</td></tr>
+        <tr><td><b>The aftermath</b></td><td>2023: Eventim + <span class="term" data-t="delek">Delek</span> take over Zappa itself (₪85–90M). 2024: ₪23M deficit; star artists (Shlomo Artzi, Rita, Idan Raichel) leave. 2025: Delek sues over <b>opacity in the ticketing books</b>; settled with ₪14M injection.</td><td>Even the 30%-holding partner had to <b>sue to see the numbers</b>. Every transparency and audit clause we demand has an Israeli precedent.</td></tr>
+      </tbody>
+    </table>
+    <p class="foot-note rise d3">Sources: CTS Eventim corporate release 18.02.2021 · Globes registry analysis · Ynet · Calcalist. Exact JV consideration remains undisclosed — the one number nobody ever published.</p>
+  </div>
+</section>
+
+<!-- 5 EVENTIM PLAYBOOK -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-pu">The pattern is global</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">Eventim's playbook: majority, or a contractual path to it</h2>
+    <table class="t rise d2" style="margin-top:12px">
+      <thead><tr><th>Market · Deal</th><th>Structure at entry</th><th>Where the local partner ended up</th></tr></thead>
+      <tbody>
+        <tr><td><b>Italy · <span class="term" data-t="ticketone">TicketOne</span></b> (2007)</td><td>Stake + <span class="term" data-t="calloption">call option</span></td><td class="vr">Bought out entirely by 2010 — ~100% for €35.9M total</td></tr>
+        <tr><td><b>France · <span class="term" data-t="francebillet">France Billet</span></b> (2019)</td><td>48% + pre-agreed option for +17% after 4 years</td><td class="vy">Option exercised on schedule → Eventim 65% majority (Dec 2024); Fnac Darty left at 35%</td></tr>
+        <tr><td><b>Austria · <span class="term" data-t="barracuda">Barracuda</span></b> (2019)</td><td>71% on day one</td><td class="vy">Founder kept 29%, stayed as manager inside Eventim's network; needed rescue in 2020</td></tr>
+        <tr><td><b>US · <span class="term" data-t="emc">EMC Presents</span></b> (2020)</td><td>"50/50" on paper</td><td class="vr">Eventim holds control and fully consolidates — even equality isn't equality</td></tr>
+        <tr><td><b>UK/US · <span class="term" data-t="seetickets">See Tickets</span></b> (2024)</td><td>Outright acquisition, ~€300M</td><td class="vg">Clean exit — the one structure where the seller actually got paid</td></tr>
+        <tr><td><b>Israel · Zappa</b> (2021–23)</td><td>51% of ticketing NewCo + liens → 51% of Zappa itself</td><td class="vr">Partner diluted 100%→19%, injecting more cash, then litigating</td></tr>
+      </tbody>
+    </table>
+    <div class="two-col rise d3" style="margin-top:14px">
+      <div class="chart">
+        <h3 class="h-md" style="margin-bottom:6px">CTS Eventim <span class="term" data-t="mcap">market cap</span>, $B</h3>
+        <svg viewBox="0 0 460 130" style="width:100%;height:auto" role="img" aria-label="Eventim market cap 2014 to 2026: 2.85, 6.15, 6.42, 6.70, 8.37, 8.78, then down to 6.68 billion dollars in August 2026">
+          <g font-family="Inter" font-size="10" fill="#6E6659">
+            <rect x="20"  y="90" width="38" height="30" rx="4" fill="#D9CFBE"/><text x="39" y="86" text-anchor="middle">2.9</text><text x="39" y="128" text-anchor="middle">2014</text>
+            <rect x="90"  y="55" width="38" height="65" rx="4" fill="#D9CFBE"/><text x="109" y="51" text-anchor="middle">6.2</text><text x="109" y="128" text-anchor="middle">2019</text>
+            <rect x="160" y="52" width="38" height="68" rx="4" fill="#D9CFBE"/><text x="179" y="48" text-anchor="middle">6.4</text><text x="179" y="128" text-anchor="middle">2020</text>
+            <rect x="230" y="49" width="38" height="71" rx="4" fill="#D9CFBE"/><text x="249" y="45" text-anchor="middle">6.7</text><text x="249" y="128" text-anchor="middle">2023</text>
+            <rect x="300" y="30" width="38" height="90" rx="4" fill="#F0641E"/><text x="319" y="26" text-anchor="middle">8.4</text><text x="319" y="128" text-anchor="middle">2024</text>
+            <rect x="370" y="26" width="38" height="94" rx="4" fill="#F0641E"/><text x="389" y="22" text-anchor="middle">8.8</text><text x="389" y="128" text-anchor="middle">2025</text>
+            <rect x="418" y="48" width="38" height="72" rx="4" fill="#D14343"/><text x="437" y="44" text-anchor="middle">6.7</text><text x="437" y="128" text-anchor="middle">8/26</text>
+          </g>
+        </svg>
+        <p class="foot-note" style="margin-top:6px">~300M tickets/yr · 25 countries · €3B+ revenue 2025 · down ~25–42% over the last year — even the platform's ride is rough.</p>
+      </div>
+      <div class="card">
+        <h3 class="h-md">The lesson Yoni internalized</h3>
+        <p class="body" style="margin-top:8px">In every market, the upside — data, e-commerce, cross-border inventory, market-cap growth — accrued to <b>the party holding the platform and the majority</b>. The local partner contributed access and inventory, then got diluted, bought down, or bought out.</p>
+        <p class="body" style="margin-top:8px"><b>toMix's 30%+ demand on Flowz is this exact playbook</b> — learned from the receiving end, now being run from the giving end. He is building his own Eventim Israel. In his script, we are Zappa Tickets.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 TWO SCARS -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-rd">The psychology</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">Two scars, one negotiator</h2>
+    <div class="scar rise d2">
+      <div class="card">
+        <h3 class="h-md">Scar 1 · The seat he missed</h3>
+        <p class="body" style="margin-top:8px">He built Israel's best ticketing asset, sold everything in Sept 2019, and 17 months later watched it become the foundation of the market leader — with a Frankfurt-listed giant on top and his old partner collecting the strategic position.</p>
+        <p class="body" style="margin-top:8px"><b>What it produces now:</b> "This time I hold the platform. This time I get the big stake. This time the tech company integrates into <i>my</i> rails."</p>
+      </div>
+      <div class="card">
+        <h3 class="h-md">Scar 2 · The partner who got crushed</h3>
+        <p class="body" style="margin-top:8px">The man who "won" the Eventim relationship — <span class="term" data-t="einat">Einat</span> — went from 100% owner to 19% minority, injected ₪30M more, watched his artists walk, and had to litigate to see the ticketing books.</p>
+        <p class="body" style="margin-top:8px"><b>What it produces now:</b> deep distrust of structures where he's the minority of someone else's vehicle — including <span class="term" data-t="safe">SAFE</span>s, <span class="term" data-t="vc">VC</span> logic, and "trust the cap table" arguments. "We're not a hi-tech company."</p>
+      </div>
+    </div>
+    <div class="resolve rise d3">Both scars are <em>real and rational</em> — the record backs them. Which means neither can be argued away. They can only be <em>structurally answered</em>: give him a real seat where the upside genuinely lives, and never ask him to be the powerless minority of our vehicle. That is exactly what One House + warrants does — <em>if we frame it through his history.</em></div>
+  </div>
+</section>
+
+<!-- 7 MAPPING ASKS -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-or">Decoding the demands</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">Every toMix ask, read through the Zappa story</h2>
+    <div class="map rise d2">
+      <div class="row"><span class="ask">"30% and north"</span><span class="arr">→</span><span>The Eventim number. Majority-or-path-to-it is the only partnership architecture he has ever seen work — from the losing side. He is not quoting a valuation; he is quoting a <b>power structure</b>.</span></div>
+      <div class="row"><span class="ask">Exclusive Israel distribution + brand unification</span><span class="arr">→</span><span>Eventim took liens on the <b>Zappa trademark</b>. Controlling the brand and the rails is how the winner won. Expect brand-control asks to be non-negotiable emotionally — cap them contractually instead (Israel-only, lapse conditions).</span></div>
+      <div class="row"><span class="ask">"We're not hi-tech" / SAFE rejection</span><span class="arr">→</span><span>Ticketing's Israeli equity outcomes were tiny — <span class="term" data-t="eventer">Eventer</span> went public via a ~$6M <span class="term" data-t="revmerger">reverse merger</span>; Zappa never passed ~₪100M. In his observed world, startup paper ≠ money. Cash flows and control = money.</span></div>
+      <div class="row"><span class="ask">Operational/service model, funded budget</span><span class="arr">→</span><span>The operator's instinct: fund the roadmap, direct the development, keep the tech close to the rails. Also exactly how Eventim ran its JVs — the model he absorbed.</span></div>
+      <div class="row"><span class="ask">Integrate Flowz into the new ticketing venture</span><span class="arr">→</span><span>He is rebuilding Zappa Tickets at toMix scale — and this time the smart-tech layer (us) sits <b>inside</b> from day one instead of being carved out later by a foreign giant. Note: the venture is <b>not public</b> — treat as private info he shared, or as intent.</span></div>
+    </div>
+    <p class="foot-note rise d3">Also on his side of the table: <span class="term" data-t="keshet">Keshet Group</span> and <span class="term" data-t="orek">Orek Capital</span> are confirmed toMix partners (toMix's own July 2026 release). Keshet also holds a stake in ticketing startup <span class="term" data-t="eventer">Eventer</span> since 2021 — a quiet potential conflict if toMix launches its own rails.</p>
+  </div>
+</section>
+
+<!-- 8 MIRROR -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-rd">The uncomfortable mirror</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">toMix's offer to us <i>is</i> the Eventim playbook</h2>
+    <table class="t rise d2" style="margin-top:14px">
+      <thead><tr><th>Eventim → Zappa (2021)</th><th>toMix → Flowz (2026)</th></tr></thead>
+      <tbody>
+        <tr><td>Contribute your crown jewel (Zappa Tickets) into a structure the giant controls</td><td>Integrate your product as the front of our ticketing; give us 30%+ of the company</td></tr>
+        <tr><td>Exclusivity and control of the rails; liens on the brand</td><td>Exclusive Israel distribution; unified brand; "one house" — theirs</td></tr>
+        <tr><td>Funding and operational support instead of a priced valuation</td><td>Funded salaries and development budget; "we're not hi-tech" — no valuation anchor</td></tr>
+        <tr><td>Partner's stake: diluted 100% → 19%, then litigation to see the books</td><td><b>The chapter that hasn't been written yet. Our job is to never let it be.</b></td></tr>
+      </tbody>
+    </table>
+    <div class="two-col rise d3" style="margin-top:14px">
+      <div class="card" style="border-top:5px solid var(--green)">
+        <h3 class="h-md" style="color:var(--green)">Why this is leverage, not doom</h3>
+        <p class="body" style="margin-top:8px">He knows this playbook better than anyone in Israel — <b>including how it feels to be on the wrong side of it</b>. Every protection we ask for (transparency, audit rights, license-lapse conditions, no minority-trap structures) can be framed as lessons from <i>his own market's history</i> — without ever saying "Zappa" out loud.</p>
+      </div>
+      <div class="card" style="border-top:5px solid var(--gold)">
+        <h3 class="h-md" style="color:var(--gold-ink)">The number that reframes everything</h3>
+        <p class="body" style="margin-top:8px">Israel-only entertainment assets in this story cap out at <b>₪80–100M</b> valuations — Zappa never escaped that band in 20 years. The upside worth owning is global or it is nothing. Which is precisely the argument for his stake sitting <b>in Flowz Global</b> — the only room where his 30%-instinct can ever be worth what he wants it to be worth.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 WHAT TO SAY -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-gr">Using it in the room</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">Lines that heal the scar — and lines that rip it open</h2>
+    <div class="two-col rise d2" style="margin-top:12px">
+      <div>
+        <h3 class="h-md" style="color:var(--green);margin-bottom:6px">Say</h3>
+        <div class="say"><span class="k">The seat</span><br>"You've seen what happens when the tech layer and the rails are owned separately — someone always ends up carved out. We're offering the opposite: your stake sits where the whole story lives, not in one territory of it."</div>
+        <div class="say"><span class="k">The upside</span><br>"An Israel-only entertainment company tops out around ₪100M — your market has proven that for twenty years. Equity in the global company is the only version of this where your percentage can mean real money."</div>
+        <div class="say"><span class="k">The trust problem</span><br>"Every shekel of value you give — data, champions, distribution — gets priced and converted into ownership. Not promises: a formula, with audit rights on both sides. Full transparency, contractually — no one should ever need a lawsuit to see the numbers."</div>
+        <div class="say"><span class="k">The rails</span><br>"Your ticketing venture wins because our layer makes it unbeatable in Israel — exclusively. That's worth more to toMix than any minority stake in us: it's the position, not the paper."</div>
+      </div>
+      <div>
+        <h3 class="h-md" style="color:var(--red);margin-bottom:6px">Never say</h3>
+        <div class="say dont"><span class="k">The wound</span><br>Anything that names Zappa, Eventim, or "the deal you missed." He was never in that deal — implying he lost it is both wrong and humiliating. The history informs <b>our</b> framing; it must never become an argument.</div>
+        <div class="say dont"><span class="k">The trap</span><br>"Trust us, it's standard" / "that's how startups do it." Standard startup paper is exactly what his world has watched fail (Eventer, ₪6M). Every mechanism needs a cash-logic explanation, not a hi-tech-convention one.</div>
+        <div class="say dont"><span class="k">The diminishment</span><br>"You'd only get 3–4%." Never lead with the small number. Lead with what the percentage is <i>of</i>, the formula that grows it, and the Israel package that comes with it. The number lands last.</div>
+      </div>
+    </div>
+    <p class="foot-note rise d3">Full negotiation architecture: the Deal Deck (structures, calculator, decisions) and the Roee conversation deck. This deck is the "why he'll say yes / why he'll explode" layer.</p>
+  </div>
+</section>
+
+<!-- 10 CORRECTIONS -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-go">Correcting our own record</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">Things we've been saying that the record contradicts</h2>
+    <table class="t rise d2" style="margin-top:14px">
+      <thead><tr><th style="width:330px">What we said (lawyer call, 24.08)</th><th style="width:110px">Verdict</th><th>The verified fact</th></tr></thead>
+      <tbody>
+        <tr><td>"Sold at a number never revealed to the market"</td><td class="vr">Refuted</td><td>₪80M valuation — reported simultaneously by Ynet, Yediot, Calcalist, TheMarker (Sept 2019).</td></tr>
+        <tr><td>"A ticketing company from inside Zappa IPO'd at $100M+"</td><td class="vr">Refuted</td><td>Zappa Tickets never IPO'd — it was folded into Eventim's private JV. Only CTS Eventim AG itself is public (~€5.8B). Nothing Israeli in ticketing ever approached $100M.</td></tr>
+        <tr><td>"Yoni and his son founded toMix"</td><td class="vy">Corrected</td><td>Founded by Yoni + <b>Reut Feingold — his wife</b> (launched ~March 2022). An <b>Itay Feingold</b> is CEO and Genesis Festival founder; his kinship to Yoni is undocumented. The "son" claim may be a garbled Itay reference — confirm directly.</td></tr>
+        <tr><td>"Keshet are partners on the board"</td><td class="vg">Confirmed*</td><td>toMix's own July 2026 release names <span class="term" data-t="orek">Orek Capital</span> + <span class="term" data-t="keshet">Keshet Group</span> + private investors as partners. Equity: yes. A literal board seat: unverified.</td></tr>
+        <tr><td>"1.5–2M tickets/yr, ₪250M+ clearing"</td><td class="vy">Unverified</td><td>No public source. The numbers <b>match Zappa's published figures</b> almost exactly (~1M tickets, ~₪250M) — possible conflation, or private info. toMix shows 11–50 employees on LinkedIn. <b>DD item #1.</b></td></tr>
+        <tr><td>"Their new ticketing company is about to launch"</td><td class="vy">Unverified</td><td>Nothing public (Aug 2026). toMix currently sells via white-label <span class="term" data-t="smarticket">Smarticket</span>. Either stealth (plausible — motive exists) or intent stated as fact. <b>DD item #2.</b></td></tr>
+        <tr><td>"CFO named Roee"</td><td class="vy">Unverified</td><td>No such name in any public source — likely internal/unlisted. Confirm role and mandate directly.</td></tr>
+      </tbody>
+    </table>
+    <p class="foot-note rise d3">Why this slide matters: we are about to negotiate against a story. Half our color on the counterparty came from one recorded call — now we know which half to trust.</p>
+  </div>
+</section>
+
+<!-- 11 TOMIX TODAY -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-bl">Know the counterparty</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">toMix today — what's actually on the record</h2>
+    <div class="three-col rise d2" style="margin-top:14px">
+      <div class="card"><h3 class="h-md">The group</h3><ul class="list" style="margin-top:8px;font-size:13px">
+        <li>Founded by Yoni + Reut Feingold, launched ~March 2022 — conceived during the Zappa years, built during COVID</li>
+        <li>Partners: <span class="term" data-t="orek">Orek Capital</span>, <span class="term" data-t="keshet">Keshet Group</span>, private investors</li>
+        <li>CEO: Itay Feingold (Genesis Festival founder)</li>
+        <li>11–50 employees on LinkedIn — the brand aggregates partner-produced events</li>
+      </ul></div>
+      <div class="card"><h3 class="h-md">The moves (2025–26)</h3><ul class="list" style="margin-top:8px;font-size:13px">
+        <li><b>toMix Theater</b> — ₪25M, disruptive pricing (₪129–179 vs market ₪250–499)</li>
+        <li><b>toX complex</b> — 4,000 sqm at G City Rishon LeZion: ₪61M/17-yr lease + ₪25M build, ~2,000 capacity, opening Sept 2026</li>
+        <li><b>50% of Marathon Israel</b> — sports enters the mix</li>
+        <li>Genesis Festival, culinary pop-ups, tourism, gift cards (Mix Card Ltd)</li>
+      </ul></div>
+      <div class="card"><h3 class="h-md">The tells</h3><ul class="list" style="margin-top:8px;font-size:13px">
+        <li>Aggressive capex into <b>physical venues</b> — an operator building inventory, exactly the Zappa muscle</li>
+        <li>Still rides <span class="term" data-t="smarticket">Smarticket</span>'s white-label for its own tickets — the motive for owning rails is visible in their own checkout</li>
+        <li>Underpricing the market in theater = the disruption instinct they'll bring to ticketing</li>
+        <li>Keshet's parallel <span class="term" data-t="eventer">Eventer</span> stake — a conflict nobody has mentioned</li>
+      </ul></div>
+    </div>
+    <div class="resolve rise d3" style="margin-top:14px">Scale reality-check: if toMix truly clears ₪250M+/yr, it is already at Zappa-empire scale with a tenth of the headcount — possible for an aggregator, but <em>we price the deal on audited numbers, not on the story</em>. The claimed volumes are DD item #1.</div>
+  </div>
+</section>
+
+<!-- 12 ISRAEL MAP -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-pu">The battlefield</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">Israeli ticketing, Aug 2026 — who toMix is walking into</h2>
+    <table class="t rise d2" style="margin-top:12px">
+      <thead><tr><th>Player</th><th>Position</th><th>Relevant fact</th></tr></thead>
+      <tbody>
+        <tr><td><b><span class="term" data-t="eventimisrael">Eventim Israel</span> / Zappa</b></td><td>Self-described market leader</td><td>~₪300M tickets/yr; absorbed Castel, Hadran, Zappa Tickets; backed by €5.8B parent — and currently distracted by internal litigation</td></tr>
+        <tr><td><b>Ticketmaster Israel</b></td><td><span class="term" data-t="livenation">Live Nation</span>'s beachhead</td><td>Launched Feb 2017 via majority stake in promoter Bluestone; Israel = its 28th market</td></tr>
+        <tr><td><b><span class="term" data-t="kupat">Kupat Tel Aviv</span></b> · <b><span class="term" data-t="leaan">Leaan</span></b></td><td>Veteran box offices</td><td>Leaan 60+ years old; Kupat runs Festigal ticketing. The names in toMix's blacklist ask</td></tr>
+        <tr><td><b><span class="term" data-t="eventer">Eventer</span></b></td><td>Startup platform</td><td>Keshet-backed; went public via ~$6M reverse merger — the cautionary tale behind "ticketing companies don't IPO"</td></tr>
+        <tr><td><b><span class="term" data-t="smarticket">Smarticket</span></b> · Tickchak · Tixwise</td><td>White-label / SMB rails</td><td>Smarticket currently powers toMix's own checkout</td></tr>
+      </tbody>
+    </table>
+    <div class="two-col rise d3" style="margin-top:14px">
+      <div class="card"><h3 class="h-md">What this means for the exclusivity clause</h3><p class="body" style="margin-top:8px">toMix's ticketing venture would fight a market leader owned by a Frankfurt giant, Live Nation's local arm, and two veteran box offices. Our <b>mutual</b> exclusivity means hitching our Israel presence to a challenger. The performance-conditions-with-lapse mechanism isn't lawyer caution — it's the difference between betting on the challenger and being buried with it.</p></div>
+      <div class="card"><h3 class="h-md">What this means for competition law</h3><p class="body" style="margin-top:8px">A blacklist naming Kupat and Live Nation, written into an exclusivity with a would-be rails owner, in a market with documented abuse-of-dominance history (Eventim-TicketOne's €10.9M AGCM saga) — the <span class="term" data-t="restrictive">restrictive-arrangement</span> question from our counsel list just became very concrete.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 13 UNKNOWNS -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-go">Honest edges</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">What we still don't know — and how to find out</h2>
+    <div class="two-col rise d2" style="margin-top:14px">
+      <div class="card">
+        <h3 class="h-md">Genuinely unknown</h3>
+        <ul class="list" style="margin-top:10px">
+          <li>Whether Yoni <b>subjectively</b> feels he missed the Eventim upside — no interview or statement exists. The timeline supports the psychology; it remains our inference.</li>
+          <li>Itay Feingold's kinship to Yoni (the possible kernel of the "son" claim).</li>
+          <li>Whether the toMix ticketing venture exists in stealth — or is intent narrated as fact.</li>
+          <li>toMix's real ticket volumes and revenue — nothing published, anywhere.</li>
+          <li>The 2021 JV's financial terms — the one number never disclosed.</li>
+          <li>Whether Keshet's toMix partnership includes a board seat — and how its Eventer stake coexists with a toMix ticketing play.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="h-md">How each gets resolved</h3>
+        <ul class="list ok" style="margin-top:10px">
+          <li><b>Companies Registrar extract</b> (רשם החברות) on the toMix entities: shareholders, board, and any new ticketing-shaped registrations under Feingold names. Cheap, fast, definitive.</li>
+          <li><b>DD requests in the term sheet:</b> audited ticket volumes and clearing figures as a condition to pricing the earn-in; the ticketing venture's status in the exclusivity annex.</li>
+          <li><b>Ask directly, socially:</b> Itay's role and mandate; who "Roee" is and what he actually controls. These are relationship questions, not registry questions.</li>
+          <li><b>Keshet:</b> one question in the open-dialogue meeting — "how does Keshet see the Eventer position alongside this?" Watch the body language.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="foot-note rise d3">Everything on this slide is also logged in the deal brief in the vault — the unknowns move to the DD checklist the moment a term sheet is on the table.</p>
+  </div>
+</section>
+
+<!-- 14 SOURCES -->
+<section class="slide">
+  <div class="slide-inner">
+    <div class="rise"><span class="chip chip-bl">Sources</span></div>
+    <h2 class="h-lg rise d1" style="margin-top:10px">Key sources (all verified reachable, Aug 2026)</h2>
+    <div class="two-col rise d2" style="margin-top:12px">
+      <div class="card"><h3 class="h-md" style="margin-bottom:8px">The Zappa chain</h3><p class="src">
+        Ynet 15.09.2019 — Einat completes 100% at ₪80M: ynet.co.il/articles/0,7340,L-5589034,00.html<br>
+        TheMarker 16.09.2019 — sale coverage: themarker.com/consumer/2019-09-16/…<br>
+        Calcalist 27.07.2014 — Einat buys 40%: calcalist.co.il/marketing/…L-3637010<br>
+        CTS Eventim corporate release 18.02.2021 — the JV: corporate.eventim.de + DGAP wire<br>
+        Globes — registry analysis of the JV + liens: globes.co.il/news/article.aspx?did=1001361589<br>
+        Ynet — 2023 takeover (50/30/20 at ₪85M): ynet.co.il/economy/article/syhfar1ka<br>
+        Calcalist — 2023 deal (₪90M, injections): calcalist.co.il/shopping/article/sjagotgo2<br>
+        Ynet — Delek vs Eventim lawsuit: ynet.co.il/economy/article/bjaqyagpyl</p></div>
+      <div class="card"><h3 class="h-md" style="margin-bottom:8px">Playbook · Market · toMix</h3><p class="src">
+        TicketOne buyout (DGAP/GlobeNewswire 2010) · France Billet 65% completion (GlobeNewswire 02.12.2024) · Barracuda 71% (IQ Magazine 12.2019) · EMC 50/50-with-control (Pollstar 2020) · See Tickets €300M (Vivendi release 06.06.2024) · AGCM €10.9M TicketOne fine (agcm.it)<br>
+        CTS Eventim market cap: companiesmarketcap.com + stockanalysis.com/quote/etr/EVD<br>
+        toMix partners (Orek + Keshet): gal-gefen.co.il/news/207199 (toMix release, 07.2026)<br>
+        toMix founding: Maariv article-944533 · toX complex: Calcalist hyb00rfqxbx · toMix Theater: Maariv 1233070 · Marathon Israel: one.co.il/Article/510801<br>
+        Ticketmaster Israel 2017 (Bluestone) · Eventer reverse merger (TASE filings 2023) · TopTix→SeatGeek $56M (2017)</p></div>
+    </div>
+    <div class="resolve rise d3" style="margin-top:14px">Bottom line for the negotiation: <em>the ghost at the table is real, but it's not the ghost we thought.</em> He isn't mourning lost money — the money barely existed. He's guarding against two structures: being carved out of the platform, and being the crushed minority. Offer him the seat that answers the first without recreating the second, and the 30% conversation changes shape.</div>
+  </div>
+</section>
+
+</div>
+
+<div id="tip"><div class="tt"></div><div class="td"></div><div class="tn"></div></div>
+
+<div class="nav" id="dots"></div>
+<div class="arrows">
+  <button class="arrow-btn" id="prev">← Prev</button>
+  <button class="arrow-btn" id="next">Next →</button>
+</div>
+<div class="slide-num" id="snum">01 / 14</div>
+
+<script>
+/* gate */
+const GATE_KEY='tmx-gate-ok';
+function gateTry(){
+  const v=document.getElementById('gateIn').value.trim().toLowerCase();
+  if(v==='2houses'||v==='two houses'||v==='twohouses'){sessionStorage.setItem(GATE_KEY,'1');document.getElementById('gate').style.display='none';}
+  else document.getElementById('gateErr').textContent='Wrong code';
+}
+document.getElementById('gateIn').addEventListener('keydown',e=>{if(e.key==='Enter')gateTry();});
+if(sessionStorage.getItem(GATE_KEY)==='1')document.getElementById('gate').style.display='none';
+
+/* tooltip state (declared before the slide engine — go() calls hideTip) */
+const tip=document.getElementById('tip');
+let tipLock=false;
+function hideTip(){if(!tipLock){tip.style.display='none';}}
+
+/* slides */
+const slides=[...document.querySelectorAll('.slide')];
+const dotsWrap=document.getElementById('dots');
+slides.forEach((_,i)=>{const d=document.createElement('button');d.className='dot'+(i===0?' on':'');d.onclick=()=>go(i);dotsWrap.appendChild(d);});
+const dots=[...dotsWrap.children];
+let cur=0;
+function go(i){
+  cur=Math.max(0,Math.min(slides.length-1,i));
+  slides.forEach((s,k)=>s.classList.toggle('active',k===cur));
+  dots.forEach((d,k)=>d.classList.toggle('on',k===cur));
+  document.querySelector('.progress').style.width=((cur+1)/slides.length*100)+'%';
+  document.getElementById('snum').textContent=String(cur+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
+  hideTip();
+}
+const h0=parseInt((location.hash||'').replace('#s',''));
+go(isNaN(h0)?0:h0-1);
+document.getElementById('next').onclick=()=>go(cur+1);
+document.getElementById('prev').onclick=()=>go(cur-1);
+addEventListener('keydown',e=>{
+  if(document.activeElement&&document.activeElement.tagName==='INPUT')return;
+  if(['ArrowRight',' ','PageDown'].includes(e.key)){e.preventDefault();go(cur+1);}
+  if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(cur-1);}
+});
+let tx=null;
+addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;tx=null;if(Math.abs(dx)>60&&matchMedia('(min-width:901px)').matches){go(cur+(dx<0?1:-1));}},{passive:true});
+
+/* ---------- hover glossary ---------- */
+const TERMS={
+  eventim:{t:'CTS Eventim AG',d:'German ticketing and live-entertainment giant, Frankfurt-listed. World #2 in ticketing; its Eventim Live network is the world #3 promoter.',n:'~300M tickets/yr · 25 countries · €3B+ revenue 2025 · market cap ~€5.8B (Aug 2026, down ~25% YoY)'},
+  zappa:{t:'Zappa Group',d:'Israel\'s dominant live-music venue chain, founded 2004 by siblings Yoni, Noam and Ruti Feingold (Haifa). Eight venues + festivals + a ticketing arm at its 2019 peak.',n:'Valuations: ₪60M (2014) → ₪80M (2019 exit) → ₪85–90M (2023 takeover). Never escaped the ₪100M band.'},
+  zappatickets:{t:'Zappa Tickets',d:'The ticketing company built inside Zappa — described by Globes as the group\'s most profitable subsidiary. Folded into the Eventim-controlled JV in 2021. Never IPO\'d.',n:'~1M tickets/yr · ~₪170M annual ticket sales (2020 est.)'},
+  einat:{t:'Golan Einat',d:'Israeli businessman (GEG Group): owner of Aroma Tel Aviv, ~50% of Roladin, Captain burger chain. Bought Zappa in stages 2014–2019, then became Eventim\'s local partner.',n:'Zappa arc: 40% (2014) → 100% (2019) → diluted to 19% (2023) while injecting ~₪30M more'},
+  delek:{t:'Delek Israel',d:'Israeli energy/retail group that bought into Zappa (10% for ₪12M, late 2021) and co-took control with Eventim in 2023 — then sued Eventim in 2025 over opaque ticketing books and artist departures.',n:'Its lawsuit is our best local precedent for demanding contractual transparency'},
+  eventimisrael:{t:'Eventim Israel',d:'CTS Eventim\'s Israeli arm since 2011, MD Ami Feinstein. Absorbed the Castel, Hadran and Zappa ticket offices to become the self-described market leader.',n:'~₪300M of tickets sold annually (2023 est.)'},
+  feinstein:{t:'Ami Feinstein',d:'Managing director of Eventim Israel since its 2011 founding; named personally in Delek\'s 2025 lawsuit over management of the Zappa venture.',n:''},
+  jv:{t:'JV — Joint Venture',d:'A jointly-owned company two partners build together. The whole question is who controls it: Eventim\'s JVs are majority-controlled or contractually on a path to majority.',n:'Eventim Israel JV: ~51% Eventim / 49% Zappa'},
+  lien:{t:'Lien / Pledge (שעבוד)',d:'A registered security interest over an asset. In the 2021 deal Eventim registered first-degree liens on Zappa\'s shares — and on the ZAPPA trademark itself.',n:'The giant collateralized the partner\'s own brand'},
+  calloption:{t:'Call option',d:'A contractual right (not obligation) to buy shares later at pre-agreed terms. Eventim\'s signature tool: enter as minority, hold a call to majority.',n:'France Billet: 48% + call for 17% → exercised on schedule → 65%'},
+  ticketone:{t:'TicketOne',d:'Italy\'s leading ticketer. Eventim entered 2007 with a stake + call option, exercised 2010 — local partner AMFIN fully bought out within 3 years.',n:'~100% for €35.9M total; later a €10.9M abuse-of-dominance fine saga (annulled 2022)'},
+  francebillet:{t:'France Billet',d:'Fnac Darty\'s ticketing arm. Eventim took 48% in 2019 with a pre-agreed call option for +17% after 4 years — exercised, completed Dec 2024.',n:'Fnac Darty left holding 35% of its own former business'},
+  barracuda:{t:'Barracuda Music',d:'Austria\'s top festival promoter (Nova Rock, Frequency). Eventim bought 71% day one (Dec 2019); the founder stayed as a 29% minority manager.',n:'Needed Eventim\'s financial rescue within a year (bank collapse)'},
+  emc:{t:'EMC Presents',d:'Eventim\'s 2020 US venture with promoter legend Michael Cohl. Formally 50/50 — but Eventim holds control and fully consolidates under IFRS.',n:'Even "equal" Eventim JVs are structured for control'},
+  seetickets:{t:'See Tickets',d:'UK/US ticketer bought outright from Vivendi, completed June 2024 — Eventim\'s Anglo-American push. The one deal where the seller simply got paid.',n:'~€300M enterprise value · 2023 revenue €137M'},
+  mcap:{t:'Market cap',d:'Total value of a listed company\'s shares. The scoreboard of who captured the upside in the ticketing consolidation story.',n:'Eventim: $2.9B (2014) → $8.8B (2025) → $6.7B (Aug 2026)'},
+  safe:{t:'SAFE',d:'Simple Agreement for Future Equity — startup instrument converting money into shares at the next round\'s valuation. toMix rejected the framing: "we\'re not a hi-tech company."',n:'Our value-ledger warrant model is a SAFE in operator\'s clothing'},
+  vc:{t:'VC — Venture Capital',d:'Institutional startup investors. Their allergy to strategic shareholders holding 30%+ of a startup ("captive company") is why our Global cap table must stay clean.',n:''},
+  keshet:{t:'Keshet Group',d:'Israel\'s leading commercial broadcaster (Channel 12 / mako). Confirmed equity partner in toMix per toMix\'s own July 2026 release — board seat unverified.',n:'Also invested $1.5M in ticketing startup Eventer (2021) — a quiet conflict'},
+  orek:{t:'Orek Capital',d:'Investment firm named by toMix\'s own press release as a group partner alongside Keshet and private investors.',n:'Shareholding size undisclosed — registrar extract would settle it'},
+  eventer:{t:'Eventer',d:'Israeli ticketing/events startup, Keshet- and Medigus-backed. Attempted a TASE IPO in 2021; went public via a tiny reverse merger in 2023.',n:'~$5.7–13M valuation — the cautionary tale behind "ticketing companies don\'t IPO"'},
+  revmerger:{t:'Reverse merger',d:'Going public by merging into an already-listed shell instead of an IPO — typically at small valuations. How Eventer reached the TASE.',n:''},
+  smarticket:{t:'Smarticket',d:'Israeli white-label ticketing platform. Powers toMix\'s own checkout today (to-mix.smarticket.co.il) — which is exactly why toMix wants rails of its own.',n:''},
+  kupat:{t:'Kupat Tel Aviv',d:'Veteran Israeli box office (with Kupat Haifa / Bravo brands). Runs Festigal ticketing. One of the two names in toMix\'s blacklist ask.',n:''},
+  leaan:{t:'Leaan (לאן)',d:'Israel\'s oldest box office — 60+ years. The second name in toMix\'s blacklist ask.',n:''},
+  livenation:{t:'Live Nation / Ticketmaster',d:'The world\'s largest live-entertainment company. Entered Israel Feb 2017 via a majority stake in promoter Bluestone — Ticketmaster Israel.',n:'Israel was Ticketmaster\'s 28th market'},
+  restrictive:{t:'Restrictive arrangement (הסדר כובל)',d:'Israeli competition-law concept: agreements restraining competition need an exemption. Exclusivity + a written blacklist + a rails owner = exactly the fact pattern to run past Goldfarb.',n:'Precedent flavor: Eventim-TicketOne\'s €10.9M AGCM fine (annulled on appeal)'},
+};
+function showTip(el){
+  const k=el.dataset.t, T=TERMS[k]; if(!T)return;
+  tip.querySelector('.tt').textContent=T.t;
+  tip.querySelector('.td').textContent=T.d;
+  const n=tip.querySelector('.tn'); n.textContent=T.n||''; n.style.display=T.n?'block':'none';
+  tip.style.display='block';
+  const r=el.getBoundingClientRect(), tw=tip.offsetWidth, th=tip.offsetHeight;
+  let x=r.left+r.width/2-tw/2; x=Math.max(10,Math.min(innerWidth-tw-10,x));
+  let y=r.top-th-10; if(y<8)y=r.bottom+10;
+  tip.style.left=x+'px'; tip.style.top=y+'px';
+}
+function hideTip(){if(!tipLock){tip.style.display='none';}}
+document.querySelectorAll('.term').forEach(el=>{
+  el.setAttribute('tabindex','0');
+  el.addEventListener('mouseenter',()=>{tipLock=false;showTip(el);});
+  el.addEventListener('mouseleave',hideTip);
+  el.addEventListener('focus',()=>showTip(el));
+  el.addEventListener('blur',hideTip);
+  el.addEventListener('click',e=>{e.stopPropagation();tipLock=!tipLock||tip.style.display==='none';showTip(el);});
+});
+addEventListener('click',()=>{tipLock=false;hideTip();});
+addEventListener('keydown',e=>{if(e.key==='Escape'){tipLock=false;hideTip();}});
+</script>
+</body>
+</html>
