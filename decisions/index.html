@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flowz – Decision Deck Concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============ design tokens – Flowz deck family ============ */
+:root{
+  --cream:#FAF6EF; --cream-deep:#F3EDE2; --card:#FFFDF9;
+  --ink:#2B2620; --ink-soft:#6E6659;
+  --orange:#F0641E; --orange-soft:#FDE8DC;
+  --blue:#3B82F6; --blue-soft:#DBEAFE; --lightblue-bg:#EAF4FB;
+  --green-soft:#DCF3C8; --green:#3E8914;
+  --purple:#8B5CF6; --purple-soft:#EFE3FA;
+  --teal:#0D9488; --teal-soft:#CCF3EC;
+  --gold:#E8A93D; --gold-soft:#FCF0D8; --red:#D14343;
+  --radius:22px; --shadow:0 10px 34px rgba(90,70,40,.10);
+  --t-slide:.55s; --t-chip:.25s;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--cream);color:var(--ink);overflow:hidden}
+button{font:inherit}
+h1,h2,h3,.display{font-family:'Sora',sans-serif}
+
+/* ============ deck chrome ============ */
+.deck{position:relative;width:100vw;height:100vh}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:44px 64px 74px;opacity:0;visibility:hidden;transform:translateY(24px);transition:opacity var(--t-slide) ease,transform var(--t-slide) ease,visibility 0s var(--t-slide)}
+.slide.active{opacity:1;visibility:visible;transform:translateY(0);transition:opacity var(--t-slide) ease,transform var(--t-slide) ease}
+.slide-inner{width:100%;max-width:1180px}
+.progress{position:fixed;left:0;top:0;height:4px;background:var(--orange);width:0;transition:width .4s ease;z-index:60;border-radius:0 4px 4px 0}
+.nav{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:60;align-items:center}
+.dot{width:9px;height:9px;border-radius:50%;background:#D9CFBE;cursor:pointer;transition:var(--t-chip);border:none;padding:0}
+.dot.on{background:var(--orange);transform:scale(1.35)}
+.arrows{position:fixed;bottom:14px;right:22px;display:flex;gap:8px;z-index:60}
+.arrow-btn{width:42px;height:42px;border-radius:14px;border:1.5px solid #E4DACB;background:var(--card);font-size:17px;color:var(--ink);cursor:pointer;transition:.2s;box-shadow:0 3px 10px rgba(90,70,40,.07)}
+.arrow-btn:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.slide-num{position:fixed;bottom:26px;left:26px;font-size:11.5px;color:#B4A88F;font-weight:600;letter-spacing:.08em;z-index:60}
+.corner-brand{position:fixed;top:20px;left:26px;font-family:'Sora';font-weight:800;font-size:15px;letter-spacing:.02em;z-index:60}
+.corner-brand span{color:var(--orange)}
+.corner-chip{position:fixed;top:18px;right:24px;z-index:60;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:var(--gold-soft);color:#8a6b1f;border:1px solid #EDD9A8;border-radius:999px;padding:5px 12px}
+
+/* ============ shared ============ */
+.kicker{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--orange);margin-bottom:10px}
+.h-title{font-size:34px;font-weight:800;letter-spacing:-.02em;line-height:1.12;margin-bottom:8px}
+.h-sub{font-size:15px;color:var(--ink-soft);max-width:880px;line-height:1.55}
+.card{background:var(--card);border:1px solid #F0E8DA;border-radius:var(--radius);box-shadow:var(--shadow);padding:20px 22px}
+.pill{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:3px 10px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{font-family:'Sora';font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:8px 12px;border-bottom:2px solid var(--cream-deep)}
+.tbl td{padding:8px 12px;border-bottom:1px solid var(--cream-deep);vertical-align:top;line-height:1.45}
+.tbl tr:last-child td{border-bottom:none}
+.btn{display:inline-block;border-radius:999px;padding:11px 22px;font-size:13.5px;font-weight:700;border:none;text-decoration:none;transition:.2s;cursor:pointer}
+.btn.primary{background:var(--orange);color:#fff}
+.btn.primary:hover{background:#d4551a}
+.btn.ghost{border:1.5px solid #E4DACB;color:var(--ink);background:var(--card)}
+.btn.ghost:hover{border-color:var(--orange);color:var(--orange)}
+.note{margin-top:14px;font-size:12.5px;color:var(--ink-soft);background:var(--cream-deep);border-radius:12px;padding:11px 16px;line-height:1.5}
+.note b{color:var(--ink)}
+
+/* ============ S1 ============ */
+.hero-loop{display:flex;align-items:center;justify-content:center;gap:10px;margin:30px 0 26px;flex-wrap:wrap}
+.hl-node{display:flex;flex-direction:column;align-items:center;gap:6px}
+.hl-ic{width:58px;height:58px;border-radius:19px;display:flex;align-items:center;justify-content:center;font-size:24px;background:var(--card);border:1.5px solid #F0E8DA;box-shadow:var(--shadow)}
+.hl-node b{font-size:11px;color:var(--ink-soft);font-weight:700}
+.hl-arrow{font-size:19px;color:#C9BDA6;margin:0 2px;padding-bottom:22px}
+.title-links{display:flex;gap:12px;justify-content:center;margin-top:24px}
+
+/* ============ S2 origin timeline ============ */
+.timeline{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:20px}
+.tl-card{background:var(--card);border:1px solid #F0E8DA;border-radius:16px;box-shadow:var(--shadow);padding:14px 15px;position:relative}
+.tl-card::after{content:"→";position:absolute;right:-13px;top:42%;color:#C9BDA6;font-size:15px;z-index:2}
+.tl-card:last-child::after{content:""}
+.tl-step{width:24px;height:24px;border-radius:9px;background:var(--ink);color:#fff;font-family:'Sora';font-weight:700;font-size:11px;display:flex;align-items:center;justify-content:center;margin-bottom:8px}
+.tl-card b{font-size:12.5px;display:block;margin-bottom:3px}
+.tl-card span{font-size:10.5px;color:var(--ink-soft);line-height:1.4;display:block}
+.tl-card a{font-size:10px;font-weight:700;color:var(--orange);text-decoration:none;display:inline-block;margin-top:6px}
+.tl-card.hot{border-color:var(--orange);background:linear-gradient(135deg,#FFF7F0,var(--card))}
+
+/* ============ S3 dead ends ============ */
+.dead{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:20px}
+.dead .card{border-top:4px solid var(--red)}
+.dead h3{font-size:15.5px;margin-bottom:6px}
+.dead p{font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+.dead .has{margin-top:9px;font-size:11px}
+.dead .has i{font-style:normal;font-weight:800}
+.dead .has .y{color:var(--green)} .dead .has .n{color:var(--red)}
+
+/* ============ S4 anatomy ============ */
+.anatomy{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}
+.an-card{background:var(--card);border:1px solid #F0E8DA;border-radius:18px;box-shadow:var(--shadow);padding:16px 17px}
+.an-num{font-family:'Sora';font-size:26px;font-weight:800;color:#D9CFBE;line-height:1;margin-bottom:8px}
+.an-card h3{font-size:14px;margin-bottom:5px}
+.an-card p{font-size:11.5px;color:var(--ink-soft);line-height:1.5}
+.an-card .mini{margin-top:10px;background:var(--cream);border-radius:10px;padding:8px 10px;font-size:10px;color:var(--ink-soft);line-height:1.45}
+.an-card .mini b{color:var(--ink)}
+
+/* ============ S5 loop diagram ============ */
+.loop-wrap{display:grid;grid-template-columns:1fr 300px;gap:16px;margin-top:18px;align-items:stretch}
+.loop-flow{display:flex;flex-direction:column;gap:9px}
+.lf-row{display:grid;grid-template-columns:44px 1fr auto;gap:13px;align-items:center;background:var(--card);border:1px solid #F0E8DA;border-radius:15px;padding:11px 15px;box-shadow:var(--shadow)}
+.lf-ic{width:40px;height:40px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.lf-row b{font-size:13.5px;display:block}
+.lf-row span{font-size:11.5px;color:var(--ink-soft);line-height:1.4;display:block}
+.lf-tag{font-size:9.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;border-radius:999px;padding:3px 9px;white-space:nowrap}
+.loop-side{background:var(--ink);border-radius:var(--radius);padding:18px 19px;color:#F5EFE4;display:flex;flex-direction:column;gap:10px}
+.loop-side h3{color:#fff;font-size:14px}
+.loop-side .ls-item{background:rgba(255,255,255,.08);border-radius:10px;padding:8px 11px;font-size:11px;line-height:1.45;color:#E8E0D2}
+.loop-side .ls-item b{color:#F5D9A8}
+
+/* ============ S7 market ============ */
+.mk{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:16px}
+.mk .card{padding:15px 17px}
+.mk h3{font-size:13.5px;margin-bottom:7px;display:flex;align-items:center;gap:7px}
+.mk ul{list-style:none;display:flex;flex-direction:column;gap:6px}
+.mk li{font-size:11px;color:var(--ink-soft);line-height:1.45;padding-left:14px;position:relative}
+.mk li::before{content:"·";position:absolute;left:2px;color:var(--orange);font-weight:800}
+.mk li b{color:var(--ink)}
+.whitespace{margin-top:14px;background:var(--orange-soft);border:1px solid #F6C9AC;border-radius:14px;padding:13px 18px;font-size:13.5px;line-height:1.55}
+
+/* ============ S9 horizons ============ */
+.horizons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:18px}
+.hz{background:var(--card);border:1px solid #F0E8DA;border-radius:18px;box-shadow:var(--shadow);padding:16px 18px;display:flex;flex-direction:column;gap:8px}
+.hz.now{border:2px solid var(--orange)}
+.hz-head{display:flex;align-items:center;justify-content:space-between}
+.hz-head h3{font-size:15px}
+.hz p{font-size:11.5px;color:var(--ink-soft);line-height:1.5}
+.hz .gate{margin-top:auto;background:var(--cream);border-radius:10px;padding:8px 11px;font-size:10.5px;color:var(--ink-soft);line-height:1.45}
+.hz .gate b{color:var(--ink)}
+.hz ul{list-style:none;display:flex;flex-direction:column;gap:4px}
+.hz li{font-size:11px;color:var(--ink-soft);line-height:1.4;padding-left:13px;position:relative}
+.hz li::before{content:"→";position:absolute;left:0;color:var(--orange);font-size:9px;top:2px}
+
+/* ============ S10 fork ============ */
+.fork{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;margin-top:18px}
+.risk{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--cream-deep)}
+.risk:last-child{border-bottom:none}
+.risk .ri{flex:none;width:26px;height:26px;border-radius:9px;background:#FBE2E2;display:flex;align-items:center;justify-content:center;font-size:12px}
+.risk b{font-size:12px;display:block}
+.risk span{font-size:10.5px;color:var(--ink-soft);line-height:1.4;display:block}
+
+/* ============ S11 survey ============ */
+.survey{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.sq{background:var(--card);border:1px solid #F0E8DA;border-radius:16px;box-shadow:var(--shadow);padding:13px 16px}
+.sq h3{font-size:12.5px;margin-bottom:8px}
+.sq .qn{color:var(--orange);margin-right:5px}
+.schips{display:flex;flex-wrap:wrap;gap:6px}
+.schip{border:1.5px solid #E4DACB;background:var(--cream);border-radius:999px;padding:5px 12px;font-size:11.5px;font-weight:700;cursor:pointer;font-family:inherit;color:var(--ink);transition:.15s}
+.schip:hover{border-color:var(--orange)}
+.schip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.snotes{width:100%;border:1.5px solid #E4DACB;border-radius:12px;background:var(--card);padding:9px 12px;font-family:inherit;font-size:12px;resize:none;height:52px;color:var(--ink)}
+.snotes:focus{outline:none;border-color:var(--orange)}
+.survey-foot{display:flex;align-items:center;gap:10px;margin-top:12px}
+.survey-foot .hint{flex:1;font-size:11.5px;color:var(--ink-soft)}
+</style>
+</head>
+<body>
+
+<div class="corner-brand">FLOW<span>Z</span></div>
+<div class="corner-chip">To Review · Internal</div>
+<div class="progress" id="progress"></div>
+
+<div class="deck">
+
+<!-- ════════ S1 · TITLE ════════ -->
+<section class="slide" data-n="1">
+  <div class="slide-inner" style="text-align:center">
+    <div class="kicker">Flowz · Product Concept</div>
+    <h1 class="display" style="font-size:47px;letter-spacing:-.03em;line-height:1.08">Decision Deck</h1>
+    <p class="h-sub" style="margin:12px auto 0;font-size:17px">The presentation that doesn't end – it becomes the work.</p>
+    <div class="hero-loop">
+      <span class="hl-node"><span class="hl-ic" style="background:var(--blue-soft)">💡</span><b>Insight</b></span>
+      <span class="hl-arrow">→</span>
+      <span class="hl-node"><span class="hl-ic" style="background:var(--orange-soft)">🎬</span><b>Decision Deck</b></span>
+      <span class="hl-arrow">→</span>
+      <span class="hl-node"><span class="hl-ic" style="background:var(--gold-soft)">🪑</span><b>Round table</b></span>
+      <span class="hl-arrow">→</span>
+      <span class="hl-node"><span class="hl-ic" style="background:var(--green-soft)">✅</span><b>DONE</b></span>
+      <span class="hl-arrow">→</span>
+      <span class="hl-node"><span class="hl-ic" style="background:var(--purple-soft)">⚙️</span><b>Tasks · Flows</b></span>
+      <span class="hl-arrow">→</span>
+      <span class="hl-node"><span class="hl-ic" style="background:var(--teal-soft)">📚</span><b>Decision log</b></span>
+    </div>
+    <p class="h-sub" style="margin:0 auto">A live artifact born from data inside Flowz, decided at the manager's desk or the organization's round table, and executed by the system the moment it's marked done.</p>
+    <div class="title-links">
+      <a class="btn primary" href="#s11">Decide on this concept →</a>
+      <a class="btn ghost" href="../">Back to hub</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ S2 · ORIGIN ════════ -->
+<section class="slide" data-n="2">
+  <div class="slide-inner">
+    <div class="kicker">Origin</div>
+    <h2 class="h-title">We used it before we named it</h2>
+    <p class="h-sub">The segmentation thread wasn't a document exercise. It was a working loop that carried research into decisions and decisions into production, and every step is live on this hub.</p>
+    <div class="timeline">
+      <div class="tl-card"><span class="tl-step">1</span><b>Research sweep</b><span>9 parallel research tracks across CRMs, RFM practice and naming psychology.</span><a href="../tiers/Flowz-Segmentation-Research.pdf" target="_blank">34-page report →</a></div>
+      <div class="tl-card"><span class="tl-step">2</span><b>Proposal deck</b><span>13 slides: system, naming ladders, options, guardrails.</span><a href="../tiers/">tiers deck →</a></div>
+      <div class="tl-card"><span class="tl-step">3</span><b>Mini survey</b><span>6 decisions with MD export, embedded as the deck's final slide.</span><a href="../tiers/#s13">S13 →</a></div>
+      <div class="tl-card"><span class="tl-step">4</span><b>Aviv's workshop</b><span>43 closed choices in 6 sections, exporting one implementation brief.</span><a href="../workshop/">workshop →</a></div>
+      <div class="tl-card hot"><span class="tl-step">5</span><b>Production input</b><span>The exported decisions file goes straight back into the build. The deck became the work.</span></div>
+    </div>
+    <div class="note"><b>The realization:</b> the deliverable format we fell in love with is not a presentation. It is a decision instrument with an execution tail. That is a product feature, and today it has a name: the Decision Deck.</div>
+  </div>
+</section>
+
+<!-- ════════ S3 · THE PROBLEM ════════ -->
+<section class="slide" data-n="3">
+  <div class="slide-inner">
+    <div class="kicker">The gap</div>
+    <h2 class="h-title">Decks die in Drive. Decisions die in meeting notes.</h2>
+    <p class="h-sub">Every tool an organization uses today holds one piece of the decision and drops the rest.</p>
+    <div class="dead">
+      <div class="card">
+        <h3>📊 Dashboards</h3>
+        <p>All the data, none of the framing. A BI screen never says "here are your three options, and this one is recommended." Someone still has to turn numbers into a question.</p>
+        <div class="has"><i class="y">✓ data</i> · <i class="n">✗ framing</i> · <i class="n">✗ commitment</i> · <i class="n">✗ execution</i></div>
+      </div>
+      <div class="card">
+        <h3>🖼️ Presentations</h3>
+        <p>Framing without commitment. The deck gets presented, heads nod, the file goes to Drive, and nothing in it knows whether anything was ever decided.</p>
+        <div class="has"><i class="n">✗ data (stale)</i> · <i class="y">✓ framing</i> · <i class="n">✗ commitment</i> · <i class="n">✗ execution</i></div>
+      </div>
+      <div class="card">
+        <h3>🗣️ Meetings</h3>
+        <p>Commitment without memory or execution. The decision lives in someone's notes, the tasks get retyped by hand, and in six months nobody remembers why it was decided.</p>
+        <div class="has"><i class="n">✗ data</i> · <i class="n">✗ framing</i> · <i class="y">✓ commitment</i> · <i class="n">✗ execution</i></div>
+      </div>
+    </div>
+    <div class="note"><b>The Decision Deck closes all four:</b> live data in, framed choices with recommended defaults, an explicit commitment surface, and automatic execution plus a permanent log the moment it's done.</div>
+  </div>
+</section>
+
+<!-- ════════ S4 · ANATOMY ════════ -->
+<section class="slide" data-n="4">
+  <div class="slide-inner">
+    <div class="kicker">The concept</div>
+    <h2 class="h-title">Anatomy of a Decision Deck</h2>
+    <div class="anatomy">
+      <div class="an-card">
+        <div class="an-num">01</div>
+        <h3>Context from live data</h3>
+        <p>Slides generated from the system's own numbers: the insight, the trend, what others do, what it costs. Not pasted screenshots – queries.</p>
+        <div class="mini"><b>Example:</b> "Repeat-buyer rate down 9% vs last event. 214 lapsed VIPs. Here's the revenue at stake."</div>
+      </div>
+      <div class="an-card">
+        <div class="an-num">02</div>
+        <h3>Framed choices</h3>
+        <p>Closed options with a recommended default and a "decision lens" explaining the tradeoff. Multi-select where it fits. No blank canvases.</p>
+        <div class="mini"><b>Example:</b> "Win-back approach: personal call · automated sequence · bundled offer (recommended)."</div>
+      </div>
+      <div class="an-card">
+        <div class="an-num">03</div>
+        <h3>Commitment surface</h3>
+        <p>Answered async at the desk or live at the round table. Owner per decision, quorum if needed, notes for the choices the chips don't capture.</p>
+        <div class="mini"><b>Delivery:</b> calendar invite + Organization Hub link + password. Offline copy for the flight.</div>
+      </div>
+      <div class="an-card">
+        <div class="an-num">04</div>
+        <h3>DONE = execution</h3>
+        <p>Marking done is not closing a file. Choices become tasks, flows get scheduled, owners get assigned, and the decision enters the permanent log with its full context.</p>
+        <div class="mini"><b>Six months later:</b> "Why did we drop the early-bird tier?" – open the log, the whole deck is the answer.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ S5 · THE LOOP IN FLOWZ ════════ -->
+<section class="slide" data-n="5">
+  <div class="slide-inner">
+    <div class="kicker">Inside Flowz</div>
+    <h2 class="h-title">One loop, six touchpoints we already have</h2>
+    <div class="loop-wrap">
+      <div class="loop-flow">
+        <div class="lf-row"><span class="lf-ic" style="background:var(--blue-soft)">💡</span><div><b>Born from an Insight or Flow</b><span>Every insight card and every Process-type flow gets a new action: "Open a Decision Deck". The system drafts it from the data behind the insight.</span></div><span class="lf-tag" style="background:var(--blue-soft);color:#1D4ED8">ControlRoom</span></div>
+        <div class="lf-row"><span class="lf-ic" style="background:var(--gold-soft)">📅</span><div><b>Sent to the table</b><span>Calendar invite with the deck attached, auto-published to the Organization Hub. Link + password, loads on any screen, offline version for travel.</span></div><span class="lf-tag" style="background:var(--gold-soft);color:#8a6b1f">Org Hub</span></div>
+        <div class="lf-row"><span class="lf-ic" style="background:var(--green-soft)">✅</span><div><b>Decided</b><span>Async or in the room. Progress visible per section, every answer saved on the spot, review screen before commit.</span></div><span class="lf-tag" style="background:var(--green-soft);color:var(--green)">Decision surface</span></div>
+        <div class="lf-row"><span class="lf-ic" style="background:var(--purple-soft)">⚙️</span><div><b>Executed &amp; remembered</b><span>DONE spawns tasks in the Tasks module, schedules flows, and writes the decision log entry. The next insight measures whether it worked.</span></div><span class="lf-tag" style="background:var(--purple-soft);color:#6D28D9">Tasks · Flows · Log</span></div>
+      </div>
+      <div class="loop-side">
+        <h3>Why Flowz can do this natively</h3>
+        <div class="ls-item"><b>Insights already exist</b> – the read-only signal layer is built and speaks in exactly the sentences a deck needs.</div>
+        <div class="ls-item"><b>Process flows have approval gates</b> – the Decision Deck IS the approval gate, finally given a face.</div>
+        <div class="ls-item"><b>The Tasks module receives</b> – decisions land as owned, dated work items.</div>
+        <div class="ls-item"><b>This hub is the prototype</b> – login gate, "To Review" section, decks that export briefs. We're already running the Organization Hub by hand.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ S6 · WHAT WE ALREADY PROVED ════════ -->
+<section class="slide" data-n="6">
+  <div class="slide-inner">
+    <div class="kicker">Proof of concept</div>
+    <h2 class="h-title">The dogfood evidence, in numbers</h2>
+    <div class="grid3" style="margin-top:18px">
+      <div class="card" style="text-align:center">
+        <div style="font-family:'Sora';font-size:40px;font-weight:800;color:var(--orange)">49</div>
+        <div style="font-size:12.5px;color:var(--ink-soft);margin-top:4px">closed decisions framed across the two segmentation instruments (6 + 43), each with a research-backed recommended default</div>
+      </div>
+      <div class="card" style="text-align:center">
+        <div style="font-family:'Sora';font-size:40px;font-weight:800;color:var(--orange)">2</div>
+        <div style="font-size:12.5px;color:var(--ink-soft);margin-top:4px">people needed to run the whole loop end to end – founder decides, builder frames, no meeting minutes anywhere</div>
+      </div>
+      <div class="card" style="text-align:center">
+        <div style="font-family:'Sora';font-size:40px;font-weight:800;color:var(--orange)">1</div>
+        <div style="font-size:12.5px;color:var(--ink-soft);margin-top:4px">markdown brief that carries every choice straight back into the build – the deck's output is the spec's input</div>
+      </div>
+    </div>
+    <div class="note" style="margin-top:16px"><b>And one telling behavior:</b> the moment the format existed, both founders started routing new topics through it (this very deck included). Internal pull is the earliest product signal there is.</div>
+  </div>
+</section>
+
+<!-- ════════ S7 · MARKET ════════ -->
+<section class="slide" data-n="7">
+  <div class="slide-inner">
+    <div class="kicker">Market scan</div>
+    <h2 class="h-title">Everyone holds one piece. Nobody closes the loop.</h2>
+    <div class="mk">
+      <div class="card">
+        <h3>🗣️ Meeting &amp; decision tools</h3>
+        <ul id="mk-lane1">
+          <li><b>AI notetakers</b> (Fireflies 20M users, Fellow, Circleback): every summary now ships a "Decisions" section – proof leaders want decisions isolated. All passive: they report what was said, never frame what to decide.</li>
+          <li><b>Loomio</b>: real closed-choice voting + published outcomes – and zero execution. A co-op niche for 14 years.</li>
+          <li><b>Cloverpop</b>: a decade + $12.6M selling a "system of record for decisions" to enterprises. Survived only by fleeing upmarket to P&amp;G/Sanofi – a horizontal decision tool arrives <b>empty</b>.</li>
+          <li>Execution stops at task stubs everywhere. Compiling a decision into running processes: untouched.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>🖼️ Interactive deck platforms</h3>
+        <ul id="mk-lane2">
+          <li><b>Menti / Slido</b>: capture the room's opinion, end as an export file.</li>
+          <li><b>Pitch / Gamma</b>: watch-the-reader analytics; a viewer's choice triggers nothing. <b>Tome died</b> at &lt;$4M ARR on 20M users – generic AI decks don't monetize.</li>
+          <li><b>Storydoc</b>: in-deck input syncing to a CRM sells – but for outbound sales, not governance.</li>
+          <li><b>Zeck</b> (10k execs): async board pre-votes → permanent minutes. Closest cousin – and it terminates in legal records, not tasks. Exec-authored, never data-generated.</li>
+          <li>"Recommended default" appears in <b>zero</b> deck tools. The name "Decision Deck" is unclaimed in SaaS.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>🧠 Decision intelligence</h3>
+        <ul id="mk-lane3">
+          <li>A formal Gartner category: rated <b>"transformational"</b> 2025, first Magic Quadrant Jan 2026, market sized $13–18B growing 16–30% CAGR.</li>
+          <li>But the leaders (FICO, SAS, IBM, Quantexa, Aera) automate machine-speed decisions – credit, fraud, supply chain. The human/operator side is nearly unoccupied.</li>
+          <li><b>Decision registries are demanded and die</b>: ~50% of ADR repos abandon under 5 records; Almanac shut down 2025; Loqbooq 2024. Failure mode: logging is a separate act after the decision.</li>
+          <li><b>SMB proof</b>: EOS runs a weekly decision ritual in 275k companies; Ninety digitizes it for 18k – hand-typed, data-blind, execution-dead.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="whitespace" id="whitespace"><b>The whitespace verdict:</b> the market splits into capture-opinion, watch-the-reader, auto-refresh-the-report and record-the-meeting. Nobody runs <b>data → framed choices with a default → commitment → compiled execution → permanent log</b> in one artifact. Best-in-class covers 2 of those 5 steps. The realistic fast-follows (Zeck moving down from boards, Decisions adding data-generated agendas) are each one architectural leap away – and neither owns the operator's live business data the way Flowz does.</div>
+  </div>
+</section>
+
+<!-- ════════ S8 · THE NEED ════════ -->
+<section class="slide" data-n="8">
+  <div class="slide-inner">
+    <div class="kicker">The need</div>
+    <h2 class="h-title">Why organizations will pay for this</h2>
+    <div class="grid2" style="margin-top:18px;grid-template-columns:1.05fr .95fr" id="need-stats">
+      <div class="card">
+        <h3 style="font-size:14px;margin-bottom:10px">The quantified pain</h3>
+        <table class="tbl">
+          <tr><td style="width:92px"><b style="font-family:'Sora';font-size:17px;color:var(--orange)">37%</b></td><td>of meetings produce an identifiable decision or committed action. Two thirds end with nothing executable. <span style="color:#B4A88F">(Flowtrace)</span></td></tr>
+          <tr><td><b style="font-family:'Sora';font-size:17px;color:var(--orange)">71%</b></td><td>of senior managers call meetings unproductive; a 30-minute meeting costs $700–1,600 – Shopify put the calculator in the invite and cut 12,000 recurring meetings. <span style="color:#B4A88F">(HBR · Shopify)</span></td></tr>
+          <tr><td><b style="font-family:'Sora';font-size:17px;color:var(--orange)">58%+</b></td><td>of managers' deciding time is used ineffectively – roughly $250M/yr of wasted wages at a typical Fortune 500. <span style="color:#B4A88F">(McKinsey)</span></td></tr>
+          <tr><td><b style="font-family:'Sora';font-size:17px;color:var(--orange)">95%</b></td><td>correlation between decision effectiveness and top-tier financial performance, across 1,000+ companies over 10 years. <span style="color:#B4A88F">(Bain)</span></td></tr>
+          <tr><td><b style="font-family:'Sora';font-size:17px;color:var(--orange)">2×</b></td><td>faster decisions with half the meetings when the choice is framed and structured. <span style="color:#B4A88F">(Cloverpop research, 566 decisions)</span></td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h3 style="font-size:14px;margin-bottom:10px">Three behaviors already proven</h3>
+        <table class="tbl">
+          <tr><td><b>SMBs sustain decision rituals.</b> EOS's weekly Level-10 meeting runs in 275,000 companies; Ninety.io digitizes it for 18,000. Operators will pay for structured deciding – today it's hand-typed and data-blind.</td></tr>
+          <tr><td><b>The canon prescribes our exact format.</b> Amazon's two-way doors and "decide at 70% of the information", GitLab's DRI, Bain's RAPID: frame the choice, name the decider, bias to a default, keep reversible calls lightweight.</td></tr>
+          <tr><td><b>The graveyard names the fix.</b> Decision logs keep failing (ADRs abandoned, Almanac dead, Loqbooq dead) because logging is a separate act after the decision. In a Decision Deck the log is a byproduct of pressing DONE – the exact failure mode, inverted.</td></tr>
+        </table>
+        <div class="note" style="margin-top:10px;font-size:11.5px"><b>Positioning rule from the research:</b> never sell "decision intelligence" to producers – that term now means enterprise fraud engines. Sell fewer meetings, decisions that execute themselves, and a permanent answer to "why did we do it this way last season". Seasonal, high-turnover event teams feel org-memory pain hardest.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ S9 · HORIZONS ════════ -->
+<section class="slide" data-n="9">
+  <div class="slide-inner">
+    <div class="kicker">Product shape</div>
+    <h2 class="h-title">Three horizons, with gates between them</h2>
+    <div class="horizons">
+      <div class="hz now">
+        <div class="hz-head"><h3>H1 · Core feature</h3><span class="pill" style="background:var(--orange-soft);color:var(--orange)">Build now</span></div>
+        <p>Decision Decks inside Flowz, born from insights and Process flows.</p>
+        <ul>
+          <li>"Open a Decision Deck" on every insight card</li>
+          <li>Deck builder: context slides from data + closed choices + defaults</li>
+          <li>Calendar invite + hub publish (login, offline copy)</li>
+          <li>DONE → tasks + scheduled flows + decision log entry</li>
+        </ul>
+        <div class="gate"><b>Gate to H2:</b> producers open decks we didn't ask them to open, and the log gets consulted ("why did we…") more than once a month.</div>
+      </div>
+      <div class="hz">
+        <div class="hz-head"><h3>H2 · Module</h3><span class="pill" style="background:var(--gold-soft);color:#8a6b1f">On pull</span></div>
+        <p>The Decision Hub: a first-class module alongside CRM and Tasks.</p>
+        <ul>
+          <li>Decision log as a browsable, searchable registry</li>
+          <li>Templates: pricing call, lineup call, budget approval</li>
+          <li>Recurring decision cadences (weekly revenue round table)</li>
+          <li>Outcome tracking: "decided X, result was Y"</li>
+        </ul>
+        <div class="gate"><b>Gate to H3:</b> clients route non-event decisions through it (hiring, suppliers) – the tool outgrows its data.</div>
+      </div>
+      <div class="hz">
+        <div class="hz-head"><h3>H3 · The fork</h3><span class="pill" style="background:var(--purple-soft);color:#6D28D9">If earned</span></div>
+        <p>A standalone product built around the loop – the decision OS for operators.</p>
+        <ul>
+          <li>Data-agnostic: connect any source, AI frames the deck</li>
+          <li>Org Hub as the system of record for "why"</li>
+          <li>Sold to SMB operators, not enterprise analysts</li>
+          <li>Working name: <b>Roundtable by Flowz</b></li>
+        </ul>
+        <div class="gate"><b>Discipline:</b> the fork happens only on demonstrated pull. Features that fork early die as thin clones of both parents.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ S10 · FORK STRATEGY & RISKS ════════ -->
+<section class="slide" data-n="10">
+  <div class="slide-inner">
+    <div class="kicker">Strategy</div>
+    <h2 class="h-title">Why this could be core, and what would kill it</h2>
+    <div class="fork">
+      <div class="card">
+        <h3 style="font-size:15px;margin-bottom:8px">The strategic logic</h3>
+        <table class="tbl">
+          <tr><td style="width:150px"><b>The wedge</b></td><td>Event producers make weekly, high-stakes, recoverable decisions (pricing, lineup, spend) in small teams that are always on the move. Perfect first user.</td></tr>
+          <tr><td><b>The moat</b></td><td>Every decided deck trains the next one: defaults get smarter, templates accumulate, and the decision log becomes switching-cost gravity no dashboard has.</td></tr>
+          <tr><td><b>Why now</b></td><td>AI is what makes deck-framing free. What took us a research sweep and a build session becomes a button: data → framed options → recommended default.</td></tr>
+          <tr><td><b>The reframe</b></td><td>Flowz stops being "a CRM for events" and becomes "the system that runs the organization's decisions" – with events as the beachhead vertical.</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h3 style="font-size:15px;margin-bottom:6px">Honest risks</h3>
+        <div class="risk"><span class="ri">🪤</span><div><b>Feature-not-product trap</b><span>The standalone graveyard is real: Cloverpop fled upmarket after a decade, Almanac and Loqbooq shut down, Tome died at &lt;$4M ARR. H1 is a feature; the fork must be earned.</span></div></div>
+        <div class="risk"><span class="ri">🎓</span><div><b>Fast-follow exposure</b><span>Zeck moving down from boardrooms, or Decisions adding data-generated agendas – each is one leap away. Our defense is owning the operator's live data and the execution tail.</span></div></div>
+        <div class="risk"><span class="ri">🪑</span><div><b>Meeting culture inertia</b><span>Some orgs simply won't decide in an artifact. The deck must also work as the agenda ON the table, not only instead of it.</span></div></div>
+        <div class="risk"><span class="ri">📵</span><div><b>Garbage framing risk</b><span>An AI deck with wrong options is worse than no deck. Human review stays in the loop until defaults earn trust, decision by decision.</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ S11 · DECIDE ════════ -->
+<section class="slide" data-n="11">
+  <div class="slide-inner">
+    <div class="kicker">Decide now</div>
+    <h2 class="h-title" style="font-size:28px">Of course this deck ends in decisions</h2>
+    <div class="survey">
+      <div class="sq">
+        <h3><span class="qn">Q1</span>Do we build H1 into Flowz?</h3>
+        <div class="schips" data-q="Build H1">
+          <button class="schip">Yes – next build cycle</button>
+          <button class="schip">Yes – after segmentation ships</button>
+          <button class="schip">Park it</button>
+        </div>
+      </div>
+      <div class="sq">
+        <h3><span class="qn">Q2</span>First entry point</h3>
+        <div class="schips" data-q="First entry point">
+          <button class="schip">Insight cards ("Open a Decision Deck")</button>
+          <button class="schip">Process-flow approval gates</button>
+          <button class="schip">Manual: "New deck" in the hub</button>
+        </div>
+      </div>
+      <div class="sq">
+        <h3><span class="qn">Q3</span>Organization Hub scope for v1</h3>
+        <div class="schips" data-q="Org hub scope">
+          <button class="schip">Harden this hub pattern (login + To Review)</button>
+          <button class="schip">Build the hub inside the Flowz app</button>
+          <button class="schip">Both from day one</button>
+        </div>
+      </div>
+      <div class="sq">
+        <h3><span class="qn">Q4</span>The DONE tail in v1</h3>
+        <div class="schips" data-q="DONE tail v1">
+          <button class="schip">Tasks only</button>
+          <button class="schip">Tasks + decision log</button>
+          <button class="schip">Tasks + log + scheduled flows</button>
+        </div>
+      </div>
+      <div class="sq">
+        <h3><span class="qn">Q5</span>Fork thesis</h3>
+        <div class="schips" data-q="Fork thesis">
+          <button class="schip">Core feature, fork only on pull</button>
+          <button class="schip">Plan the fork now in parallel</button>
+          <button class="schip">Feature forever, no fork</button>
+        </div>
+      </div>
+      <div class="sq">
+        <h3><span class="qn">Q6</span>Name for the concept</h3>
+        <div class="schips" data-q="Concept name">
+          <button class="schip">Decision Deck</button>
+          <button class="schip">Roundtable</button>
+          <button class="schip">Decisions (module name)</button>
+        </div>
+      </div>
+    </div>
+    <textarea class="snotes" id="surveyNotes" placeholder="Notes, angles, disagreements – everything the chips don't capture…" style="margin-top:12px"></textarea>
+    <div class="survey-foot">
+      <span class="hint" id="surveyHint">0 / 6 answered · export includes your notes</span>
+      <button class="btn ghost" id="surveyCopy">Copy as Markdown</button>
+      <button class="btn primary" id="surveyDl">Download decisions (.md)</button>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<div class="nav" id="nav"></div>
+<div class="arrows">
+  <button class="arrow-btn" id="prev">←</button>
+  <button class="arrow-btn" id="next">→</button>
+</div>
+<div class="slide-num" id="slideNum">01 / 11</div>
+
+<script>
+const slides = Array.from(document.querySelectorAll('.slide'));
+let cur = 0;
+const nav = document.getElementById('nav');
+slides.forEach((s, i) => {
+  const d = document.createElement('button');
+  d.className = 'dot';
+  d.addEventListener('click', () => go(i));
+  nav.appendChild(d);
+});
+const dots = Array.from(nav.querySelectorAll('.dot'));
+function go(i) {
+  cur = Math.max(0, Math.min(slides.length - 1, i));
+  slides.forEach((s, j) => s.classList.toggle('active', j === cur));
+  dots.forEach((d, j) => d.classList.toggle('on', j === cur));
+  document.getElementById('progress').style.width = ((cur + 1) / slides.length * 100) + '%';
+  document.getElementById('slideNum').textContent = String(cur + 1).padStart(2, '0') + ' / ' + slides.length;
+}
+document.getElementById('next').addEventListener('click', () => go(cur + 1));
+document.getElementById('prev').addEventListener('click', () => go(cur - 1));
+document.addEventListener('keydown', e => {
+  if (/^(TEXTAREA|INPUT)$/.test(e.target.tagName)) return;
+  if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') go(cur + 1);
+  if (e.key === 'ArrowLeft' || e.key === 'PageUp') go(cur - 1);
+  if (e.key === 'Home') go(0);
+  if (e.key === 'End') go(slides.length - 1);
+});
+let tx = null;
+document.addEventListener('touchstart', e => tx = e.touches[0].clientX, {passive: true});
+document.addEventListener('touchend', e => {
+  if (tx === null) return;
+  const dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 60) (dx < 0 ? go(cur + 1) : go(cur - 1));
+  tx = null;
+}, {passive: true});
+function goFromHash() {
+  const m = location.hash.match(/^#s(\d+)$/);
+  if (m) go(parseInt(m[1], 10) - 1);
+}
+window.addEventListener('hashchange', goFromHash);
+go(0);
+goFromHash();
+
+/* ---- decision survey (the meta one) ---- */
+const answers = {};
+document.querySelectorAll('.schips').forEach(group => {
+  group.querySelectorAll('.schip').forEach(chip => chip.addEventListener('click', () => {
+    group.querySelectorAll('.schip').forEach(c => c.classList.remove('on'));
+    chip.classList.add('on');
+    answers[group.dataset.q] = chip.textContent.trim();
+    document.getElementById('surveyHint').textContent =
+      Object.keys(answers).length + ' / 6 answered · export includes your notes';
+  }));
+});
+function surveyMd() {
+  const d = new Date();
+  const stamp = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  const qs = ['Build H1', 'First entry point', 'Org hub scope', 'DONE tail v1', 'Fork thesis', 'Concept name'];
+  let md = '# Flowz Decision Deck – Concept Decisions\n\n';
+  md += 'Date: ' + stamp + '\nSource: flowz-hub.pages.dev/decisions (S11)\nStatus: input for H1 spec\n\n';
+  qs.forEach((q, i) => { md += '## Q' + (i + 1) + ' · ' + q + '\n' + (answers[q] || '_unanswered_') + '\n\n'; });
+  const notes = document.getElementById('surveyNotes').value.trim();
+  md += '## Notes\n' + (notes || '_none_') + '\n';
+  return md;
+}
+document.getElementById('surveyDl').addEventListener('click', () => {
+  const blob = new Blob([surveyMd()], { type: 'text/markdown' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'flowz-decision-deck-decisions.md';
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+document.getElementById('surveyCopy').addEventListener('click', async e => {
+  await navigator.clipboard.writeText(surveyMd());
+  e.target.textContent = 'Copied ✓';
+  setTimeout(() => e.target.textContent = 'Copy as Markdown', 1600);
+});
+</script>
+</body>
+</html>
